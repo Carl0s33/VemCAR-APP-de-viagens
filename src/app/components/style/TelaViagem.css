@@ -1,0 +1,52 @@
+/* Styles for MercosulPlate component */
+
+.mercosul-plate {
+  background: white;
+  border: 2px solid #2A2A2A;
+  border-radius: 7px;
+  overflow: hidden;
+  width: 108px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.mercosul-plate-banner {
+  background: #1565C0;
+  padding: 3px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mercosul-plate-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.mercosul-plate-country {
+  font-size: 6.5px;
+  color: white;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.mercosul-plate-region {
+  font-size: 5.5px;
+  color: #90CAF9;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.mercosul-plate-chars {
+  padding: 4px 6px 2px;
+  text-align: center;
+}
+
+.mercosul-plate-chars p {
+  font-size: 22px;
+  font-weight: 900;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  color: #111;
+  line-height: 1.1;
+}

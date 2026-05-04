@@ -1,0 +1,131 @@
+.tela-navegacao-motorista-container {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+.tela-navegacao-motorista-mapa-wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.tela-navegacao-motorista-endereco {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  background: #121212;
+  border: 1px solid #1E1E1E;
+  border-radius: 20px;
+  padding: 16px 20px;
+  z-index: 20;
+}
+.tela-navegacao-motorista-endereco p {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.4;
+}
+
+.tela-navegacao-motorista-barra-status {
+  position: absolute;
+  bottom: 200px;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: #000;
+  border: 1px solid #1E1E1E;
+  border-top: 1px solid #1E1E1E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 20;
+}
+.tela-navegacao-motorista-tempo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tela-navegacao-motorista-bolinha-verde {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #10B981;
+}
+.tela-navegacao-motorista-tempo span {
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+}
+.tela-navegacao-motorista-distancia {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.tela-navegacao-motorista-distancia span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #888;
+}
+
+.tela-navegacao-motorista-painel-inferior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  border-top: 1px solid #1E1E1E;
+  padding: 24px;
+  z-index: 30;
+}
+.tela-navegacao-motorista-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.tela-navegacao-motorista-botao-acao {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: #121212;
+  border: 1px solid #1E1E1E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.tela-navegacao-motorista-botao-acao:active {
+  transform: scale(0.95);
+}
+.tela-navegacao-motorista-nome-passageiro {
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+}
+.tela-navegacao-motorista-botao-iniciar {
+  width: 100%;
+  height: 64px;
+  border-radius: 16px;
+  background: #10B981;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.tela-navegacao-motorista-botao-iniciar:active {
+  transform: scale(0.98);
+}
+.tela-navegacao-motorista-botao-iniciar span {
+  font-size: 18px;
+  font-weight: 900;
+  color: #000;
+  letter-spacing: 0.5px;
+}

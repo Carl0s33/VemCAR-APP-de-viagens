@@ -1,0 +1,348 @@
+.tela-pagamento-container {
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tela-pagamento-mapa-wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.tela-pagamento-botao-voltar {
+  position: absolute;
+  top: 56px;
+  left: 20px;
+  width: 46px;
+  height: 46px;
+  border-radius: 23px;
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  cursor: pointer;
+}
+
+.tela-pagamento-info-rota {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: rgba(17, 24, 39, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 20;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tela-pagamento-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tela-pagamento-info-item span {
+  font-size: 11px;
+  font-weight: 600;
+  color: #E5E7EB;
+}
+
+.tela-pagamento-bottom-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111827;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.45);
+  z-index: 30;
+  padding-bottom: 36px;
+}
+
+.tela-pagamento-drag-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: #374151;
+  margin: 14px auto 20px;
+}
+
+.tela-pagamento-barra-info {
+  padding-left: 22px;
+  padding-right: 22px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tela-pagamento-card-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  background: #1F2937;
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+.tela-pagamento-card-label {
+  font-size: 10px;
+  color: #6B7280;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.tela-pagamento-card-valor {
+  font-size: 15px;
+  color: #F9FAFB;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.tela-pagamento-cabecalho-secao {
+  padding-left: 22px;
+  padding-right: 22px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tela-pagamento-titulo-secao {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F9FAFB;
+}
+
+.tela-pagamento-avaliacao {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tela-pagamento-avaliacao span {
+  font-size: 11px;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+.tela-pagamento-lista-categorias {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-left: 22px;
+  padding-right: 22px;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+}
+
+.tela-pagamento-card-categoria {
+  flex-shrink: 0;
+  width: 118px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #1F2937;
+  border-radius: 20px;
+  padding: 16px 10px 14px;
+  border: 2px solid rgba(55, 65, 81, 0.6);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.tela-pagamento-card-categoria.ativo {
+  background: #0D1F30;
+  border: 2px solid #00E5FF;
+  box-shadow: 0 0 24px rgba(0, 229, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.tela-pagamento-glow-topo {
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #00E5FF;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 0 8px #00E5FF;
+}
+
+.tela-pagamento-badge {
+  position: absolute;
+  top: 8px;
+  right: 7px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 7px;
+  padding: 2px 5px;
+}
+
+.tela-pagamento-badge span {
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.tela-pagamento-icone-container {
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  background: rgba(55, 65, 81, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(75, 85, 99, 0.3);
+}
+
+.tela-pagamento-card-categoria.ativo .tela-pagamento-icone-container {
+  background: rgba(0, 229, 255, 0.13);
+  border: 1.5px solid rgba(0, 229, 255, 0.35);
+}
+
+.tela-pagamento-nome-categoria {
+  font-size: 12px;
+  font-weight: 700;
+  color: #9CA3AF;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.tela-pagamento-card-categoria.ativo .tela-pagamento-nome-categoria {
+  color: #F9FAFB;
+}
+
+.tela-pagamento-preco-categoria {
+  font-size: 14px;
+  font-weight: 800;
+  color: #6B7280;
+  line-height: 1;
+}
+
+.tela-pagamento-card-categoria.ativo .tela-pagamento-preco-categoria {
+  color: #00E5FF;
+}
+
+.tela-pagamento-tempo-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(55, 65, 81, 0.35);
+  border-radius: 7px;
+  padding: 3px 7px;
+}
+
+.tela-pagamento-card-categoria.ativo .tela-pagamento-tempo-container {
+  background: rgba(0, 229, 255, 0.08);
+}
+
+.tela-pagamento-tempo-container span {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6B7280;
+}
+
+.tela-pagamento-card-categoria.ativo .tela-pagamento-tempo-container span {
+  color: #00E5FF;
+}
+
+.tela-pagamento-linha-pagamento {
+  padding-left: 22px;
+  padding-right: 22px;
+  margin-bottom: 14px;
+}
+
+.tela-pagamento-box-pagamento {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1F2937;
+  border-radius: 16px;
+  padding: 12px 16px;
+  border: 1px solid #2D3748;
+}
+
+.tela-pagamento-pagamento-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tela-pagamento-icone-carteira {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tela-pagamento-pagamento-label {
+  font-size: 10px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.tela-pagamento-pagamento-valor {
+  font-size: 14px;
+  color: #F9FAFB;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.tela-pagamento-pagamento-preco {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tela-pagamento-pagamento-preco span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #00E5FF;
+}
+
+.tela-pagamento-linha-botao {
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.tela-pagamento-botao-solicitar {
+  width: 100%;
+  padding: 17px 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #00E5FF 0%, #00CAE5 100%);
+  box-shadow: 0 6px 30px rgba(0, 229, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.tela-pagamento-botao-solicitar.pressionado {
+  background: #00C4D9;
+}
+
+.tela-pagamento-botao-solicitar span {
+  font-size: 15px;
+  font-weight: 800;
+  color: #061520;
+  letter-spacing: 0.4px;
+}

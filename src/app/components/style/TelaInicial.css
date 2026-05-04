@@ -1,0 +1,99 @@
+.home-container {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+.home-search-section {
+  padding: 80px 20px 20px;
+  background: linear-gradient(to bottom, #121212, #000000);
+}
+
+.search-bar-matte {
+  background-color: #1e1e1e;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  cursor: pointer;
+  border: 1px solid #2a2a2a;
+}
+
+.search-bar-matte span {
+  color: #888888;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.home-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.destination-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #121212;
+  cursor: pointer;
+}
+
+.icon-wrapper-matte {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dest-name {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.dest-address {
+  color: #666666;
+  font-size: 13px;
+}
+
+.promotion-card {
+  margin-top: 32px;
+  background-color: #00e5ff;
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.promo-text h3 {
+  color: #000000;
+  font-weight: 900;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.promo-text p {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 200px;
+}
