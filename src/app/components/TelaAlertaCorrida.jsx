@@ -1,134 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapaCidade } from "./MapaCidade";
-import { MapPin, User, Star, X, Check, ChevronRight, Navigation, CircleDot } from "lucide-react";
-import { motion } from "framer-motion";
+import { MapPin, User, Star, X, CircleDot } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import "./style/TelaAlertaCorrida.css";
 
-export default function TelaAlertaCorrida({ aoAceitar, aoRejeitar, aoIniciarCorrida }) {
-  const [corridaAceita, setCorridaAceita] = useState(false);
+export default function TelaAlertaCorrida({ aoAceitar, aoRejeitar }) {
+  const [tempo, setTempo] = useState(15); // Minimundo: 15 segundos!
 
-  const handleAceitar = () => {
-    setCorridaAceita(true);
-    if (aoAceitar) aoAceitar();
-  };
+  // Som de notificação padrão do navegador (usando um Beep sintetizado para evitar bloqueios de autoplay de MP3)
+  useEffect(() => {
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    
+    const tocarBeep = (freq, tempoInicio, duracao) => {
+      const osc = context.createOscillator();
+      const ganho = context.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, context.currentTime + tempoInicio);
+      ganho.gain.setValueAtTime(0.1, context.currentTime + tempoInicio);
+      ganho.gain.exponentialRampToValueAtTime(0.001, context.currentTime + tempoInicio + duracao);
+      osc.connect(ganho);
+      ganho.connect(context.destination);
+      osc.start(context.currentTime + tempoInicio);
+      osc.stop(context.currentTime + tempoInicio + duracao);
+    };
+
+    // Toca o som triplo clássico de alerta (Bi-Bi-Bip)
+    tocarBeep(600, 0, 0.2);
+    tocarBeep(600, 0.3, 0.2);
+    tocarBeep(800, 0.6, 0.4);
+    
+    return () => context.close();
+  }, []);
+
+  // Temporizador de 15 segundos do Minimundo
+  useEffect(() => {
+    if (tempo > 0) {
+      const timer = setTimeout(() => setTempo(tempo - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      aoRejeitar(); // Se o motorista perder o tempo... Fim da chamada.
+    }
+  }, [tempo, aoRejeitar]);
+
+  const progressoX = (tempo / 15) * 100;
 
   return (
-    <div className="tela-alerta-wrapper" style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100vh", overflow: "hidden", zIndex: 9999 }}>
+    <div className="tela-alerta-wrapper">
       
-      {/* O mapa de fundo já está configurado para mostrar a rota tracejada */}
-      <div className="mapa-background" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1 }}>
+      {/* Mapa Fundo */}
+      <div className="mapa-background">
         <MapaCidade mostrarRota={true} mostrarCarro={false} />
       </div>
 
       <div className="alerta-container-flutuante">
         <motion.div 
-          className="alerta-card-inferior" 
-          layout /* Faz a transição de altura ser animada automaticamente */
-          initial={{ y: 200, opacity: 0 }}
+          className="alerta-card-matte" 
+          initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 200, opacity: 0 }}
+          exit={{ y: "100%", opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
         >
-          
-          {/* SE A CORRIDA AINDA NÃO FOI ACEITA: Mostra tudo */}
-          {!corridaAceita ? (
-            <>
-              <motion.div layout="position" className="alerta-header-card">
-                <div className="alerta-badge-servico">
-                  <div className="alerta-icone-usuario">
-                    <User size={14} color="#000" strokeWidth={3} />
-                  </div>
-                  <span className="badge-texto">VEM CAR</span>
-                </div>
-                <h1 className="alerta-distancia-texto">3 min de distância</h1>
-              </motion.div>
-              
-              <motion.div layout="position" className="alerta-info-passageiro">
-                <div className="info-rating">
-                  <Star size={16} fill="#F59E0B" color="#F59E0B" strokeWidth={2} />
-                  <span>5,0</span>
-                </div>
-                <div className="divisor-ponto"></div>
-                <span className="distancia-km">1,0 km (R$ 12,50)</span>
-                <div className="divisor-ponto"></div>
-                <span className="pagamento-tipo">Pix</span>
-              </motion.div>
+          {/* Efeito de Radar/Pulsar na Borda */}
+          <div className="borda-pulsante" />
 
-              <motion.div layout="position" className="nome-passageiro-destaque">
-                <p>Passageiro: <strong>Carlos E.</strong></p>
-              </motion.div>
-              
-              <motion.div layout="position" className="alerta-locais-container">
-                <div className="local-item">
-                  <CircleDot size={20} color="#34C759" strokeWidth={2.5} />
-                  <div className="destino-texto">
-                    <p className="nome-destino">R. São José, Centro</p>
-                    <p className="cidade-destino">Santo Antônio - RN</p>
-                  </div>
-                </div>
-                <div className="local-linha-conexao" />
-                <div className="local-item">
-                  <MapPin size={20} color="#00E5FF" strokeWidth={2.5} />
-                  <div className="destino-texto">
-                    <p className="nome-destino">IFRN Campus Nova Cruz</p>
-                    <p className="cidade-destino">Nova Cruz - RN</p>
-                  </div>
-                </div>
-              </motion.div>
-              
-              <motion.div layout="position" className="alerta-botoes-container">
-                <button className="botao-acao-uber rejeitar" onClick={aoRejeitar}>
-                  <X size={28} color="#FFF" strokeWidth={2} />
-                </button>
-                <button className="botao-acao-uber aceitar" onClick={handleAceitar}>
-                  <Check size={28} color="#FFF" strokeWidth={2} />
-                  <span>ACEITAR</span>
-                </button>
-              </motion.div>
-            </>
-          ) : (
-            /* SE A CORRIDA FOI ACEITA: Interface minimalista estilo Uber */
+          {/* Barra de Progresso do Minimundo Visual */}
+          <div style={{ width: "100%", height: "4px", backgroundColor: "#333", position: "absolute", top: 0, left: 0, overflow: "hidden", borderRadius: "32px 32px 0 0" }}>
             <motion.div 
-              className="estado-a-caminho"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              <div className="info-compacta-topo">
-                <div className="info-textos">
-                  <h2 className="titulo-a-caminho">A caminho do passageiro</h2>
-                  <p className="subtitulo-passageiro">Carlos E. • 1,0 km de distância</p>
-                </div>
-                <div className="icone-navegacao-redondo">
-                  <Navigation size={20} color="#34C759" fill="#34C759" />
-                </div>
-              </div>
+               style={{ height: "100%", backgroundColor: tempo <= 5 ? "#EF4444" : "#00E5FF" }}
+               animate={{ width: `${progressoX}%` }}
+               transition={{ duration: 1, ease: "linear" }}
+            />
+          </div>
 
-              <div className="swipe-container">
-                <div className="swipe-setas">
-                  <ChevronRight size={24} />
-                  <ChevronRight size={24} />
-                  <ChevronRight size={24} />
-                </div>
-                <span className="swipe-texto">INICIAR CORRIDA</span>
-                
-                <motion.div 
-                  className="swipe-thumb"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 230 }}
-                  dragElastic={0.1}
-                  onDragEnd={(e, info) => {
-                    if (info.offset.x > 150) {
-                      if (aoIniciarCorrida) aoIniciarCorrida();
-                      console.log("Corrida iniciada!");
-                    }
-                  }}
-                >
-                  <Navigation size={24} color="#FFF" fill="#FFF" />
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
+          {/* CABEÇALHO DO ALERTA */}
+          <div className="alerta-header">
+            <div className="alerta-tempo-preco">
+              <h1 className="tempo-destaque">3 min</h1>
+              <p className="distancia-destaque">1,2 km</p>
+            </div>
+            
+            <div className="preco-estimado">
+              <h2>R$ 14,50</h2>
+              <p>Dinheiro</p>
+            </div>
+          </div>
+          
+          <div className="divisor-linha" />
+
+          {/* INFO PASSAGEIRO */}
+          <div className="alerta-info-passageiro">
+            <div className="info-rating">
+              <Star size={16} fill="#F59E0B" color="#F59E0B" />
+              <span>5.0</span>
+            </div>
+            <div className="divisor-ponto" />
+            <span className="nome-passageiro"><User size={14} style={{marginRight: 4}}/> Carlos Eduardo</span>
+            <div className="divisor-ponto" />
+            <span className="categoria-carro">VEM CAR</span>
+          </div>
+          
+          {/* LOCAIS DE ORIGEM E DESTINO */}
+          <div className="alerta-locais">
+            <div className="local-linha">
+              <CircleDot size={18} color="#34C759" />
+              <p>R. Santo Antônio, 42 - Centro</p>
+            </div>
+            <div className="traco-conexao" />
+            <div className="local-linha">
+              <MapPin size={18} color="#00E5FF" />
+              <p>IFRN Campus Nova Cruz</p>
+            </div>
+          </div>
+          
+          {/* BOTÕES DE AÇÃO */}
+          <div className="alerta-botoes">
+            <motion.button 
+              whileTap={{ scale: 0.9 }} 
+              className="btn-rejeitar-circular" 
+              onClick={aoRejeitar}
+            >
+              <X size={28} color="#FFF" strokeWidth={2.5} />
+            </motion.button>
+            
+            <motion.button 
+              whileTap={{ scale: 0.95 }} 
+              className="btn-aceitar-grande" 
+              onClick={aoAceitar} /* O clique aqui já manda pro driver-navigation direto */
+            >
+              TOCAR PARA ACEITAR
+            </motion.button>
+          </div>
+
+          <div className="barra-tempo-esgotando">
+            <motion.div 
+              className="barra-progresso"
+              initial={{ width: "100%" }}
+              animate={{ width: "0%" }}
+              transition={{ duration: 15, ease: "linear" }}
+              onAnimationComplete={aoRejeitar} // Auto rejeita se o tempo acabar
+            />
+          </div>
 
         </motion.div>
       </div>

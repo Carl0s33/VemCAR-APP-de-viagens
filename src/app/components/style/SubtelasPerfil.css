@@ -1,0 +1,140 @@
+/* --- ESTRUTURA DAS SUBTELAS --- */
+.subtela-container {
+  padding: 0 24px 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.subtela-titulo {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 0 0 8px;
+  color: #FFF;
+}
+
+.subtela-desc {
+  color: #888;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+/* --- INPUTS --- */
+.input-group-matte {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.label-solid {
+  color: #888;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-solid {
+  width: 100%;
+  height: 56px;
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  border-radius: 16px;
+  padding: 0 16px;
+  color: #FFF;
+  font-weight: 700;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-solid:focus {
+  border-color: #00E5FF;
+}
+
+.input-solid:disabled {
+  color: #666;
+  cursor: not-allowed;
+  border-color: #1A1A1A;
+}
+
+/* --- CARDS DE ITEM SALVO (PAGAMENTOS, ENDEREÇOS, CARRO) --- */
+.card-item-salvo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.icone-item-salvo {
+  width: 48px;
+  height: 48px;
+  background: #1A1A1A;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulo-item-salvo {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: #00E5FF;
+}
+
+.desc-item-salvo {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  margin: 0;
+}
+
+/* --- BOTÕES NATIVOS DAS SUBTELAS --- */
+.btn-salvar-matte {
+  width: 100%;
+  height: 60px;
+  background: #00E5FF;
+  border: none;
+  border-radius: 20px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 900;
+  margin-top: auto; /* Se tiver espaço na tela, ele empurra o botão lá pro fundo */
+  cursor: pointer;
+  box-shadow: 0 4px 0px #00B2C7;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-salvar-matte:active {
+  transform: translateY(4px);
+  box-shadow: 0 0px 0px transparent;
+}
+
+.btn-adicionar-matte {
+  width: 100%;
+  height: 60px;
+  background: transparent;
+  border: 2px dashed #333;
+  border-radius: 20px;
+  color: #00E5FF;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-adicionar-matte:active {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: #00E5FF;
+}

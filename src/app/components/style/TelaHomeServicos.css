@@ -1,85 +1,174 @@
 .home-servicos-container {
   width: 100%;
   height: 100%;
-  background-color: #000000;
-  font-family: 'Inter', sans-serif;
-  display: flex;
-  flex-direction: column;
+  padding: 60px 20px 100px;
+  background: #000;
   overflow-y: auto;
 }
 
-.home-servicos-header {
-  padding: 60px 24px 20px;
-}
-
+/* HEADER E BUSCA */
 .home-servicos-saudacao {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 900;
-  color: #ffffff;
-  margin-bottom: 24px;
-}
-
-.home-servicos-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 0 24px;
-  margin-bottom: 32px;
-}
-
-.card-servico-matte {
-  aspect-ratio: 1;
-  background-color: #121212;
-  border: 1px solid #1e1e1e;
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.card-servico-matte:active {
-  transform: scale(0.96);
-}
-
-.icone-servico-wrapper {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background-color: #00e5ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nome-servico-texto {
-  font-size: 14px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.home-servicos-busca-secao {
-  padding: 0 24px;
+  color: #FFF;
+  margin-bottom: 20px;
 }
 
 .barra-busca-falsa {
   width: 100%;
-  height: 56px;
-  background-color: #121212;
-  border-radius: 18px;
-  border: 1px solid #1e1e1e;
+  height: 60px;
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  border-radius: 30px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  gap: 12px;
-  cursor: pointer;
+  padding: 0 24px;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .barra-busca-falsa span {
-  color: #888888;
-  font-weight: 500;
+  color: #888;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* GRID DE SERVIÇOS */
+.home-servicos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.card-servico-matte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.icone-servico-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 0px rgba(255,255,255,0.05);
+}
+
+.nome-servico-texto {
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* BANNER PROMO */
+.banner-promo-matte {
+  margin-top: 32px;
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-texto h3 {
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0 0 4px 0;
+}
+
+.promo-texto p {
+  color: #888;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  max-width: 80%;
+}
+
+.promo-badge {
+  background: #00E5FF;
+  color: #000;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 4px 8px;
+  border-radius: 6px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+/* SEÇÃO RECENTES */
+.secao-destinos-recentes {
+  margin-top: 32px;
+}
+
+.secao-titulo-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.secao-titulo {
+  font-size: 18px;
+  font-weight: 900;
+  color: #FFF;
+}
+
+.btn-ver-todos {
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  color: #FFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 100px;
+}
+
+.card-destino-recente {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #111;
+  cursor: pointer;
+}
+
+.icone-recente-circulo {
+  width: 40px;
+  height: 40px;
+  background: #121212;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recente-textos {
+  flex: 1;
+}
+
+.recente-local {
+  color: #FFF;
   font-size: 15px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.recente-endereco {
+  color: #666;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 2px 0 0 0;
 }

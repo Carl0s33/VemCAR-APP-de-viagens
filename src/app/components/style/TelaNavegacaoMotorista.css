@@ -1,131 +1,206 @@
 .tela-navegacao-motorista-container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #000;
   font-family: 'Inter', sans-serif;
   position: relative;
+  overflow: hidden;
 }
 
 .tela-navegacao-motorista-mapa-wrapper {
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
+/* Card de Endereço no Topo */
 .tela-navegacao-motorista-endereco {
   position: absolute;
-  top: 20px;
+  top: 60px;
   left: 20px;
   right: 20px;
   background: #121212;
-  border: 1px solid #1E1E1E;
+  border: 2px solid #1E1E1E;
   border-radius: 20px;
-  padding: 16px 20px;
+  padding: 16px;
   z-index: 20;
-}
-.tela-navegacao-motorista-endereco p {
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.4;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
+.endereco-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.endereco-titulo {
+  font-size: 13px;
+  color: #888;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.endereco-subtitulo {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FFF;
+}
+
+/* Barra de Status flutuando perto da base */
 .tela-navegacao-motorista-barra-status {
   position: absolute;
-  bottom: 200px;
-  left: 0;
-  right: 0;
+  bottom: 220px;
+  left: 20px;
+  right: 20px;
   height: 56px;
-  background: #000;
-  border: 1px solid #1E1E1E;
-  border-top: 1px solid #1E1E1E;
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 20px;
   z-index: 20;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
-.tela-navegacao-motorista-tempo {
+
+.tela-navegacao-motorista-tempo,
+.tela-navegacao-motorista-distancia {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 .tela-navegacao-motorista-bolinha-verde {
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background: #10B981;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
 }
+
 .tela-navegacao-motorista-tempo span {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 900;
   color: #fff;
 }
-.tela-navegacao-motorista-distancia {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+
 .tela-navegacao-motorista-distancia span {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
   color: #888;
 }
 
+/* Painel Baseão */
 .tela-navegacao-motorista-painel-inferior {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #000;
-  border-top: 1px solid #1E1E1E;
+  background: #0A0A0A;
+  border-top: 2px solid #1E1E1E;
+  border-radius: 32px 32px 0 0;
   padding: 24px;
   z-index: 30;
 }
+
 .tela-navegacao-motorista-acoes {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
+
 .tela-navegacao-motorista-botao-acao {
   width: 56px;
   height: 56px;
-  border-radius: 28px;
-  background: #121212;
-  border: 1px solid #1E1E1E;
+  border-radius: 20px;
+  background: #1A1A1A;
+  border: 2px solid #2A2A2A;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.15s;
 }
-.tela-navegacao-motorista-botao-acao:active {
-  transform: scale(0.95);
-}
+
 .tela-navegacao-motorista-nome-passageiro {
   font-size: 22px;
   font-weight: 900;
   color: #fff;
+  margin: 0 0 4px 0;
 }
-.tela-navegacao-motorista-botao-iniciar {
+
+.rating-passageiro {
+  font-size: 13px;
+  font-weight: 800;
+  color: #A1A1AA;
+}
+
+/* Botão Simples: CHEGUEI */
+.btn-cheguei-matte {
   width: 100%;
   height: 64px;
-  border-radius: 16px;
-  background: #10B981;
-  border: none;
+  border-radius: 20px;
+  background: #1A1A1A;
+  border: 2px solid #333;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 0px #000;
+}
+
+/* Área do Slider/Swipe */
+.swipe-container-matte {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.15s;
+  overflow: hidden;
 }
-.tela-navegacao-motorista-botao-iniciar:active {
-  transform: scale(0.98);
+
+.swipe-container-matte.iniciar {
+  background: #34C759; /* VERDE */
 }
-.tela-navegacao-motorista-botao-iniciar span {
-  font-size: 18px;
-  font-weight: 900;
+
+.swipe-container-matte.encerrar {
+  background: #EF4444;
+}
+
+.swipe-texto {
   color: #000;
+  font-weight: 900;
+  font-size: 15px;
   letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+.swipe-container-matte.encerrar .swipe-texto {
+  color: #FFF; /* Texto branco no botão vermelho */
+}
+
+.swipe-thumb-matte {
+  position: absolute;
+  left: 6px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+.swipe-container-matte.iniciar .swipe-thumb-matte {
+  background: #000;
+}
+
+.swipe-container-matte.encerrar .swipe-thumb-matte {
+  background: #000; /* Botão de arrastar escuro pra dar contraste */
+}
+
+.swipe-thumb-matte:active {
+  cursor: grabbing;
 }
