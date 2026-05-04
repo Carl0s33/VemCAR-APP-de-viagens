@@ -1,84 +1,197 @@
+/* =========================================
+   CONTAINER PRINCIPAL E HEADER
+   ========================================= */
 .tela-selecao-destino-container {
   width: 100%;
-  height: 100%;
-  background-color: #000000;
+  height: 100dvh;
+  background-color: #000000; /* Fundo totalmente preto */
+  color: #ffffff;
   display: flex;
   flex-direction: column;
+  font-family: 'Inter', sans-serif;
   position: relative;
+  overflow: hidden; /* Evita rolagem bugada quando o modal abre */
 }
 
 .tela-selecao-destino-voltar-wrapper {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 24px 16px 16px 16px;
+  gap: 16px;
 }
 
 .tela-selecao-destino-botao-voltar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #000000;
-  border: 1px solid #1E1E1E;
+  background: #18181b;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.15s ease;
+  padding: 10px;
+  border-radius: 50%;
+  transition: transform 0.2s;
 }
 
 .tela-selecao-destino-botao-voltar:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
-.tela-selecao-destino-header-busca {
-  padding: 80px 24px 24px 24px;
+.titulo-tela-busca {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-.tela-selecao-destino-input-wrapper {
-  position: relative;
+/* =========================================
+   CAIXA DUPLA DE ROTA (Estilo Matte)
+   ========================================= */
+.tela-selecao-destino-caixa-dupla.matte-box {
+  display: flex;
+  background-color: #18181b; /* Cinza fosco */
+  margin: 0 16px 16px 16px;
+  border-radius: 24px; /* Bem arredondado */
+  padding: 16px;
+  border: none;
 }
 
-.tela-selecao-destino-icone-busca {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+/* conectores visuais (bolinha, linha, pino) */
+.indicadores-rota {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16px;
+  margin-top: 12px;
 }
 
-.tela-selecao-destino-input {
-  width: 100%;
-  background-color: #121212;
-  border: 1px solid #1E1E1E;
-  border-radius: 20px;
-  padding: 16px 16px 16px 48px;
-  color: #FFFFFF;
-  font-size: 14px;
+.linha-pontilhada-rota {
+  width: 2px;
+  height: 36px;
+  background-image: linear-gradient(to bottom, #3f3f46 50%, transparent 50%);
+  background-size: 100% 6px;
+  margin: 4px 0;
+}
+
+/* inputs de origem e destino */
+.inputs-rota {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-origem-box, .input-destino-box {
+  display: flex;
+  align-items: center;
+  height: 48px;
+}
+
+.input-rota-texto {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  color: #fafafa;
+  font-size: 16px;
   font-weight: 500;
   outline: none;
+  width: 100%;
 }
 
-.tela-selecao-destino-input::placeholder {
-  color: #888888;
+.input-rota-texto::placeholder {
+  color: #71717a;
 }
 
-.tela-selecao-destino-input:focus {
-  border-color: #00E5FF;
+.input-rota-texto.destaque::placeholder {
+  color: #a1a1aa;
+  font-weight: 600;
 }
 
+.divisor-inputs {
+  height: 1px;
+  background-color: #27272a;
+  margin: 4px 0;
+}
+
+/* botão de abrir o mapa dentro do input */
+.botao-abrir-mapa {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #27272a;
+  border: none;
+  color: #fafafa;
+  padding: 8px 12px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   BOTÃO DE PAGAMENTO (Botão Principal)
+   ========================================= */
+.seletor-pagamento-wrapper {
+  padding: 0 16px 24px 16px;
+}
+
+.botao-pagamento-matte {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #18181b;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 16px;
+  gap: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.botao-pagamento-matte:active {
+  background-color: #27272a;
+}
+
+.icone-pagamento-wrapper {
+  width: 44px;
+  height: 44px;
+  background-color: #27272a;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-pagamento {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pagamento-titulo {
+  color: #a1a1aa;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pagamento-valor {
+  color: #fafafa;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* =========================================
+   ATALHOS FREQUENTES (Lista de Destinos)
+   ========================================= */
 .tela-selecao-destino-conteudo {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 24px;
+  flex-grow: 1;
+  padding: 0 16px;
 }
 
 .tela-selecao-destino-titulo-secao {
-  color: #888888;
-  font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
+  color: #71717a;
+  letter-spacing: 1px;
   margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  font-weight: 800;
 }
 
 .tela-selecao-destino-lista-atalhos {
@@ -88,47 +201,124 @@
 }
 
 .tela-selecao-destino-card-atalho {
-  width: 100%;
-  background-color: #121212;
-  border: 1px solid #1E1E1E;
-  border-radius: 20px;
-  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  background-color: transparent;
+  border: none;
+  padding: 12px 0;
   cursor: pointer;
-  transition: transform 0.15s ease;
-  border-left: none; /* Reset some possible tailwind overrides, optionally */
-}
-
-.tela-selecao-destino-card-atalho:active {
-  transform: scale(0.98);
+  text-align: left;
+  border-bottom: 1px solid #18181b;
 }
 
 .tela-selecao-destino-icone-relogio {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
+  background-color: #18181b;
   border-radius: 50%;
-  background-color: rgba(0, 229, 255, 0.1);
-  border: 1px solid #00E5FF;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 16px;
 }
 
 .tela-selecao-destino-info-atalho {
-  flex: 1;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .tela-selecao-destino-nome-atalho {
-  color: #FFFFFF;
+  color: #fafafa;
+  font-size: 17px;
   font-weight: 700;
-  font-size: 16px;
 }
 
 .tela-selecao-destino-subtitulo-atalho {
-  color: #888888;
+  color: #a1a1aa;
   font-size: 14px;
-  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* =========================================
+   MODAL DE PAGAMENTO MATTE (BOTTOM SHEET)
+   ========================================= */
+
+/* Fundo escuro transparente cobrindo a tela toda */
+.modal-overlay-matte {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px); /* Efeitinho embaçado de fundo */
+  z-index: 100;
+}
+
+/* O card do rodapé */
+.modal-bottom-sheet-matte {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #18181b;
+  border-radius: 32px 32px 0 0;
+  padding: 12px 20px 40px 20px; /* Um pouco mais de espaço embaixo */
+  z-index: 101; /* Fica acima do overlay */
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* Puxadorzinho em cima do modal */
+.drag-handle {
+  width: 48px;
+  height: 5px;
+  background-color: #3f3f46;
+  border-radius: 10px;
+  margin: 0 auto 16px auto;
+}
+
+.modal-titulo-matte {
+  color: #fafafa;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+}
+
+/* Lista de opções dentro do modal */
+.lista-opcoes-pagamento {
+  display: flex;
+  flex-direction: column;
+  background-color: #27272a;
+  border-radius: 20px;
+  padding: 8px 16px;
+}
+
+.opcao-pagamento-item {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 16px 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.opcao-pagamento-item .texto-opcao-pagamento {
+  flex-grow: 1;
+  margin-left: 16px;
+  color: #fafafa;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.opcao-pagamento-item.selecionado .texto-opcao-pagamento {
+  color: #00E5FF; /* Muda de cor se tiver selecionado */
+}
+
+.divisor-modal-matte {
+  height: 1px;
+  background-color: #3f3f46;
+  margin-left: 60px; /* Alinha certinho com o texto, ignorando o ícone */
 }

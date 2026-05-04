@@ -1,144 +1,44 @@
-.alerta-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.85); /* Fundo escurecido atrás do card */
+/* Estilos para o estado de corrida aceita (Card Encolhido) */
+.estado-a-caminho {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 999;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.alerta-card-central {
-  background-color: #121212;
-  border: 1px solid #1e1e1e;
-  border-radius: 32px;
-  width: 100%;
-  max-width: 340px;
-  padding: 32px 24px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-}
-
-.alerta-badge-servico {
+.info-compacta-topo {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: #1e1e1e;
-  padding: 6px 12px;
-  border-radius: 100px;
-  width: fit-content;
-  margin: 0 auto 20px;
+  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 16px;
 }
 
-.alerta-icone-usuario {
-  background-color: #00E5FF;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+.info-textos {
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.badge-texto {
-  color: #FFF;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.alerta-distancia-texto {
-  color: #FFF;
-  font-size: 24px;
-  font-weight: 900;
-  margin-bottom: 12px;
-}
-
-.alerta-info-passageiro {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.info-rating {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 4px;
-  color: #FFF;
-  font-weight: 700;
 }
 
-.divisor-ponto {
-  width: 4px;
-  height: 4px;
-  background-color: #444;
+.titulo-a-caminho {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.subtitulo-passageiro {
+  margin: 0;
+  font-size: 14px;
+  color: #aaaaaa;
+  font-weight: 500;
+}
+
+.icone-navegacao-redondo {
+  background-color: rgba(52, 199, 89, 0.15);
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-}
-
-.distancia-km {
-  color: #888;
-  font-weight: 600;
-}
-
-.alerta-card-destino {
-  background-color: #1a1a1a;
-  border-radius: 20px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
-.destino-texto {
-  text-align: left;
-}
-
-.label-destino {
-  color: #666;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.nome-destino {
-  color: #FFF;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-/* CONTAINER DOS BOTÕES */
-.alerta-botoes-container {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.botao-acao {
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.botao-acao.rejeitar {
-  width: 64px;
-  height: 64px;
-  background-color: #FF3B30; /* Vermelho preenchido */
-  border-radius: 20px;
-}
-
-.botao-acao.aceitar {
-  flex: 1;
-  height: 64px;
-  background-color: #34C759; /* Verde preenchido */
-  border-radius: 20px;
-  gap: 8px;
-  color: #FFF;
-  font-size: 18px;
-  font-weight: 900;
 }

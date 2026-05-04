@@ -1,75 +1,165 @@
 .preco-categoria-container {
   width: 100%;
-  height: 100%;
-  background-color: #000000;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
-  font-family: 'Inter', sans-serif;
+  background-color: #000;
 }
 
-.preco-card-oferta {
+/* O CARD PRINCIPAL */
+.preco-card-cliente-matte {
   position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 320px;
-  background-color: #121212;
-  border: 1px solid #1e1e1e;
-  border-radius: 28px;
-  padding: 32px 24px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #18181b; /* Cinza escuro fosco, não é 100% preto */
+  border-radius: 32px 32px 0 0;
+  padding: 12px 20px 32px 20px;
+  box-shadow: 0 -4px 40px rgba(0, 0, 0, 0.5); /* Sombra bem suave, sem marcação dura */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  z-index: 30;
+  gap: 20px;
+  font-family: 'Inter', sans-serif;
+  z-index: 50;
 }
 
-.preco-badge-categoria {
-  background-color: #1e1e1e;
-  border-radius: 20px;
-  padding: 8px 16px;
+/* O "puxador" moderno no topo */
+.drag-handle {
+  width: 48px;
+  height: 5px;
+  background-color: #3f3f46;
+  border-radius: 10px;
+  margin: 0 auto 8px auto;
+}
+
+/* BLOCO DO CARRO (Mais preenchido e arredondado) */
+.opcao-carro-matte {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
+  gap: 16px;
+  padding: 16px;
+  background-color: #27272a; /* Bloco preenchido */
+  border-radius: 24px;
 }
 
-.preco-badge-texto {
-  color: #ffffff;
-  font-size: 12px;
+.icone-carro-fosco {
+  width: 56px;
+  height: 56px;
+  background-color: #00E5FF;
+  border-radius: 18px; /* Quadrado arredondado moderno */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-opcao-carro {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nome-categoria {
+  margin: 0;
+  color: #fafafa;
+  font-size: 19px;
   font-weight: 800;
-  text-transform: uppercase;
+  letter-spacing: -0.5px;
 }
 
-.preco-titulo-tempo {
-  font-size: 32px;
-  font-weight: 900;
-  color: #ffffff;
-  text-align: center;
-  line-height: 1.1;
-  margin-bottom: 24px;
+.tempo-chegada {
+  margin: 0;
+  color: #a1a1aa;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.preco-info-viagem {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+.preco-estimado-bloco {
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-.preco-texto-secundario {
-  color: #888888;
-  font-size: 15px;
+.moeda-matte {
+  font-size: 14px;
+  color: #a1a1aa;
+  margin-right: 2px;
   font-weight: 600;
 }
 
-.preco-card-destino {
-  width: 100%;
-  background-color: #000000;
-  border: 1px solid #1e1e1e;
-  border-radius: 16px;
-  padding: 16px;
+/* BLOCO DE DETALHES (Agrupado) */
+.detalhes-viagem-matte {
+  background-color: #27272a;
+  border-radius: 24px;
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.linha-detalhe {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+
+.icone-detalhe {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* fundos suaves para os ícones */
+.icone-detalhe.fosco-azul { background-color: rgba(0, 229, 255, 0.1); }
+.icone-detalhe.fosco-verde { background-color: rgba(52, 199, 89, 0.1); }
+
+.texto-detalhe {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-detalhe {
+  margin: 0;
+  color: #fafafa;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.subtitulo-detalhe {
+  margin: 2px 0 0 0;
+  color: #a1a1aa;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.divisor-matte {
+  height: 1px;
+  background-color: #3f3f46;
+  margin-left: 56px; /* alinha a linha com o texto, visual premium */
+}
+
+/* BOTÃO PRINCIPAL (Flat e Grosso) */
+.botao-confirmar-matte {
+  background-color: #00E5FF;
+  color: #000000;
+  border: none;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.2s, transform 0.1s;
+  /* Sem box-shadow brilhante, visual totalmente flat */
+}
+
+.botao-confirmar-matte:active {
+  transform: scale(0.97);
+  opacity: 0.8;
 }
