@@ -20,7 +20,7 @@ function figmaAssetResolver() {
 
 export default defineConfig({
   // base configurada para repositório do github pages
-  base: '/Mobile-App-UI-Design/', 
+  base: '/VemCAR-APP-de-viagens/', 
   plugins: [
     figmaAssetResolver(),
     react(),
