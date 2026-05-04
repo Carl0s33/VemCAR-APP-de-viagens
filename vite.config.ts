@@ -19,8 +19,8 @@ function figmaAssetResolver() {
 }
 
 export default defineConfig({
-  // base configurada como './' para garantir caminhos relativos e evitar erro 404
-  base: './', 
+  // base configurada para repositório do github pages
+  base: '/Mobile-App-UI-Design/', 
   plugins: [
     figmaAssetResolver(),
     react(),
