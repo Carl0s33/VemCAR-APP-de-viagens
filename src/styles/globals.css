@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 210 10% 55%;
+    --border: 210 10% 85%;
+    --card-bg: 210 10% 95%;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* CLASSES GERAIS - MODO CLARO DE ACORDO COM O PEDIDO DO USUÁRIO */
+body.light-mode {
+  background-color: #F9FAFB !important;
+  color: #111827 !important;
+}
+
+body.light-mode * {
+  border-color: #E5E7EB;
+}
+
+body.light-mode .card,
+body.light-mode .caixa-matte,
+body.light-mode .modal-conteudo-matte,
+body.light-mode .bottom-sheet-viagem {
+  background: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode button {
+  border-color: #E5E7EB;
+}
+
+body.light-mode .texto-primario {
+  color: #111827 !important;
+}
+
+body.light-mode .texto-secundario {
+  color: #4B5563 !important;
+}

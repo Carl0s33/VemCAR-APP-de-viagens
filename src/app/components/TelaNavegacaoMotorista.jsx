@@ -119,7 +119,7 @@ export default function TelaNavegacaoMotorista({ aoChegar }) {
               dragElastic={0.1}
               onDragEnd={lidarComSwipe}
             >
-              <ArrowRight size={24} color={fase === "aguardando" ? "#000" : "#FFF"} strokeWidth={3} />
+              <ArrowRight size={24} color="#FFF" strokeWidth={3} />
             </motion.div>
           </div>
         )}

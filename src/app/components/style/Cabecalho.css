@@ -57,3 +57,26 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* LIGHT MODE CABEÇALHO */
+body.light-mode .cabecalho-container {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+body.light-mode .cabecalho-botao-menu {
+  background-color: #F9FAFB;
+  border: 1px solid #E5E7EB;
+}
+
+body.light-mode .cabecalho-botao-menu svg {
+  stroke: #111827; /* Cor preta para o ícone de menu */
+}
+
+body.light-mode .cabecalho-logo-vem {
+  color: #111827;
+}
+
+body.light-mode .cabecalho-avatar {
+  background-color: #F9FAFB;
+}

@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowLeft, CreditCard, CarFront, AlertTriangle, Star, CheckCircle, Search, User } from "lucide-react";
+import { MapPin, ArrowLeft, CreditCard, CarFront, Bike, GraduationCap, AlertTriangle, Star, CheckCircle, Search, User } from "lucide-react";
 import { MapaCidade } from "./MapaCidade";
-import "./style/FluxoViagem.css"; // Puxando o CSS bruto que te mandei!
+import "./style/FluxoViagem.css";
 
 export default function FluxoViagem({ aoSair }) {
   // Estados: selecao_destino, orcamento, buscando, a_caminho, aguardando_embarque, em_corrida, finalizada, avaliacao
   const [etapa, setEtapa] = useState("selecao_destino");
   const [precisaTroco, setPrecisaTroco] = useState(false);
+  const [categoria, setCategoria] = useState("VEM MOTO"); // Padrão
+
+  const modalidades = [
+    { id: "VEM MOTO", preco: "R$ 6,00", desc: "Viagem rápida", icone: <Bike size={28} color="#000" /> },
+    { id: "VEM CAR", preco: "R$ 10,00", desc: "Conforto", icone: <CarFront size={28} color="#000" /> },
+    { id: "VEM IFRN", preco: "R$ 15,00", desc: "Intermunicipal", icone: <GraduationCap size={28} color="#000" /> }
+  ];
+
+  const modalidadeEscolhida = modalidades.find(m => m.id === categoria);
 
   // Simulação de busca do motorista (4 segundos)
   useEffect(() => {
@@ -39,15 +48,31 @@ export default function FluxoViagem({ aoSair }) {
       case "orcamento":
         return (
           <>
-            <div className="card-orcamento">
-              <div className="icone-orcamento">
-                <CarFront size={28} color="#000" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3 style={{ fontSize: 18, margin: 0, fontWeight: 800 }}>VEM CAR</h3>
-                <p style={{ color: "#A1A1AA", fontSize: 13, margin: 0, fontWeight: 600 }}>Estimativa de preço</p>
-              </div>
-              <h2 style={{ fontSize: 24, margin: 0, color: "#00E5FF", fontWeight: 900 }}>R$ 14,50</h2>
+            <h3 style={{ fontSize: 16, margin: "0 0 16px", fontWeight: 800, color: "#888", textTransform: "uppercase" }}>Escolha a Modalidade (Preço Fixo)</h3>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
+              {modalidades.map((mod) => (
+                <div 
+                  key={mod.id}
+                  className={`card-orcamento ${categoria === mod.id ? 'selecionado' : ''}`}
+                  onClick={() => setCategoria(mod.id)}
+                  style={{ 
+                    cursor: "pointer", 
+                    marginBottom: 0,
+                    borderColor: categoria === mod.id ? "#00E5FF" : "#1E1E1E",
+                    opacity: categoria === mod.id ? 1 : 0.6
+                  }}
+                >
+                  <div className="icone-orcamento" style={{ background: categoria === mod.id ? "#00E5FF" : "#333" }}>
+                    {mod.icone}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: 18, margin: 0, fontWeight: 900, color: categoria === mod.id ? "#FFF" : "#AAA" }}>{mod.id}</h3>
+                    <p style={{ color: "#888", fontSize: 13, margin: 0, fontWeight: 700 }}>{mod.desc}</p>
+                  </div>
+                  <h2 style={{ fontSize: 22, margin: 0, color: categoria === mod.id ? "#00E5FF" : "#FFF", fontWeight: 900 }}>{mod.preco}</h2>
+                </div>
+              ))}
             </div>
 
             <div className="card-pagamento">
@@ -128,7 +153,7 @@ export default function FluxoViagem({ aoSair }) {
               <h2 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Destino Alcançado!</h2>
               <p style={{ color: "#888", fontWeight: 600, marginTop: 8 }}>Valor final cobrado da corrida</p>
               
-              <h1 style={{ fontSize: 56, color: "#00E5FF", fontWeight: 900, margin: "16px 0" }}>R$ 14,50</h1>
+              <h1 style={{ fontSize: 56, color: "#00E5FF", fontWeight: 900, margin: "16px 0" }}>{modalidadeEscolhida?.preco}</h1>
               <p style={{ color: "#A1A1AA", fontSize: 14, fontWeight: 600, marginBottom: 32 }}>Pagamento físico no veículo.</p>
               
               <button className="btn-viagem" onClick={() => setEtapa("avaliacao")}>
