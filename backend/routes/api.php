@@ -10,3 +10,6 @@ Route::get('/user', function (Request $request) {
 
 // Rota para criar um novo usuário
 Route::post('/user/create', [UserController::class, 'create']);
+
+// Rota para autenticar um usuário
+Route::post('/user/login', [UserController::class, 'login']);
