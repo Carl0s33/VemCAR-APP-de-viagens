@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserType;
 
-#[Fillable(['name', 'email', 'password', 'type', 'phone'])]
+#[Fillable(['name', 'email', 'password', 'type', 'phone', 'cpf'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -30,6 +30,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'phone' => 'string',
+            'cpf' => 'string',
             'type' => UserType::class,
         ];
     }

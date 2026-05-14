@@ -17,6 +17,7 @@ class UserController extends Controller {
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
+            'cpf'      => $request->cpf,
             'password' => bcrypt($request->password),
             'type'     => $request->type,
             'phone'    => $request->phone,
@@ -30,8 +31,8 @@ class UserController extends Controller {
 
     public function login(LoginRequest $request) {
 
-       $user = User::where('email', $request->email)->first();
-        
+       $user = User::where('email', $request->login)->first();
+
        if (!$user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['As credenciais fornecidas estão incorretas.'],
