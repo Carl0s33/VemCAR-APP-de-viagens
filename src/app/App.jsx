@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { useTheme } from "./hooks/useTheme";
+
 // Imports Essenciais que Sobraram
-import TelaAbertura from "./components/TelaAbertura"; 
+import TelaAbertura from "./components/TelaAbertura";
 import TelaLogin from "./components/TelaLogin";
 import FluxoCadastro from "./components/FluxoCadastro"; // <-- NOVO FLUXO UNIFICADO
 import TelaHomeServicos from "./components/TelaHomeServicos"; 
@@ -30,6 +32,7 @@ export default function App() {
   const [screen, setScreen] = useState("splash");
   const [prevScreen, setPrevScreen] = useState("splash");
   const [servicoExtra, setServicoExtra] = useState(null);
+  const { isLight } = useTheme();
 
   const navigate = useCallback((to) => {
     setPrevScreen(screen);
@@ -39,7 +42,7 @@ export default function App() {
   const dir = SCREEN_ORDER.indexOf(screen) >= SCREEN_ORDER.indexOf(prevScreen) ? 1 : -1;
 
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden", background: "#000" }}>
+    <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden", background: isLight ? "#F9FAFB" : "#000" }}>
       <AnimatePresence mode="wait" custom={dir}>
         <motion.div
           key={screen}

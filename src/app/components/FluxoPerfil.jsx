@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Settings, CreditCard, MapPin, LogOut, ChevronRight,
-  ShieldCheck, ArrowLeft, CarFront, Banknote, CircleUserRound, BadgeCheck, X, GraduationCap
+  ShieldCheck, ArrowLeft, CarFront, Banknote, CircleUserRound, BadgeCheck, X, GraduationCap,
+  Sun, Moon
 } from "lucide-react";
 
 import {
   TelaInfo, TelaPagamentos, TelaEnderecos, TelaSeguranca,
   TelaVeiculo, TelaGanhos, TelaVemIFRN
 } from "./SubtelasPerfil";
+import { useTheme } from "../hooks/useTheme";
 import "./style/FluxoPerfil.css";
 
 export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
   const [telaAtiva, setTelaAtiva] = useState("menu");
   const [modalAtivo, setModalAtivo] = useState(null);
+  const { isLight, toggleTheme } = useTheme();
 
   const AVATAR_URL = "https://images.unsplash.com/photo-1649044747879-d77b1dbcecf6?fit=max&fm=jpg&q=80&w=400";
   const isMotorista = tipoUsuario === "motorista";
@@ -108,6 +111,30 @@ export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
                       </motion.div>
                   ))}
                 </div>
+
+                <motion.button
+                  className="perfil-toggle-tema"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={toggleTheme}
+                  aria-label={isLight ? "Mudar para modo escuro" : "Mudar para modo claro"}
+                >
+                  <div className="perfil-item-esquerda">
+                    <div className="perfil-icone-caixa">
+                      {isLight
+                        ? <Moon size={22} color="#111827" strokeWidth={2.5} />
+                        : <Sun size={22} color="#FFD60A" strokeWidth={2.5} />}
+                    </div>
+                    <div className="perfil-textos-caixa">
+                      <span className="perfil-item-label">Aparência</span>
+                      <span className="perfil-item-desc">
+                        {isLight ? "Modo claro ativo" : "Modo escuro ativo"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={`perfil-switch ${isLight ? "ativo" : ""}`}>
+                    <div className="perfil-switch-bolinha" />
+                  </div>
+                </motion.button>
 
                 <motion.button className="perfil-botao-sair" whileTap={{ scale: 0.95 }} onClick={() => setModalAtivo("sair")}>
                   <LogOut size={20} color="#000" strokeWidth={2.5} />
