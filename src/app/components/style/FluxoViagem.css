@@ -1,3 +1,6 @@
+/* =======================================================
+   ESTRUTURA BASE E MAPA
+======================================================= */
 .viagem-container {
   position: absolute;
   top: 0;
@@ -6,50 +9,56 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: #000;
+  background: #000000;
   font-family: 'Inter', sans-serif;
 }
 
 .mapa-layer {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
 }
 
 .header-viagem {
   position: absolute;
   top: 40px;
-  left: 20px;
+  left: 16px;
   z-index: 50;
 }
 
 .btn-voltar {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   background: rgba(18, 18, 18, 0.8);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #FFF;
-  border-radius: 16px;
+  color: #FFFFFF;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   transition: transform 0.1s;
 }
-.btn-voltar:active { transform: scale(0.95); }
+
+.btn-voltar:active {
+  transform: scale(0.95);
+}
 
 /* =======================================================
-   NOVO: ANIMAÇÕES DOS PINOS E MARCADORES
+   ANIMAÇÕES DOS PINOS E MARCADORES
 ======================================================= */
 .ponto-embarque-verde {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background-color: #10B981;
-  border: 4px solid #000;
+  border: 3px solid #000000;
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
 }
 
 .pino-selecao-dinamico {
@@ -57,185 +66,362 @@
   flex-direction: column;
   align-items: center;
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.5));
 }
 
 /* Quando o mapa está sendo arrastado, o pino levanta! */
 .pino-selecao-dinamico.arrastando {
-  transform: translateY(-16px) scale(1.05);
-  filter: drop-shadow(0 20px 15px rgba(0,0,0,0.4));
+  transform: translateY(-12px) scale(1.05);
+  filter: drop-shadow(0 15px 12px rgba(0,0,0,0.4));
 }
 
 .balao-pino {
-  background: #000;
+  background: #000000;
   border: 1px solid #1E1E1E;
   color: #00BCD4;
-  padding: 6px 14px;
-  border-radius: 16px;
-  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 900;
-  margin-bottom: 8px;
-  white-space: nowrap;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  margin-bottom: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* --- BOTTOM SHEET --- */
+/* =======================================================
+   BOTTOM SHEET (GAVETA INFERIOR COMPACTA)
+======================================================= */
 .bottom-sheet-viagem {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: linear-gradient(180deg, #121212 0%, #0A0A0A 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 32px 32px 0 0;
-  padding: 24px;
+  border-radius: 24px 24px 0 0;
+  padding: 20px 16px 16px;
   z-index: 100;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
 }
 
 .sheet-drag {
-  width: 48px; height: 5px;
+  width: 40px;
+  height: 4px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  margin: 0 auto 20px;
+  margin: 0 auto 16px;
 }
 
-.sheet-title { font-size: 22px; font-weight: 900; color: #FFF; margin: 0 0 16px; }
-.sheet-subtitle { font-size: 13px; font-weight: 800; color: #888; text-transform: uppercase; margin: 0 0 16px; letter-spacing: 0.5px;}
-.sheet-desc { color: #888; font-size: 14px; font-weight: 600; margin: 0; }
-.sheet-centralizado { display: flex; flex-direction: column; align-items: center; text-align: center; }
-
-/* Inputs e Cards */
-.input-viagem-wrapper {
-  display: flex; align-items: center; gap: 12px;
-  background: #1A1A1A; border: 2px solid #333;
-  padding: 16px; border-radius: 16px; margin-bottom: 24px;
-}
-.input-viagem-wrapper input {
-  background: transparent; border: none; color: #FFF; font-size: 16px; font-weight: 600; width: 100%; outline: none;
-}
-.input-viagem-wrapper input::placeholder { color: #666; }
-
-.modalidades-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-
-.card-orcamento {
-  display: flex; align-items: center; gap: 16px;
-  background: #1A1A1A; border: 2px solid #333;
-  padding: 16px; border-radius: 20px;
-  cursor: pointer; transition: all 0.2s;
-}
-.card-orcamento.selecionado { border-color: #00BCD4; background: rgba(0, 188, 212, 0.05); }
-
-.icone-orcamento {
-  width: 48px; height: 48px; border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-  background: #333; color: #888; transition: all 0.2s;
-}
-.card-orcamento.selecionado .icone-orcamento { background: #00BCD4; color: #000; }
-
-.info-orcamento { flex: 1; }
-.info-orcamento h3 { font-size: 18px; font-weight: 900; color: #FFF; margin: 0; }
-.info-orcamento p { font-size: 13px; font-weight: 700; color: #888; margin: 0; }
-
-.preco-orcamento { font-size: 22px; font-weight: 900; color: #FFF; margin: 0; }
-.card-orcamento.selecionado .preco-orcamento { color: #00BCD4; }
-
-/* Pagamento */
-.card-pagamento {
-  display: flex; justify-content: space-between; align-items: center;
-  background: #1A1A1A; padding: 16px; border-radius: 16px; margin-bottom: 24px;
-}
-.checkbox-troco { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #A1A1AA; font-weight: 600; cursor: pointer; }
-.checkbox-troco input { accent-color: #00BCD4; width: 16px; height: 16px; }
-
-/* Botões */
-.btn-viagem {
-  width: 100%; height: 64px; border-radius: 20px; border: none;
-  font-size: 16px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-}
-.btn-viagem.principal { background: #00BCD4; color: #000; box-shadow: 0 4px 20px rgba(0, 188, 212, 0.3); }
-.btn-viagem.principal:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
-
-.btn-viagem.secundario { background: #1A1A1A; color: #FFF; border: 1px solid #333; }
-.btn-viagem.secundario:active { transform: scale(0.98); }
-
-.btn-perigo {
-  width: 64px; height: 64px; border-radius: 20px; background: #1A1A1A; border: 1px solid #333; color: #EF4444;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
+.sheet-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0 0 12px;
 }
 
-/* Telas de Corrida */
-.perfil-motorista { display: flex; align-items: center; gap: 16px; background: #1A1A1A; padding: 16px; border-radius: 20px; margin-bottom: 16px;}
-.avatar-motorista { width: 56px; height: 56px; background: #333; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
-.info-motorista { flex: 1; }
-.info-motorista h2 { font-size: 18px; font-weight: 900; color: #FFF; margin: 0; }
-.info-motorista p { font-size: 14px; font-weight: 600; color: #888; margin: 0; }
-.badge-placa { background: #333; color: #FFF; font-weight: 900; padding: 6px 10px; border-radius: 8px; font-size: 12px; letter-spacing: 1px;}
-
-.preco-final { font-size: 48px; color: #00BCD4; font-weight: 900; margin: 16px 0; letter-spacing: -1px; }
-.avaliacao-estrelas { display: flex; gap: 8px; margin-bottom: 32px; }
-.botao-estrela { background: transparent; border: none; padding: 0; cursor: pointer; }
-
-/* Animação Radar */
-.search-pulse-container {
-  width: 80px; height: 80px; background: rgba(0, 188, 212, 0.1); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  animation: pulse-search 1.5s infinite;
+.sheet-subtitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: #888888;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  letter-spacing: 0.5px;
 }
-@keyframes pulse-search {
-  0% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.4); }
-  70% { box-shadow: 0 0 0 20px rgba(0, 188, 212, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); }
+
+.sheet-desc {
+  color: #888888;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sheet-centralizado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* =======================================================
-   MODO CLARO (Via body.light-mode)
+   INPUTS E CARDS DE ORÇAMENTO
 ======================================================= */
-body.light-mode .bottom-sheet-viagem { background: #FFFFFF; border-top-color: #E2E8F0; box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15); }
-body.light-mode .btn-voltar { background: #FFFFFF; border-color: #E2E8F0; color: #0F172A; }
-body.light-mode .sheet-title, body.light-mode .info-orcamento h3, body.light-mode .preco-orcamento, body.light-mode .info-motorista h2 { color: #0F172A; }
-body.light-mode .sheet-desc, body.light-mode .info-motorista p { color: #64748B; }
-body.light-mode .input-viagem-wrapper { background: #F8FAFC; border-color: #E2E8F0; }
-body.light-mode .input-viagem-wrapper input { color: #0F172A; }
-body.light-mode .card-orcamento { background: #F8FAFC; border-color: #E2E8F0; }
-body.light-mode .card-orcamento.selecionado { border-color: #00BCD4; background: #F0FBFC; }
-body.light-mode .icone-orcamento { background: #E2E8F0; color: #64748B; }
-body.light-mode .card-pagamento, body.light-mode .perfil-motorista { background: #F8FAFC; border: 1px solid #E2E8F0; }
-body.light-mode .badge-placa { background: #E2E8F0; color: #0F172A; }
-body.light-mode .btn-viagem.principal { color: #FFFFFF; }
-body.light-mode .btn-viagem.secundario { background: #F8FAFC; color: #0F172A; border-color: #E2E8F0; }
-body.light-mode .btn-perigo { background: #FEF2F2; border-color: #FECACA; }
+.input-viagem-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1A1A1A;
+  border: 2px solid #333333;
+  padding: 12px 16px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
 
-body.light-mode .balao-pino { background: #FFFFFF; color: #00BCD4; border-color: #E2E8F0; }
+.input-viagem-wrapper input {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  outline: none;
+}
+
+.input-viagem-wrapper input::placeholder {
+  color: #666666;
+}
+
+.modalidades-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.card-orcamento {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1A1A1A;
+  border: 2px solid #333333;
+  padding: 12px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card-orcamento.selecionado {
+  border-color: #00BCD4;
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.icone-orcamento {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333333;
+  color: #888888;
+  transition: all 0.2s;
+}
+
+.card-orcamento.selecionado .icone-orcamento {
+  background: #00BCD4;
+  color: #000000;
+}
+
+.info-orcamento {
+  flex: 1;
+}
+
+.info-orcamento h3 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.info-orcamento p {
+  font-size: 12px;
+  font-weight: 700;
+  color: #888888;
+  margin: 0;
+}
+
+.preco-orcamento {
+  font-size: 18px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.card-orcamento.selecionado .preco-orcamento {
+  color: #00BCD4;
+}
+
+/* =======================================================
+   PAGAMENTO E BOTÕES
+======================================================= */
+.card-pagamento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1A1A1A;
+  padding: 12px 16px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.checkbox-troco {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #A1A1AA;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkbox-troco input {
+  accent-color: #00BCD4;
+  width: 14px;
+  height: 14px;
+}
+
+.btn-viagem {
+  width: 100%;
+  height: 54px;
+  border-radius: 16px;
+  border: none;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-viagem.principal {
+  background: #00BCD4;
+  color: #000000;
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+}
+
+.btn-viagem.principal:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.btn-viagem.secundario {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+
+.btn-viagem.secundario:active {
+  transform: scale(0.98);
+}
+
+.btn-perigo {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #1A1A1A;
+  border: 1px solid #333333;
+  color: #EF4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* =======================================================
+   TELAS DE CORRIDA E AVALIAÇÃO
+======================================================= */
+.perfil-motorista {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1A1A1A;
+  padding: 12px 16px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+.avatar-motorista {
+  width: 44px;
+  height: 44px;
+  background: #333333;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-motorista {
+  flex: 1;
+}
+
+.info-motorista h2 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.info-motorista p {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888888;
+  margin: 0;
+}
+
+.badge-placa {
+  background: #333333;
+  color: #FFFFFF;
+  font-weight: 900;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.preco-final {
+  font-size: 36px;
+  color: #00BCD4;
+  font-weight: 900;
+  margin: 12px 0;
+  letter-spacing: -1px;
+}
+
+.avaliacao-estrelas {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.botao-estrela {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* =======================================================
+   AUTOCOMPLETE E DROPDOWN
+======================================================= */
 .dropdown-sugestoes {
   position: absolute;
-  top: 100%; /* Fica exatamente abaixo do input */
+  top: 100%;
   left: 0;
   width: 100%;
   background: #121212;
   border: 1px solid #1E1E1E;
-  border-radius: 16px;
+  border-radius: 14px;
   margin-top: 4px;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
   z-index: 1000;
 }
 
-/* Scrollbar invisível */
 .dropdown-sugestoes::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
+
 .dropdown-sugestoes::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #333333;
   border-radius: 4px;
 }
 
 .item-sugestao {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 12px 16px;
   border-bottom: 1px solid #1E1E1E;
   cursor: pointer;
   transition: background 0.2s;
@@ -250,48 +436,133 @@ body.light-mode .balao-pino { background: #FFFFFF; color: #00BCD4; border-color:
 }
 
 .icone-sugestao {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   background: #1A1A1A;
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.textos-sugestao {
-  flex: 1;
-}
-
 .textos-sugestao h4 {
-  color: #FFF;
-  font-size: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
   font-weight: 800;
   margin: 0;
 }
 
 .textos-sugestao p {
-  color: #888;
-  font-size: 13px;
+  color: #888888;
+  font-size: 12px;
   font-weight: 600;
   margin: 2px 0 0 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 250px;
+  max-width: 220px;
 }
 
 /* =======================================================
-   ATUALIZAÇÕES MODO CLARO PARA O DROPDOWN
+   ANIMAÇÃO DO RADAR DE BUSCA
 ======================================================= */
+.search-pulse-container {
+  width: 64px;
+  height: 64px;
+  background: rgba(0, 188, 212, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-search 1.5s infinite;
+}
+
+@keyframes pulse-search {
+  0% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(0, 188, 212, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); }
+}
+
+/* =======================================================
+   MODO CLARO (LIGHT MODE)
+======================================================= */
+body.light-mode .bottom-sheet-viagem {
+  background: #FFFFFF;
+  border-top-color: #E2E8F0;
+}
+
+body.light-mode .btn-voltar {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  color: #0F172A;
+}
+
+body.light-mode .sheet-title,
+body.light-mode .info-orcamento h3,
+body.light-mode .preco-orcamento,
+body.light-mode .info-motorista h2,
+body.light-mode .textos-sugestao h4 {
+  color: #0F172A;
+}
+
+body.light-mode .sheet-desc,
+body.light-mode .info-motorista p,
+body.light-mode .textos-sugestao p {
+  color: #64748B;
+}
+
+body.light-mode .input-viagem-wrapper,
+body.light-mode .card-orcamento,
+body.light-mode .card-pagamento,
+body.light-mode .perfil-motorista {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+
+body.light-mode .input-viagem-wrapper input {
+  color: #0F172A;
+}
+
+body.light-mode .card-orcamento.selecionado {
+  border-color: #00BCD4;
+  background: #F0FBFC;
+}
+
+body.light-mode .icone-orcamento,
+body.light-mode .icone-sugestao {
+  background: #E2E8F0;
+  color: #64748B;
+}
+
+body.light-mode .badge-placa {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+body.light-mode .btn-viagem.principal {
+  color: #FFFFFF;
+}
+
+body.light-mode .btn-viagem.secundario {
+  background: #F8FAFC;
+  color: #0F172A;
+  border-color: #E2E8F0;
+}
+
+body.light-mode .btn-perigo {
+  background: #FEF2F2;
+  border-color: #FECACA;
+}
+
+body.light-mode .balao-pino {
+  background: #FFFFFF;
+  color: #00BCD4;
+  border-color: #E2E8F0;
+}
+
 body.light-mode .dropdown-sugestoes {
   background: #FFFFFF;
   border-color: #E2E8F0;
-  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.1);
-}
-
-body.light-mode .dropdown-sugestoes::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
 }
 
 body.light-mode .item-sugestao {
@@ -300,16 +571,4 @@ body.light-mode .item-sugestao {
 
 body.light-mode .item-sugestao:active {
   background: #F8FAFC;
-}
-
-body.light-mode .icone-sugestao {
-  background: #F1F5F9;
-}
-
-body.light-mode .textos-sugestao h4 {
-  color: #0F172A;
-}
-
-body.light-mode .textos-sugestao p {
-  color: #64748B;
 }

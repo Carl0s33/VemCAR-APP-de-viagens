@@ -150,41 +150,13 @@ export const TelaVeiculo = () => (
 // --- 7. GANHOS (MOTORISTA) ---
 export const TelaGanhos = () => (
     <div className="subtela-container">
-        <h2 className="subtela-titulo">Carteira / Repasses</h2>
-        <p className="subtela-desc">Saldo de repasses disponíveis para saque.</p>
+        <h2 className="subtela-titulo">Carteira Virtual</h2>
+        <p className="subtela-desc">Rendimentos líquidos após taxas.</p>
 
-        <div className="saldo-card-matte uber-style">
-            <p className="saldo-label">Seu Saldo</p>
-            <h1 className="saldo-valor">R$ 452,50</h1>
-            <div className="saldo-acoes">
-               <button className="btn-saque-uber">
-                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center' }}>
-                       Fazer Saque
-                   </div>
-               </button>
-            </div>
-            
-            <div className="saldo-divider"></div>
-            
-            <div className="transacoes-recentes">
-                <h3 className="transacoes-titulo">Atividade Recente</h3>
-                <div className="transacao-item">
-                    <div className="transacao-icone"><TrendingUp color="#34C759" size={20} /></div>
-                    <div className="transacao-detalhes">
-                        <span className="transacao-nome">Repasse de Viagem</span>
-                        <span className="transacao-data">Ontem às 14:30</span>
-                    </div>
-                    <span className="transacao-valor positivo">+ R$ 14,50</span>
-                </div>
-                <div className="transacao-item">
-                    <div className="transacao-icone"><Wallet color="#EF4444" size={20} /></div>
-                    <div className="transacao-detalhes">
-                        <span className="transacao-nome">Saque para Conta</span>
-                        <span className="transacao-data">23 de Mai, 10:00</span>
-                    </div>
-                    <span className="transacao-valor">− R$ 200,00</span>
-                </div>
-            </div>
+        <div className="saldo-card-matte">
+            <p>Saldo Disponível</p>
+            <h1>R$ 452,50</h1>
+            <button className="btn-saque-rapido">SAQUE VIA PIX</button>
         </div>
     </div>
 );

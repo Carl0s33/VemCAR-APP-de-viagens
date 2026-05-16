@@ -40,8 +40,14 @@
 }
 
 @keyframes pulso-carro-online {
-  0% { transform: scale(1); filter: drop-shadow(0px 10px 20px rgba(0, 188, 212, 0.2)); }
-  100% { transform: scale(1.05); filter: drop-shadow(0px 15px 30px rgba(0, 188, 212, 0.6)); }
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0px 10px 20px rgba(0, 188, 212, 0.2));
+  }
+  100% {
+    transform: scale(1.05);
+    filter: drop-shadow(0px 15px 30px rgba(0, 188, 212, 0.6));
+  }
 }
 
 /* =======================================================
@@ -61,7 +67,9 @@
   z-index: 50;
 }
 
-.botao-menu, .relogio-flutuante, .status-online {
+.botao-menu,
+.relogio-flutuante,
+.status-online {
   background: rgba(18, 18, 18, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -81,7 +89,9 @@
   transition: transform 0.1s;
 }
 
-.botao-menu:active { transform: scale(0.95); }
+.botao-menu:active {
+  transform: scale(0.95);
+}
 
 .relogio-flutuante {
   flex: 1;
@@ -125,7 +135,11 @@
   border-color: rgba(0, 188, 212, 0.4);
   background: rgba(0, 188, 212, 0.1);
 }
-.status-online.ativo span { color: #00BCD4; }
+
+.status-online.ativo span {
+  color: #00BCD4;
+}
+
 .status-online.ativo .ponto-status {
   background: #00BCD4;
   box-shadow: 0 0 10px #00BCD4;
@@ -180,10 +194,33 @@
   justify-content: center;
 }
 
-.info-box-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-.info-box-header p { color: #A1A1AA; font-size: 11px; font-weight: 800; text-transform: uppercase; margin: 0; }
-.info-box-valor { color: #FFFFFF; font-size: 24px; font-weight: 900; margin: 0; }
-.info-box-sufixo { font-size: 14px; font-weight: 700; color: #A1A1AA; }
+.info-box-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.info-box-header p {
+  color: #A1A1AA;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.info-box-valor {
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0;
+}
+
+.info-box-sufixo {
+  font-size: 14px;
+  font-weight: 700;
+  color: #A1A1AA;
+}
 
 /* Botões */
 .btn-power {
@@ -206,14 +243,21 @@
   color: #FFFFFF;
   border: 1px solid #333;
 }
-.btn-power.offline:active { transform: scale(0.98); }
+
+.btn-power.offline:active {
+  transform: scale(0.98);
+}
 
 .btn-power.online {
   background: var(--ciano-primario, #00BCD4);
   color: #000000;
   box-shadow: 0 4px 20px rgba(0, 188, 212, 0.3);
 }
-.btn-power.online:active { transform: translateY(4px); box-shadow: 0 0px 0px transparent; }
+
+.btn-power.online:active {
+  transform: translateY(4px);
+  box-shadow: 0 0px 0px transparent;
+}
 
 .btn-simular {
   background: rgba(0, 188, 212, 0.05);
@@ -230,7 +274,10 @@
   transition: all 0.2s;
   height: 56px;
 }
-.btn-simular:active { background: rgba(0, 188, 212, 0.15); }
+
+.btn-simular:active {
+  background: rgba(0, 188, 212, 0.15);
+}
 
 
 /* =======================================================
@@ -265,7 +312,7 @@
 }
 
 .swipe-texto {
-  color: #000000; /* Preto pro contraste no fundo verde/vermelho */
+  color: #000000;
   font-weight: 900;
   font-size: 15px;
   letter-spacing: 0.5px;
@@ -296,7 +343,7 @@
 }
 
 .swipe-thumb-matte svg {
-  stroke: #FFFFFF !important; /* Setinha branca no fundo amoled black */
+  stroke: #FFFFFF !important;
 }
 
 /* =======================================================
@@ -320,8 +367,14 @@ body.light-mode .status-online.ativo {
   border-color: #00BCD4;
   background: #F0FBFC;
 }
-body.light-mode .status-online.ativo span { color: #00BCD4; }
-body.light-mode .status-online.ativo .ponto-status { box-shadow: none; }
+
+body.light-mode .status-online.ativo span {
+  color: #00BCD4;
+}
+
+body.light-mode .status-online.ativo .ponto-status {
+  box-shadow: none;
+}
 
 body.light-mode .card-inferior-motorista {
   background: #FFFFFF;
@@ -337,16 +390,28 @@ body.light-mode .info-box {
   background: #F8FAFC;
   border-color: #E2E8F0;
 }
-body.light-mode .info-box-header p { color: #64748B; }
-body.light-mode .info-box-valor { color: #0F172A; }
-body.light-mode .info-box-sufixo { color: #64748B; }
+
+body.light-mode .info-box-header p {
+  color: #64748B;
+}
+
+body.light-mode .info-box-valor {
+  color: #0F172A;
+}
+
+body.light-mode .info-box-sufixo {
+  color: #64748B;
+}
 
 body.light-mode .btn-power.offline {
   background: #F8FAFC;
   color: #0F172A;
   border-color: #E2E8F0;
 }
-body.light-mode .btn-power.offline:active { background: #E2E8F0; }
+
+body.light-mode .btn-power.offline:active {
+  background: #E2E8F0;
+}
 
 body.light-mode .btn-power.online {
   color: #FFFFFF;
@@ -355,6 +420,7 @@ body.light-mode .btn-power.online {
 body.light-mode .swipe-container-matte {
   border: none;
 }
+
 body.light-mode .swipe-texto {
-  color: #FFFFFF; /* No light mode o texto fica branco pra dar um contraste melhor no fundo vermelho/verde */
+  color: #FFFFFF;
 }

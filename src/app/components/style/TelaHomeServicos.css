@@ -1,210 +1,267 @@
 /* =======================================================
-   ESTRUTURA GERAL (BLACK MODE - PADRÃO)
+   ESTRUTURA BASE (AMOLED BLACK MODE - PADRÃO)
 ======================================================= */
-.home-servicos-container {
+.home-bento-container {
   width: 100%;
   height: 100%;
-  padding: 60px 20px 120px; /* espaco pro menu de baixo */
-  background: #000000;
+  padding: 60px 20px 100px;
+  background: #000000; /* Fundo 100% Preto */
   overflow-y: auto;
   font-family: 'Inter', sans-serif;
 }
 
-.home-servicos-header {
+.home-bento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 24px;
 }
 
-.home-servicos-saudacao {
-  font-size: 32px;
+.saudacao-bento {
+  font-size: 28px;
   font-weight: 900;
   color: #FFFFFF;
-  margin: 0;
+  margin: 0 0 4px 0;
   letter-spacing: -0.5px;
 }
 
-/* BUSCA GIGANTE */
-.home-servicos-busca-secao {
-  margin-bottom: 32px;
-  cursor: pointer;
-}
-
-.barra-busca-falsa {
-  width: 100%;
-  height: 64px;
-  background: #121212;
-  border: 2px solid #1E1E1E;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  gap: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  transition: all 0.2s ease;
-}
-
-.barra-busca-falsa:active {
-  border-color: #00BCD4;
-  background: #1A1A1A;
-}
-
-.texto-busca {
-  color: #A1A1AA;
-  font-size: 18px;
-  font-weight: 800;
-  flex: 1;
-}
-
-/* =======================================================
-   CARROSSEL DE SERVIÇOS ROlando pro lado
-======================================================= */
-.home-servicos-carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  margin-bottom: 32px;
-  padding-bottom: 12px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* some com a barra de rolagem nativa feiosa */
-.home-servicos-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.card-servico-matte {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  min-width: 80px; /* garante que fique quadradão e saia da tela pra rolar */
-  scroll-snap-align: start;
-}
-
-.icone-servico-wrapper {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.btn-viagens {
-  background: #00BCD4;
-  color: #000000;
-  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.25);
-}
-
-.btn-outros {
-  background: #1A1A1A;
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.nome-servico-texto {
-  color: #FFFFFF;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-/* =======================================================
-   LISTAS VERTICAIS (FAVORITOS E RECENTES)
-======================================================= */
-.secao-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.secao-titulo {
-  font-size: 20px;
-  font-weight: 900;
-  color: #FFFFFF;
+.sub-saudacao-bento {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888888;
   margin: 0;
 }
 
-.lista-vertical {
+/* WIDGET TEMPO (Fosco) */
+.widget-clima {
+  background: #121212;
+  border: 1px solid #1E1E1E;
+  padding: 10px 14px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+/* =======================================================
+   GRID BENTO E CARDS
+======================================================= */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.bento-card {
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  cursor: pointer;
+  position: relative;
+  min-height: 120px;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.bento-card:active {
+  transform: scale(0.96);
+  border-color: #333;
+  background: #1A1A1A;
+}
+
+.bento-card.principal {
+  grid-column: span 2;
+  min-height: 140px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bento-card.largo {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+  min-height: 90px;
+}
+
+/* Card Destaque Rosa */
+.bento-card.bg-rosa {
+  background: linear-gradient(135deg, #EC4899, #E11D48);
+  border: none;
+  box-shadow: 0 12px 30px rgba(225, 29, 72, 0.25);
+}
+.bento-card.bg-rosa h3, .bento-card.bg-rosa p {
+  color: #FFFFFF;
+}
+.bento-card.bg-rosa:active {
+  transform: scale(0.96);
+  filter: brightness(0.9);
+}
+
+/* =======================================================
+   ÍCONES E GRADIENTES NEON PREMIUM
+======================================================= */
+.bento-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.bento-card.principal .bento-icon-wrapper,
+.bento-card.largo .bento-icon-wrapper {
+  margin-bottom: 0;
+  margin-right: 16px;
+}
+
+/* Cores Refinadas */
+.bento-icon-wrapper.azul { background: linear-gradient(135deg, #00BCD4, #0284C7); color: #000; box-shadow: 0 8px 20px rgba(0, 188, 212, 0.3); }
+.bento-icon-wrapper.laranja { background: linear-gradient(135deg, #FBBF24, #F59E0B); color: #000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2); }
+.bento-icon-wrapper.roxo { background: linear-gradient(135deg, #A855F7, #7E22CE); color: #FFF; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); }
+.bento-icon-wrapper.verde { background: linear-gradient(135deg, #34D399, #059669); color: #000; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2); }
+.bento-icon-wrapper.branco { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid rgba(255, 255, 255, 0.2); }
+
+/* Textos dos Cards */
+.bento-card h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.bento-text-area {
+  flex: 1;
+}
+
+.bento-text-area p {
+  font-size: 13px;
+  color: #A1A1AA;
+  margin: 4px 0 0 0;
+  font-weight: 600;
+}
+
+.icon-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #52525B;
+}
+
+/* =======================================================
+   DESTINOS RECENTES
+======================================================= */
+.recentes-bento-section {
+  margin-top: 32px;
+}
+
+.recentes-titulo-bento {
+  font-size: 20px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0 0 16px 0;
+}
+
+.recentes-lista-bento {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.card-lista-vertical {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
+.recente-card-bento {
   background: #121212;
   border: 2px solid #1E1E1E;
   border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.card-lista-vertical:active {
+.recente-card-bento:active {
   background: #1A1A1A;
   border-color: #333;
+  transform: scale(0.98);
 }
 
-.icone-lista-circulo {
-  width: 44px;
-  height: 44px;
+.recente-icon-circulo {
+  width: 48px;
+  height: 48px;
   background: #1A1A1A;
-  border-radius: 14px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #00BCD4; /* Detalhe Ciano no ícone de recente */
 }
 
-.icone-lista-cor { color: #A1A1AA; }
-.icone-seta-cor { color: #52525B; }
-
-.lista-textos {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.lista-titulo {
-  color: #FFFFFF;
+.recente-local-nome {
+  margin: 0;
   font-size: 16px;
   font-weight: 800;
-  margin: 0;
+  color: #FFFFFF;
 }
 
-.lista-subtitulo {
-  color: #888888;
+.recente-local-desc {
+  margin: 4px 0 0 0;
   font-size: 13px;
+  color: #888888;
   font-weight: 600;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
 }
+
 
 /* =======================================================
-   MODO CLARO
+   MODO CLARO (LIGHT MODE - VIA BODY.LIGHT-MODE)
 ======================================================= */
-body.light-mode .home-servicos-container { background: #F8FAFC; }
-body.light-mode .home-servicos-saudacao { color: #0F172A; }
-body.light-mode .barra-busca-falsa { background: #FFFFFF; border-color: #E2E8F0; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05); }
-body.light-mode .barra-busca-falsa:active { background: #F0FBFC; border-color: #00BCD4; }
-body.light-mode .texto-busca { color: #64748B; }
-body.light-mode .nome-servico-texto { color: #0F172A; }
-body.light-mode .btn-outros { background: #FFFFFF; color: #0F172A; border-color: #E2E8F0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
-body.light-mode .secao-titulo { color: #0F172A; }
-body.light-mode .card-lista-vertical { background: #FFFFFF; border-color: #E2E8F0; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03); }
-body.light-mode .card-lista-vertical:active { background: #F8FAFC; }
-body.light-mode .icone-lista-circulo { background: #F1F5F9; }
-body.light-mode .icone-lista-cor { color: #64748B; }
-body.light-mode .icone-seta-cor { color: #CBD5E1; }
-body.light-mode .lista-titulo { color: #0F172A; }
-body.light-mode .lista-subtitulo { color: #64748B; }
+body.light-mode .home-bento-container { background: #F8FAFC; }
+body.light-mode .saudacao-bento { color: #0F172A; }
+body.light-mode .sub-saudacao-bento { color: #64748B; }
+
+body.light-mode .widget-clima {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  color: #0F172A;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+body.light-mode .bento-card {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+body.light-mode .bento-card:active {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+/* O card rosa continua rosa no modo claro para destacar */
+
+body.light-mode .bento-card h3 { color: #0F172A; }
+body.light-mode .bento-text-area p { color: #64748B; }
+body.light-mode .icon-badge { color: #CBD5E1; }
+
+body.light-mode .recentes-titulo-bento { color: #0F172A; }
+body.light-mode .recente-card-bento {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+}
+body.light-mode .recente-card-bento:active { background: #F8FAFC; }
+body.light-mode .recente-icon-circulo { background: #F1F5F9; color: #0284C7; }
+body.light-mode .recente-local-nome { color: #0F172A; }
+body.light-mode .recente-local-desc { color: #64748B; }

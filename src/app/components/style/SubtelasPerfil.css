@@ -219,13 +219,7 @@
   margin-bottom: 24px;
 }
 
-.saldo-card-matte.uber-style {
-  text-align: left;
-  padding: 24px;
-  background: #0A0A0A;
-}
-
-.saldo-label {
+.saldo-card-matte p {
   color: #888;
   font-weight: 800;
   font-size: 14px;
@@ -233,9 +227,9 @@
   margin: 0 0 8px;
 }
 
-.saldo-valor {
-  color: #FFF;
-  font-size: 48px;
+.saldo-card-matte h1 {
+  color: #34C759;
+  font-size: 42px;
   font-weight: 900;
   margin: 0 0 24px;
   letter-spacing: -1px;
@@ -355,153 +349,3 @@
   font-size: 13px;
   font-weight: 800;
 }
-
-/* --- GANHOS (CARTEIRA) --- */
-.saldo-card-matte {
-  background: #121212;
-  border: 2px solid #1E1E1E;
-  border-radius: 24px;
-  padding: 32px 24px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-
-.saldo-card-matte.uber-style {
-  text-align: left;
-  padding: 24px;
-  background: #0A0A0A;
-}
-
-.saldo-label {
-  color: #888;
-  font-weight: 800;
-  font-size: 14px;
-  text-transform: uppercase;
-  margin: 0 0 8px;
-}
-
-.saldo-valor {
-  color: #FFF;
-  font-size: 48px;
-  font-weight: 900;
-  margin: 0 0 24px;
-  letter-spacing: -1px;
-}
-
-.btn-saque-uber {
-  background: #34C759;
-  color: #000;
-  border: none;
-  height: 56px;
-  width: 100%;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 900;
-  cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-
-.btn-saque-uber:active {
-  transform: scale(0.98);
-}
-
-.saldo-divider {
-  height: 2px;
-  background: #1E1E1E;
-  margin: 24px 0;
-}
-
-.transacoes-titulo {
-  font-size: 16px;
-  font-weight: 800;
-  color: #FFF;
-  margin: 0 0 16px;
-}
-
-.transacao-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.transacao-item:last-child {
-  margin-bottom: 0;
-}
-
-.transacao-icone {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #1A1A1A;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.transacao-detalhes {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.transacao-nome {
-  font-size: 15px;
-  font-weight: 700;
-  color: #FFF;
-}
-
-.transacao-data {
-  font-size: 12px;
-  font-weight: 600;
-  color: #888;
-}
-
-.transacao-valor {
-  font-size: 15px;
-  font-weight: 800;
-  color: #FFF;
-}
-
-.transacao-valor.positivo {
-  color: #34C759;
-}
-
-/* Modificações Light Mode */
-body.light-mode .saldo-card-matte,
-body.light-mode .veiculo-card-display,
-body.light-mode .carteirinha-virtual-matte,
-body.light-mode .card-item-salvo,
-body.light-mode .perfil-menu-item {
-  background: #FFFFFF;
-  border: 1px solid #E5E7EB;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-body.light-mode .perfil-container,
-body.light-mode .subtela-container,
-body.light-mode .perfil-header {
-  background: #F9FAFB;
-  color: #111827;
-}
-
-body.light-mode .subtela-titulo,
-body.light-mode .saldo-valor,
-body.light-mode .transacao-nome,
-body.light-mode .transacoes-titulo {
-  color: #111827;
-}
-
-body.light-mode .transacao-icone {
-  background: #F3F4F6;
-}
-
-body.light-mode .input-solid {
-  background: #FFFFFF;
-  border: 1px solid #D1D5DB;
-  color: #111827;
-}
-
-/* Fim Modificações Light Mode */
