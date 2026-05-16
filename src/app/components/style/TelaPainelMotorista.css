@@ -1,29 +1,52 @@
-/* --- ESTRUTURA GERAL --- */
+/* =======================================================
+   ESTRUTURA BASE E MAPA (COMUM AOS DOIS MODOS)
+======================================================= */
 .tela-painel-motorista {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw; 
-  height: 100vh; 
-  height: 100dvh; 
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background-color: #000;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
 }
 
-.mapa {
+.mapa-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 0;
 }
 
-.mapa > div {
+.maplibregl-map {
   width: 100% !important;
   height: 100% !important;
 }
+
+/* Animação do Carro */
+.carro-marcador-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+
+.carro-buscando {
+  animation: pulso-carro-online 2s infinite alternate ease-in-out;
+}
+
+@keyframes pulso-carro-online {
+  0% { transform: scale(1); filter: drop-shadow(0px 10px 20px rgba(0, 188, 212, 0.2)); }
+  100% { transform: scale(1.05); filter: drop-shadow(0px 15px 30px rgba(0, 188, 212, 0.6)); }
+}
+
+/* =======================================================
+   MODO ESCURO (BLACK MODE - PADRÃO)
+======================================================= */
 
 /* --- CABEÇALHO --- */
 .cabecalho-flutuante {
@@ -34,100 +57,111 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 20;
+  gap: 8px;
+  z-index: 50;
 }
 
-.botao-menu-matte {
+.botao-menu, .relogio-flutuante, .status-online {
+  background: rgba(18, 18, 18, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.botao-menu {
   width: 48px;
   height: 48px;
-  background: #121212;
-  border: 2px solid #1E1E1E;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   transition: transform 0.1s;
 }
 
-.botao-menu-matte:active {
-  transform: scale(0.95);
+.botao-menu:active { transform: scale(0.95); }
+
+.relogio-flutuante {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 48px;
+  border-radius: 24px;
+  font-weight: 800;
+  font-size: 14px;
 }
 
-.status-online-matte {
-  background: #121212;
-  border: 2px solid #1E1E1E;
-  padding: 0 20px;
+.status-online {
+  padding: 0 16px;
   height: 48px;
   border-radius: 24px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  gap: 8px;
   transition: all 0.3s ease;
 }
 
-.status-online-matte span {
-  color: #888;
+.status-online span {
+  color: #A1A1AA;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .ponto-status {
   width: 10px;
   height: 10px;
-  border-radius: 5px;
-  background: #333;
+  border-radius: 50%;
+  background: #52525B;
   transition: all 0.3s;
 }
 
-/* Estado Online Ativo (Ficou Verde!) */
-.status-online-matte.ativo {
-  border-color: #10B981;
-  background: #10B981;
+/* Status Online Ativado (Ciano Neon) */
+.status-online.ativo {
+  border-color: rgba(0, 188, 212, 0.4);
+  background: rgba(0, 188, 212, 0.1);
 }
-
-.status-online-matte.ativo span {
-  color: #000;
-}
-
-.status-online-matte.ativo .ponto-status {
-  background: #000;
-  animation: piscar-estado 1s infinite alternate;
+.status-online.ativo span { color: #00BCD4; }
+.status-online.ativo .ponto-status {
+  background: #00BCD4;
+  box-shadow: 0 0 10px #00BCD4;
+  animation: piscar-estado 1.5s infinite alternate;
 }
 
 @keyframes piscar-estado {
   from { opacity: 1; }
-  to { opacity: 0.4; }
+  to { opacity: 0.3; }
 }
 
-/* --- BOTTOM SHEET (GAVETA) --- */
-.card-inferior-motorista-matte {
+/* --- PAINEL INFERIOR --- */
+.card-inferior-motorista {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #0A0A0A;
-  border-top: 2px solid #1E1E1E;
+  background: linear-gradient(180deg, #121212 0%, #0A0A0A 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 32px 32px 0 0;
   padding: 24px;
-  z-index: 30;
+  z-index: 50;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
 }
 
 .alca-drag {
   width: 48px;
-  height: 6px;
-  background: #2A2A2A;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   margin: 0 auto 20px;
 }
 
-/* --- BLOCOS DE INFORMAÇÃO --- */
+/* Informações de ganhos */
 .painel-ganhos-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -135,35 +169,24 @@
   margin-bottom: 24px;
 }
 
-.info-box-matte {
-  background: #121212;
-  border: 2px solid #1E1E1E;
+.info-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   padding: 16px;
-  text-align: center;
-}
-
-.info-box-matte p {
-  color: #888;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 8px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
 }
 
-.info-box-matte h2 {
-  color: #FFF;
-  font-size: 26px;
-  font-weight: 900;
-  margin: 0;
-}
+.info-box-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.info-box-header p { color: #A1A1AA; font-size: 11px; font-weight: 800; text-transform: uppercase; margin: 0; }
+.info-box-valor { color: #FFFFFF; font-size: 24px; font-weight: 900; margin: 0; }
+.info-box-sufixo { font-size: 14px; font-weight: 700; color: #A1A1AA; }
 
-/* --- BOTÕES VERDE E VERMELHO --- */
-.btn-power-matte {
+/* Botões */
+.btn-power {
   width: 100%;
   height: 64px;
   border-radius: 20px;
@@ -175,33 +198,27 @@
   font-size: 16px;
   font-weight: 900;
   cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition: all 0.2s ease;
 }
 
-/* Botão VERDE pra Ficar Online */
-.btn-power-matte.online {
-  background: #10B981;
-  color: #000;
-  box-shadow: 0 4px 0px #047857;
+.btn-power.offline {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border: 1px solid #333;
 }
+.btn-power.offline:active { transform: scale(0.98); }
 
-/* Botão VERMELHO pra Ficar Offline */
-.btn-power-matte.offline {
-  background: #EF4444;
-  color: #000;
-  box-shadow: 0 4px 0px #B91C1C;
+.btn-power.online {
+  background: var(--ciano-primario, #00BCD4);
+  color: #000000;
+  box-shadow: 0 4px 20px rgba(0, 188, 212, 0.3);
 }
+.btn-power.online:active { transform: translateY(4px); box-shadow: 0 0px 0px transparent; }
 
-.btn-power-matte:active {
-  transform: translateY(4px);
-  box-shadow: 0 0px 0px transparent !important;
-}
-
-/* Botão Simular */
-.btn-simular-matte {
-  background: transparent;
-  border: 2px dashed #333;
-  color: #00E5FF;
+.btn-simular {
+  background: rgba(0, 188, 212, 0.05);
+  border: 1px dashed rgba(0, 188, 212, 0.3);
+  color: #00BCD4;
   border-radius: 16px;
   font-weight: 800;
   font-size: 14px;
@@ -211,10 +228,133 @@
   gap: 10px;
   cursor: pointer;
   transition: all 0.2s;
+  height: 56px;
+}
+.btn-simular:active { background: rgba(0, 188, 212, 0.15); }
+
+
+/* =======================================================
+   BOTÃO DE DESLIZAR (SWIPE NAVEGAÇÃO) - AMOLED BLACK
+======================================================= */
+.swipe-container-matte {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  background: #000000;
+  border: 2px solid #1E1E1E;
+  margin-top: 16px;
 }
 
-.btn-simular-matte:active {
-  background: rgba(0, 229, 255, 0.1);
-  border-color: #00E5FF;
+/* VERDE TOTAL pra Iniciar */
+.swipe-container-matte.iniciar {
+  background: #10B981;
+  border-color: #059669;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+
+/* VERMELHO TOTAL pra Encerrar */
+.swipe-container-matte.encerrar {
+  background: #EF4444;
+  border-color: #DC2626;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.2);
+}
+
+.swipe-texto {
+  color: #000000; /* Preto pro contraste no fundo verde/vermelho */
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Botão que arrasta - 100% AMOLED BLACK */
+.swipe-thumb-matte {
+  position: absolute;
+  left: 6px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #000000 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border: 1px solid #1E1E1E;
+}
+
+.swipe-thumb-matte:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+.swipe-thumb-matte svg {
+  stroke: #FFFFFF !important; /* Setinha branca no fundo amoled black */
+}
+
+/* =======================================================
+   MODO CLARO (WHITE MODE - VIA BODY.LIGHT-MODE)
+======================================================= */
+
+body.light-mode .botao-menu,
+body.light-mode .relogio-flutuante,
+body.light-mode .status-online {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #E2E8F0;
+  color: #0F172A;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+body.light-mode .status-online span {
+  color: #64748B;
+}
+
+body.light-mode .status-online.ativo {
+  border-color: #00BCD4;
+  background: #F0FBFC;
+}
+body.light-mode .status-online.ativo span { color: #00BCD4; }
+body.light-mode .status-online.ativo .ponto-status { box-shadow: none; }
+
+body.light-mode .card-inferior-motorista {
+  background: #FFFFFF;
+  border-top-color: #E2E8F0;
+  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15);
+}
+
+body.light-mode .alca-drag {
+  background: #E2E8F0;
+}
+
+body.light-mode .info-box {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+body.light-mode .info-box-header p { color: #64748B; }
+body.light-mode .info-box-valor { color: #0F172A; }
+body.light-mode .info-box-sufixo { color: #64748B; }
+
+body.light-mode .btn-power.offline {
+  background: #F8FAFC;
+  color: #0F172A;
+  border-color: #E2E8F0;
+}
+body.light-mode .btn-power.offline:active { background: #E2E8F0; }
+
+body.light-mode .btn-power.online {
+  color: #FFFFFF;
+}
+
+body.light-mode .swipe-container-matte {
+  border: none;
+}
+body.light-mode .swipe-texto {
+  color: #FFFFFF; /* No light mode o texto fica branco pra dar um contraste melhor no fundo vermelho/verde */
 }

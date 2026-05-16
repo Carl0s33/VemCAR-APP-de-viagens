@@ -1,44 +1,75 @@
+/* =======================================================
+   ESTRUTURA GERAL (BLACK MODE - PADRÃO)
+======================================================= */
 .home-servicos-container {
   width: 100%;
   height: 100%;
-  padding: 60px 20px 100px;
-  background: #000;
+  padding: 60px 20px 120px; /* espaco pro menu de baixo */
+  background: #000000;
   overflow-y: auto;
+  font-family: 'Inter', sans-serif;
 }
 
-/* HEADER E BUSCA */
+.home-servicos-header {
+  margin-bottom: 24px;
+}
+
 .home-servicos-saudacao {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 900;
-  color: #FFF;
-  margin-bottom: 20px;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* BUSCA GIGANTE */
+.home-servicos-busca-secao {
+  margin-bottom: 32px;
+  cursor: pointer;
 }
 
 .barra-busca-falsa {
   width: 100%;
-  height: 60px;
+  height: 64px;
   background: #121212;
   border: 2px solid #1E1E1E;
-  border-radius: 30px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 20px;
   gap: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  transition: all 0.2s ease;
 }
 
-.barra-busca-falsa span {
-  color: #888;
-  font-size: 16px;
-  font-weight: 700;
+.barra-busca-falsa:active {
+  border-color: #00BCD4;
+  background: #1A1A1A;
 }
 
-/* GRID DE SERVIÇOS */
-.home-servicos-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 32px;
+.texto-busca {
+  color: #A1A1AA;
+  font-size: 18px;
+  font-weight: 800;
+  flex: 1;
+}
+
+/* =======================================================
+   CARROSSEL DE SERVIÇOS ROlando pro lado
+======================================================= */
+.home-servicos-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* some com a barra de rolagem nativa feiosa */
+.home-servicos-carousel::-webkit-scrollbar {
+  display: none;
 }
 
 .card-servico-matte {
@@ -49,126 +80,131 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  padding: 0;
+  min-width: 80px; /* garante que fique quadradão e saia da tela pra rolar */
+  scroll-snap-align: start;
 }
 
 .icone-servico-wrapper {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 0px rgba(255,255,255,0.05);
+  transition: all 0.2s;
+}
+
+.btn-viagens {
+  background: #00BCD4;
+  color: #000000;
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.25);
+}
+
+.btn-outros {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .nome-servico-texto {
-  color: #FFF;
-  font-size: 12px;
+  color: #FFFFFF;
+  font-size: 13px;
   font-weight: 800;
 }
 
-/* BANNER PROMO */
-.banner-promo-matte {
-  margin-top: 32px;
-  background: #121212;
-  border: 2px solid #1E1E1E;
-  border-radius: 24px;
-  padding: 20px;
+/* =======================================================
+   LISTAS VERTICAIS (FAVORITOS E RECENTES)
+======================================================= */
+.secao-vertical {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.promo-texto h3 {
-  color: #FFF;
-  font-size: 18px;
-  font-weight: 900;
-  margin: 0 0 4px 0;
-}
-
-.promo-texto p {
-  color: #888;
-  font-size: 13px;
-  font-weight: 600;
-  margin: 0;
-  max-width: 80%;
-}
-
-.promo-badge {
-  background: #00E5FF;
-  color: #000;
-  font-size: 10px;
-  font-weight: 900;
-  padding: 4px 8px;
-  border-radius: 6px;
-  position: absolute;
-  top: 16px;
-  right: 16px;
-}
-
-/* SEÇÃO RECENTES */
-.secao-destinos-recentes {
-  margin-top: 32px;
-}
-
-.secao-titulo-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .secao-titulo {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 900;
-  color: #FFF;
+  color: #FFFFFF;
+  margin: 0;
 }
 
-.btn-ver-todos {
-  background: #121212;
-  border: 2px solid #1E1E1E;
-  color: #FFF;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 6px 12px;
-  border-radius: 100px;
+.lista-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.card-destino-recente {
+.card-lista-vertical {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 0;
-  border-bottom: 1px solid #111;
+  padding: 16px;
+  background: #121212;
+  border: 2px solid #1E1E1E;
+  border-radius: 20px;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.icone-recente-circulo {
-  width: 40px;
-  height: 40px;
-  background: #121212;
-  border-radius: 20px;
+.card-lista-vertical:active {
+  background: #1A1A1A;
+  border-color: #333;
+}
+
+.icone-lista-circulo {
+  width: 44px;
+  height: 44px;
+  background: #1A1A1A;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.recente-textos {
+.icone-lista-cor { color: #A1A1AA; }
+.icone-seta-cor { color: #52525B; }
+
+.lista-textos {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.recente-local {
-  color: #FFF;
-  font-size: 15px;
+.lista-titulo {
+  color: #FFFFFF;
+  font-size: 16px;
   font-weight: 800;
   margin: 0;
 }
 
-.recente-endereco {
-  color: #666;
+.lista-subtitulo {
+  color: #888888;
   font-size: 13px;
   font-weight: 600;
-  margin: 2px 0 0 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
+
+/* =======================================================
+   MODO CLARO
+======================================================= */
+body.light-mode .home-servicos-container { background: #F8FAFC; }
+body.light-mode .home-servicos-saudacao { color: #0F172A; }
+body.light-mode .barra-busca-falsa { background: #FFFFFF; border-color: #E2E8F0; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05); }
+body.light-mode .barra-busca-falsa:active { background: #F0FBFC; border-color: #00BCD4; }
+body.light-mode .texto-busca { color: #64748B; }
+body.light-mode .nome-servico-texto { color: #0F172A; }
+body.light-mode .btn-outros { background: #FFFFFF; color: #0F172A; border-color: #E2E8F0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+body.light-mode .secao-titulo { color: #0F172A; }
+body.light-mode .card-lista-vertical { background: #FFFFFF; border-color: #E2E8F0; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03); }
+body.light-mode .card-lista-vertical:active { background: #F8FAFC; }
+body.light-mode .icone-lista-circulo { background: #F1F5F9; }
+body.light-mode .icone-lista-cor { color: #64748B; }
+body.light-mode .icone-seta-cor { color: #CBD5E1; }
+body.light-mode .lista-titulo { color: #0F172A; }
+body.light-mode .lista-subtitulo { color: #64748B; }
