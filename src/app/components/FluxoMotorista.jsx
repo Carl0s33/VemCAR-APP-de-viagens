@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import Map, { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,11 +6,8 @@ import {
     Phone, User, CheckCircle, Star, MapPin, CornerUpRight, CornerUpLeft, ArrowUp,
     Menu, Power, Bell, Wallet, Route, Clock, Target, MessageSquare, X, CircleDot, ShieldAlert
 } from 'lucide-react';
-import './style/TelaNavegacaoMotorista.css';
 import './style/TelaPainelMotorista.css';
-import './style/TelaAlertaCorrida.css';
 
-// Calcula a rotação (yaw) do carro em movimento
 function getBearing(start, end) {
     const [lng1, lat1] = start;
     const [lng2, lat2] = end;
@@ -27,31 +24,28 @@ const PONTO_PASSAGEIRA = [-35.43350494820496, -6.480733831089614];
 const PONTO_DESTINO = [-35.44523200903737, -6.470226792030399];
 const ROTACAO_CARRO_PARADO = -135;
 
-const BotaoDeslizante = ({ texto, corFundo, aoCompletar }) => {
+const BotaoDeslizante = memo(({ texto, corFundo, aoCompletar }) => {
     return (
-        <div style={{ position: 'relative', width: '100%', height: '56px', backgroundColor: '#1E293B', borderRadius: '28px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 8 }}>
-            <span style={{ color: '#94A3B8', fontWeight: '700', zIndex: 1 }}>{texto}</span>
+        <div className="swipe-container-matte">
+            <span className="swipe-texto">{texto}</span>
             <motion.div
                 drag="x"
-                dragConstraints={{ left: 0, right: (window.innerWidth >= 400 ? 320 : window.innerWidth - 100) }}
+                dragConstraints={{ left: 0, right: window.innerWidth - 100 }}
                 dragSnapToOrigin
                 onDragEnd={(e, info) => { if (info.offset.x > 150) aoCompletar(); }}
-                style={{ position: 'absolute', left: 4, top: 4, width: '48px', height: '48px', backgroundColor: corFundo, borderRadius: '24px', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', boxShadow: '0 4px 12px rgba(0,0,0,0.3)', cursor: 'grab' }}
+                className="swipe-thumb-matte"
+                style={{ backgroundColor: corFundo }}
             >
-                <ArrowUp size={24} style={{ transform: 'rotate(90deg)' }} />
+                <ArrowUp size={24} style={{ transform: 'rotate(90deg)' }} color="#FFF" />
             </motion.div>
         </div>
-    )
-}
+    );
+});
 
 export default function FluxoMotorista({ aoPerfil }) {
     const mapRef = useRef(null);
-
-    // Estados Unificados do Motorista
-    // offline -> online -> alerta -> a_caminho -> aguardando -> em_corrida -> finalizada -> avaliacao -> online
     const [fase, setFase] = useState('offline');
 
-    // Estados do Mapa e Navegação
     const [viewState, setViewState] = useState({
         longitude: PONTO_CARRO[0],
         latitude: PONTO_CARRO[1],
@@ -65,7 +59,6 @@ export default function FluxoMotorista({ aoPerfil }) {
     const [instrucaoAtual, setInstrucaoAtual] = useState(null);
     const [posicaoCarro, setPosicaoCarro] = useState(PONTO_CARRO);
 
-    // Estados Extras (Painel e Alerta)
     const [horaAtual, setHoraAtual] = useState("");
     const [tempoAlerta, setTempoAlerta] = useState(15);
     const [nota, setNota] = useState(0);
@@ -74,7 +67,6 @@ export default function FluxoMotorista({ aoPerfil }) {
     const ganhosHoje = 142.50;
     const progressoMeta = (ganhosHoje / metaDiaria) * 100;
 
-    // Relógio
     useEffect(() => {
         const atualizarHora = () => {
             const data = new Date();
@@ -85,42 +77,17 @@ export default function FluxoMotorista({ aoPerfil }) {
         return () => clearInterval(intervalo);
     }, []);
 
-    // Som do Alerta
-    useEffect(() => {
-        if (fase === 'alerta') {
-            const context = new (window.AudioContext || window.webkitAudioContext)();
-            const tocarBeep = (freq, tempoInicio, duracao) => {
-                const osc = context.createOscillator();
-                const ganho = context.createGain();
-                osc.type = "sine";
-                osc.frequency.setValueAtTime(freq, context.currentTime + tempoInicio);
-                ganho.gain.setValueAtTime(0.1, context.currentTime + tempoInicio);
-                ganho.gain.exponentialRampToValueAtTime(0.001, context.currentTime + tempoInicio + duracao);
-                osc.connect(ganho);
-                ganho.connect(context.destination);
-                osc.start(context.currentTime + tempoInicio);
-                osc.stop(context.currentTime + tempoInicio + duracao);
-            };
-            tocarBeep(600, 0, 0.2);
-            tocarBeep(600, 0.3, 0.2);
-            tocarBeep(800, 0.6, 0.4);
-            return () => context.close();
-        }
-    }, [fase]);
-
-    // Temporizador do Alerta
     useEffect(() => {
         if (fase === 'alerta') {
             if (tempoAlerta > 0) {
                 const timer = setTimeout(() => setTempoAlerta(tempoAlerta - 1), 1000);
                 return () => clearTimeout(timer);
             } else {
-                setFase('online'); // Volta pro painel se estourar o tempo
+                setFase('online'); 
             }
         }
     }, [fase, tempoAlerta]);
 
-    // Função para buscar rota no OSRM
     const fetchRoute = async (start, end) => {
         try {
             const url = `https://router.project-osrm.org/route/v1/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&steps=true&overview=full`;
@@ -136,17 +103,16 @@ export default function FluxoMotorista({ aoPerfil }) {
                 if (coordenadas.length > 1) {
                     initialBearing = getBearing(coordenadas[0], coordenadas[1]);
                 }
-                setViewState((prev) => ({
+                setViewState(prev => ({
                     ...prev,
                     longitude: coordenadas[0][0],
                     latitude: coordenadas[0][1],
-                    bearing: initialBearing,
-                    pitch: 0
+                    bearing: initialBearing
                 }));
                 if (steps && steps.length > 0) atualizarInstrucao(0, steps);
             }
         } catch (e) {
-            console.error("Erro ao buscar rota:", e);
+            console.error(e);
         }
     };
 
@@ -157,7 +123,7 @@ export default function FluxoMotorista({ aoPerfil }) {
             if (distAcumulada > distPercorrida) {
                 setInstrucaoAtual({
                     distancia: Math.round(distAcumulada - distPercorrida),
-                    nomeRua: passo.name || "Rota desconhecida",
+                    nomeRua: passo.name || "Rota principal",
                     tipoCurva: passo.maneuver.modifier
                 });
                 break;
@@ -165,9 +131,8 @@ export default function FluxoMotorista({ aoPerfil }) {
         }
     };
 
-    // Motor da Animação (Rodando a 60FPS sem piscar a tela)
     useEffect(() => {
-        if (rota.length < 2 || ['offline', 'online', 'alerta', 'aguardando', 'finalizada', 'avaliacao'].includes(fase)) return;
+        if (rota.length < 2 || !['a_caminho', 'em_corrida'].includes(fase)) return;
 
         let animationFrameId;
         let currentIdx = 0;
@@ -218,12 +183,11 @@ export default function FluxoMotorista({ aoPerfil }) {
                 }
                 if (passos.length > 0) atualizarInstrucao(distPercorrida, passos);
 
-                setViewState((prev) => ({
+                setViewState(prev => ({
                     ...prev,
                     longitude: currentLng,
                     latitude: currentLat,
-                    bearing: newBearing,
-                    pitch: 0
+                    bearing: newBearing
                 }));
             }
             animationFrameId = requestAnimationFrame(animate);
@@ -233,7 +197,6 @@ export default function FluxoMotorista({ aoPerfil }) {
         return () => cancelAnimationFrame(animationFrameId);
     }, [rota, fase]);
 
-    // Ações do Fluxo
     const iniciarAlerta = () => { setTempoAlerta(15); setFase('alerta'); };
     const aceitarCorrida = () => { setFase('a_caminho'); fetchRoute(PONTO_CARRO, PONTO_PASSAGEIRA); };
     const iniciarCorrida = () => { setRota([]); setFase('em_corrida'); fetchRoute(PONTO_PASSAGEIRA, PONTO_DESTINO); };
@@ -245,19 +208,15 @@ export default function FluxoMotorista({ aoPerfil }) {
     };
 
     const getIconeManeobra = (modificador) => {
-        if (!modificador) return <ArrowUp size={32} color="#FFFFFF" />;
-        if (modificador.includes('left')) return <CornerUpLeft size={32} color="#FFFFFF" />;
-        if (modificador.includes('right')) return <CornerUpRight size={32} color="#FFFFFF" />;
-        return <ArrowUp size={32} color="#FFFFFF" />;
+        if (!modificador) return <ArrowUp size={24} color="#00BCD4" />;
+        if (modificador.includes('left')) return <CornerUpLeft size={24} color="#00BCD4" />;
+        if (modificador.includes('right')) return <CornerUpRight size={24} color="#00BCD4" />;
+        return <ArrowUp size={24} color="#00BCD4" />;
     };
 
     return (
-        <div className="tela-painel-motorista" style={{ background: "#000" }}>
-
-            {/* ============================================================== */}
-            {/* O MAPA É RENDERIZADO UMA ÚNICA VEZ E FICA FIXO NO FUNDO */}
-            {/* ============================================================== */}
-            <div className="mapa-wrapper" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <div className="tela-painel-motorista">
+            <div className="mapa-wrapper">
                 <Map
                     ref={mapRef}
                     {...viewState}
@@ -266,14 +225,12 @@ export default function FluxoMotorista({ aoPerfil }) {
                     interactive={false}
                     style={{ width: '100%', height: '100%' }}
                 >
-                    {/* Linha da Rota (Só renderiza se tiver uma rota ativa) */}
                     {rota.length > 0 && (
                         <Source id="rotaSource" type="geojson" data={{ type: 'Feature', geometry: { type: 'LineString', coordinates: rota } }}>
-                            <Layer id="rotaLayer" type="line" paint={{ 'line-color': '#00BCD4', 'line-width': 6, 'line-opacity': 0.8 }} />
+                            <Layer id="rotaLayer" type="line" paint={{ 'line-color': '#00BCD4', 'line-width': 5, 'line-opacity': 0.8 }} />
                         </Source>
                     )}
 
-                    {/* Marcador Único do Carro */}
                     <Marker
                         longitude={posicaoCarro[0]}
                         latitude={posicaoCarro[1]}
@@ -283,137 +240,101 @@ export default function FluxoMotorista({ aoPerfil }) {
                         rotation={['offline', 'online', 'alerta'].includes(fase) ? ROTACAO_CARRO_PARADO : viewState.bearing}
                     >
                         <div className={`carro-marcador-container ${fase === 'online' ? 'carro-buscando' : ''}`}>
-                            <svg width="80" height="120" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="headlightGlow" x1="50%" y1="0%" x2="50%" y2="100%">
-                                        <stop offset="0%" stopColor="#FFF" stopOpacity={['online', 'alerta', 'a_caminho', 'em_corrida'].includes(fase) ? "0.6" : "0.1"} />
-                                        <stop offset="100%" stopColor="#FFF" stopOpacity="0" />
-                                    </linearGradient>
-                                    <radialGradient id="shadowPainel" cx="50%" cy="50%" r="50%">
-                                        <stop offset="0%" stopColor="#00E5FF" stopOpacity={fase === 'online' ? "0.5" : "0"} />
-                                        <stop offset="100%" stopColor="#00E5FF" stopOpacity="0" />
-                                    </radialGradient>
-                                    <linearGradient id="bodyGradPainel" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stopColor="#0EA5E9" />
-                                        <stop offset="40%" stopColor="#00BCD4" />
-                                        <stop offset="100%" stopColor="#0369A1" />
-                                    </linearGradient>
-                                    <linearGradient id="roofGradPainel" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stopColor="#E0F2FE" />
-                                        <stop offset="100%" stopColor="#7DD3FC" />
-                                    </linearGradient>
-                                </defs>
-
-                                <polygon points="26,45 -10,0 90,0 54,45" fill="url(#headlightGlow)" />
-                                <ellipse cx="40" cy="72" rx="30" ry="15" fill="url(#shadowPainel)" />
-                                <rect x="24" y="37" width="32" height="46" rx="8" fill="url(#bodyGradPainel)" />
-                                <rect x="28" y="45" width="24" height="24" rx="4" fill="url(#roofGradPainel)" />
+                            <svg width="60" height="90" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+                                <polygon points="26,45 -10,0 90,0 54,45" fill="rgba(255,255,255,0.4)" />
+                                <rect x="24" y="37" width="32" height="46" rx="8" fill="#00BCD4" />
+                                <rect x="28" y="45" width="24" height="24" rx="4" fill="#0369A1" />
                                 <path d="M 29 47 Q 40 41 51 47 L 50 51 Q 40 47 30 51 Z" fill="rgba(255,255,255,0.8)" />
-                                <path d="M 30 63 Q 40 67 50 63 L 49 61 Q 40 64 31 61 Z" fill="#0C4A6E" opacity="0.8" />
-                                <rect x="27" y="37" width="8" height="4" rx="2" fill="#FEF08A" opacity="1" />
-                                <rect x="45" y="37" width="8" height="4" rx="2" fill="#FEF08A" opacity="1" />
-                                <rect x="26" y="80" width="8" height="4" rx="2" fill="#EF4444" opacity="1" />
-                                <rect x="46" y="80" width="8" height="4" rx="2" fill="#EF4444" opacity="1" />
-                                <ellipse cx="24" cy="45" rx="4" ry="5" fill="#1E293B" />
-                                <ellipse cx="56" cy="45" rx="4" ry="5" fill="#1E293B" />
-                                <ellipse cx="24" cy="73" rx="4" ry="5" fill="#1E293B" />
-                                <ellipse cx="56" cy="73" rx="4" ry="5" fill="#1E293B" />
+                                <rect x="27" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
+                                <rect x="45" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
+                                <rect x="26" y="80" width="8" height="4" rx="2" fill="#EF4444" />
+                                <rect x="46" y="80" width="8" height="4" rx="2" fill="#EF4444" />
                             </svg>
                         </div>
                     </Marker>
 
-                    {/* Marcadores de Destino e Passageira */}
                     {(fase === 'a_caminho' || fase === 'aguardando') && (
                         <Marker longitude={PONTO_PASSAGEIRA[0]} latitude={PONTO_PASSAGEIRA[1]} anchor="bottom">
-                            <MapPin size={32} color="#FFFFFF" fill="#0F172A" strokeWidth={2} />
+                            <MapPin size={32} color="#000" fill="#FFF" strokeWidth={1.5} />
                         </Marker>
                     )}
                     {(fase === 'em_corrida' || fase === 'finalizada') && (
                         <Marker longitude={PONTO_DESTINO[0]} latitude={PONTO_DESTINO[1]} anchor="bottom">
-                            <MapPin size={32} color="#FFFFFF" fill="#00BCD4" strokeWidth={2} />
+                            <MapPin size={32} color="#000" fill="#00BCD4" strokeWidth={1.5} />
                         </Marker>
                     )}
                 </Map>
             </div>
 
-            {/* ============================================================== */}
-            {/* UI SOBREPOSTA (Muda dinamicamente sem recarregar o componente) */}
-            {/* ============================================================== */}
-
-            {/* --- INSTRUÇÕES DO GPS (Aparece ao dirigir) --- */}
             <AnimatePresence>
                 {instrucaoAtual && (fase === 'a_caminho' || fase === 'em_corrida') && (
-                    <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} className="painel-curva-topo" style={{ zIndex: 100 }}>
+                    <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} className="painel-curva-topo">
                         <div className="curva-icone-container">{getIconeManeobra(instrucaoAtual.tipoCurva)}</div>
                         <div className="curva-infos">
-                            <div className="curva-distancia">A {instrucaoAtual.distancia}m vire à {instrucaoAtual.tipoCurva?.includes('left') ? 'esquerda' : instrucaoAtual.tipoCurva?.includes('right') ? 'direita' : 'frente'} na</div>
-                            <div className="curva-rua">{instrucaoAtual.nomeRua ? instrucaoAtual.nomeRua : 'Rua principal'}</div>
+                            <div className="curva-distancia">A {instrucaoAtual.distancia}m vire à {instrucaoAtual.tipoCurva?.includes('left') ? 'esquerda' : instrucaoAtual.tipoCurva?.includes('right') ? 'direita' : 'frente'}</div>
+                            <div className="curva-rua">{instrucaoAtual.nomeRua}</div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* --- CABEÇALHO PADRÃO (Online/Offline) --- */}
             <AnimatePresence>
                 {['offline', 'online'].includes(fase) && (
-                    <motion.div className="cabecalho-flutuante" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }} style={{ zIndex: 50 }}>
-                        <button className="botao-menu" onClick={aoPerfil}><Menu size={24} /></button>
-                        <div className="relogio-flutuante"><Clock size={16} /><span>{horaAtual}</span></div>
+                    <motion.div className="cabecalho-flutuante" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }}>
+                        <button className="botao-menu" onClick={aoPerfil}><Menu size={20} color="#FFF" /></button>
+                        <div className="relogio-flutuante"><Clock size={16} color="#888" /><span style={{color: '#FFF'}}>{horaAtual}</span></div>
                         <button className="botao-menu" style={{ position: 'relative' }}>
-                            <MessageSquare size={20} />
-                            <span style={{ position: 'absolute', top: 8, right: 8, width: 8, height: 8, background: '#EF4444', borderRadius: '50%' }} />
+                            <MessageSquare size={20} color="#FFF" />
+                            <span className="notificacao-dot" />
                         </button>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* --- GAVETA INFERIOR (Onde a mágica acontece) --- */}
             <AnimatePresence mode="wait">
                 {['offline', 'online'].includes(fase) && (
-                    <motion.div key="painel" className="card-inferior-motorista" initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }} style={{ zIndex: 60 }}>
+                    <motion.div key="painel" className="card-inferior-motorista" initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
                         <div className="alca-drag" />
                         <div className="painel-ganhos-grid">
                             <div className="info-box">
-                                <div className="info-box-header"><Wallet size={16} color="#10B981" /><p>Ganhos Hoje</p></div>
+                                <div className="info-box-header"><Wallet size={14} color="#10B981" /><p>Hoje</p></div>
                                 <h2 className="info-box-valor">R$ {ganhosHoje.toFixed(2).replace('.', ',')}</h2>
                             </div>
                             <div className="info-box">
-                                <div className="info-box-header"><Route size={16} color="#00BCD4" /><p>Corridas</p></div>
+                                <div className="info-box-header"><Route size={14} color="#00BCD4" /><p>Corridas</p></div>
                                 <h2 className="info-box-valor">8</h2>
                             </div>
                         </div>
 
-                        <div style={{ marginBottom: 24, padding: "0 4px" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                                <span style={{ fontSize: 12, fontWeight: 800, color: "#888", display: "flex", alignItems: "center", gap: 6 }}><Target size={14} color="#00BCD4" /> Meta Diária</span>
-                                <span style={{ fontSize: 12, fontWeight: 800, color: "#FFF" }}>{Math.round(progressoMeta)}%</span>
+                        <div className="progresso-container">
+                            <div className="progresso-header">
+                                <span><Target size={12} color="#00BCD4" /> Meta Diária</span>
+                                <span>{Math.round(progressoMeta)}%</span>
                             </div>
-                            <div style={{ width: "100%", height: 6, background: "#1E1E1E", borderRadius: 4, overflow: "hidden" }}>
-                                <motion.div initial={{ width: 0 }} animate={{ width: `${progressoMeta}%` }} transition={{ duration: 1, ease: "easeOut" }} style={{ height: "100%", background: "#00BCD4" }} />
+                            <div className="progresso-barra-fundo">
+                                <motion.div initial={{ width: 0 }} animate={{ width: `${progressoMeta}%` }} className="progresso-barra-preenchimento" />
                             </div>
                         </div>
 
                         <button className={`btn-power ${fase === 'online' ? 'online' : 'offline'}`} onClick={() => setFase(fase === 'online' ? 'offline' : 'online')}>
-                            <Power size={24} /><span>{fase === 'online' ? 'Ficar Offline' : 'Ficar Online'}</span>
+                            <Power size={20} /><span>{fase === 'online' ? 'Ficar Offline' : 'Ficar Online'}</span>
                         </button>
 
                         <AnimatePresence>
                             {fase === 'online' && (
-                                <motion.button initial={{ opacity: 0, height: 0, marginTop: 0 }} animate={{ opacity: 1, height: "56px", marginTop: "16px" }} exit={{ opacity: 0, height: 0, marginTop: 0 }} className="btn-simular" onClick={iniciarAlerta}>
-                                    <Bell size={20} /><span>Simular Nova Chamada</span>
+                                <motion.button initial={{ opacity: 0, height: 0, marginTop: 0 }} animate={{ opacity: 1, height: "50px", marginTop: "12px" }} exit={{ opacity: 0, height: 0, marginTop: 0 }} className="btn-simular" onClick={iniciarAlerta}>
+                                    <Bell size={18} /><span>Simular Chamada</span>
                                 </motion.button>
                             )}
                         </AnimatePresence>
                     </motion.div>
                 )}
 
-                {/* ALERTA DE CORRIDA */}
                 {fase === 'alerta' && (
-                    <motion.div key="alerta" className="alerta-container-flutuante" style={{ zIndex: 100, position: 'absolute', bottom: 0, width: '100%', left: 0, padding: 16 }}>
+                    <motion.div key="alerta" className="alerta-container-flutuante">
                         <motion.div className="alerta-card-matte" initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
-                            <div className="borda-pulsante" />
-                            <div style={{ width: "100%", height: "4px", backgroundColor: "#1E1E1E", position: "absolute", top: 0, left: 0, overflow: "hidden", borderRadius: "32px 32px 0 0" }}>
-                                <motion.div style={{ height: "100%", backgroundColor: tempoAlerta <= 5 ? "#EF4444" : "#00BCD4" }} animate={{ width: `${(tempoAlerta / 15) * 100}%` }} transition={{ duration: 1, ease: "linear" }} />
+                            <div className="barra-tempo-fundo">
+                                <motion.div className="barra-tempo-preenchimento" style={{ backgroundColor: tempoAlerta <= 5 ? "#EF4444" : "#00BCD4" }} animate={{ width: `${(tempoAlerta / 15) * 100}%` }} transition={{ duration: 1, ease: "linear" }} />
                             </div>
                             <div className="alerta-header">
                                 <div className="alerta-tempo-preco"><h1 className="tempo-destaque">3 min</h1><p className="distancia-destaque">1,2 km de distância</p></div>
@@ -421,89 +342,74 @@ export default function FluxoMotorista({ aoPerfil }) {
                             </div>
                             <div className="divisor-linha" />
                             <div className="alerta-info-passageiro">
-                                <div className="info-rating"><Star size={16} fill="#F59E0B" color="#F59E0B" /><span>5.0</span></div>
-                                <div className="divisor-ponto" /><span className="nome-passageiro"><User size={14} style={{marginRight: 4}}/> Joao Pedro</span>
+                                <div className="info-rating"><Star size={14} fill="#F59E0B" color="#F59E0B" /><span>5.0</span></div>
+                                <div className="divisor-ponto" /><span className="nome-passageiro"><User size={12} style={{marginRight: 4}}/> Joao Pedro</span>
                                 <div className="divisor-ponto" /><span className="categoria-carro">VEM CAR</span>
                             </div>
                             <div className="alerta-locais">
-                                <div className="local-linha"><CircleDot size={18} color="#34C759" /><p>R. Primeiro de Maio, 42 - Centro</p></div>
+                                <div className="local-linha"><CircleDot size={16} color="#34C759" /><p>R. Primeiro de Maio, 42</p></div>
                                 <div className="traco-conexao" />
-                                <div className="local-linha"><MapPin size={18} color="#00BCD4" /><p>IFRN Campus Nova Cruz</p></div>
+                                <div className="local-linha"><MapPin size={16} color="#00BCD4" /><p>IFRN Campus Nova Cruz</p></div>
                             </div>
                             <div className="alerta-botoes">
-                                <motion.button whileTap={{ scale: 0.9 }} className="btn-rejeitar-circular" onClick={() => setFase('online')}><X size={28} color="#FFF" strokeWidth={2.5} /></motion.button>
-                                <motion.button whileTap={{ scale: 0.95 }} className="btn-aceitar-grande" onClick={aceitarCorrida}>TOCAR PARA ACEITAR</motion.button>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 12, opacity: 0.8 }}>
-                                <ShieldAlert size={12} color="#A1A1AA" />
-                                <span style={{ fontSize: 11, fontWeight: 700, color: "#A1A1AA", textTransform: "uppercase" }}>Recusar reduzirá sua taxa de aceitação</span>
+                                <motion.button whileTap={{ scale: 0.9 }} className="btn-rejeitar-circular" onClick={() => setFase('online')}><X size={24} color="#FFF" /></motion.button>
+                                <motion.button whileTap={{ scale: 0.95 }} className="btn-aceitar-grande" onClick={aceitarCorrida}>ACEITAR CORRIDA</motion.button>
                             </div>
                         </motion.div>
                     </motion.div>
                 )}
 
-                {/* NAVEGAÇÃO E AVALIAÇÃO */}
                 {['a_caminho', 'aguardando', 'em_corrida', 'finalizada', 'avaliacao'].includes(fase) && (
-                    <motion.div key="navegacao" className="navegacao-painel-flutuante" style={{ zIndex: 60 }} initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
+                    <motion.div key="navegacao" className="navegacao-painel-flutuante" initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
                         {fase === 'a_caminho' && (
                             <div className="painel-conteudo">
                                 <div className="painel-flex">
-                                    <div className="avatar-icon"><User size={24} color="#00BCD4" /></div>
+                                    <div className="avatar-icon"><User size={20} color="#00BCD4" /></div>
                                     <div className="painel-textos">
                                         <span className="texto-destaque">Buscando Joao Pedro</span>
-                                        <span className="texto-secundario"><Star size={14} className="star-icon" /> 5.0</span>
+                                        <span className="texto-secundario"><Star size={12} fill="#888" color="#888" /> 5.0</span>
                                     </div>
-                                    <Phone size={24} color="#00BCD4" className="icone-acao" />
+                                    <div className="icone-acao"><Phone size={20} color="#FFF" /></div>
                                 </div>
-                                <div className="aviso-simulacao">Dirigindo até o passageiro...</div>
                             </div>
                         )}
 
                         {fase === 'aguardando' && (
                             <div className="painel-conteudo painel-centralizado">
-                                <CheckCircle size={48} color="#00BCD4" className="icone-central" />
                                 <h3 className="titulo-chegada">Você Chegou!</h3>
-                                <p className="texto-aviso">Passageiro(a) Joao Pedro notificado(a).</p>
-                                <BotaoDeslizante texto="DESLIZE PARA INICIAR" corFundo="#10B981" aoCompletar={iniciarCorrida} />
+                                <p className="texto-aviso">Passageiro notificado.</p>
+                                <BotaoDeslizante texto="DESLIZE P/ INICIAR" corFundo="#10B981" aoCompletar={iniciarCorrida} />
                             </div>
                         )}
 
                         {fase === 'em_corrida' && (
                             <div className="painel-conteudo">
                                 <div className="painel-flex">
-                                    <div className="avatar-icon"><MapPin size={24} color="#00BCD4" /></div>
+                                    <div className="avatar-icon"><MapPin size={20} color="#00BCD4" /></div>
                                     <div className="painel-textos">
                                         <span className="texto-destaque">A caminho do Destino</span>
                                         <span className="texto-secundario">IFRN Campus Nova Cruz</span>
                                     </div>
                                 </div>
-                                <div className="aviso-simulacao">Simulando trajeto...</div>
                             </div>
                         )}
 
                         {fase === 'finalizada' && (
                             <div className="painel-conteudo painel-centralizado">
-                                <CheckCircle size={56} color="#00BCD4" className="icone-central" />
                                 <div className="titulo-chegada">Corrida Finalizada</div>
-                                <div className="texto-secundario">Cobrar do passageiro</div>
                                 <div className="valor-corrida">R$ 14,50</div>
-                                <BotaoDeslizante texto="DESLIZE PARA FINALIZAR" corFundo="#EF4444" aoCompletar={() => setFase('avaliacao')} />
+                                <p className="texto-aviso">Receber em Dinheiro</p>
+                                <BotaoDeslizante texto="DESLIZE P/ FINALIZAR" corFundo="#EF4444" aoCompletar={() => setFase('avaliacao')} />
                             </div>
                         )}
 
                         {fase === 'avaliacao' && (
                             <div className="painel-conteudo painel-centralizado">
                                 <div className="titulo-chegada">Como foi a viagem?</div>
-                                <div className="texto-secundario">Avalie o Passageiro(a)</div>
                                 <div className="avaliacao-estrelas">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <button key={star} className="botao-estrela" onClick={() => setNota(star)}>
-                                            <Star
-                                                size={40}
-                                                fill={star <= nota ? "#00BCD4" : "transparent"}
-                                                color="#00BCD4" /* <-- Borda sempre ciano/azul! */
-                                                strokeWidth={1.5}
-                                            />
+                                            <Star size={36} fill={star <= nota ? "#00BCD4" : "transparent"} color="#00BCD4" strokeWidth={1.5} />
                                         </button>
                                     ))}
                                 </div>

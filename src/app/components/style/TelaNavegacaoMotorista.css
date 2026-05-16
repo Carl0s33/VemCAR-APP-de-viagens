@@ -52,6 +52,62 @@
   border-bottom: none;
 }
 
+@media (max-width: 500px) {
+  .painel-conteudo {
+    border-radius: 18px 18px 0 0;
+    padding: 12px 6px;
+    gap: 8px;
+  }
+  .texto-destaque {
+    font-size: 14px;
+  }
+  .texto-secundario, .texto-aviso, .aviso-simulacao {
+    font-size: 11px;
+  }
+  .avatar-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+  .botao-ciano {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  .titulo-chegada {
+    font-size: 16px;
+  }
+  .valor-corrida {
+    font-size: 22px;
+    margin: 8px 0;
+  }
+  .painel-curva-topo {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    border-radius: 10px;
+    padding: 8px;
+    gap: 8px;
+  }
+  .curva-distancia {
+    font-size: 10px;
+  }
+  .curva-rua {
+    font-size: 14px;
+  }
+  .avaliacao-estrelas {
+    gap: 4px;
+    margin: 8px 0;
+  }
+  .botao-estrela {
+    padding: 4px;
+  }
+  .ponto-pulsante {
+    width: 10px;
+    height: 10px;
+  }
+}
+
 .painel-centralizado {
   align-items: center;
   text-align: center;

@@ -1,6 +1,3 @@
-/* =======================================================
-   ESTRUTURA BASE E MAPA (COMUM AOS DOIS MODOS)
-======================================================= */
 .tela-painel-motorista {
   position: absolute;
   top: 0;
@@ -22,12 +19,6 @@
   z-index: 0;
 }
 
-.maplibregl-map {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Animação do Carro */
 .carro-marcador-container {
   display: flex;
   align-items: center;
@@ -40,26 +31,15 @@
 }
 
 @keyframes pulso-carro-online {
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0px 10px 20px rgba(0, 188, 212, 0.2));
-  }
-  100% {
-    transform: scale(1.05);
-    filter: drop-shadow(0px 15px 30px rgba(0, 188, 212, 0.6));
-  }
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); filter: drop-shadow(0px 10px 20px rgba(0, 188, 212, 0.3)); }
 }
 
-/* =======================================================
-   MODO ESCURO (BLACK MODE - PADRÃO)
-======================================================= */
-
-/* --- CABEÇALHO --- */
 .cabecalho-flutuante {
   position: absolute;
-  top: 40px;
-  left: 20px;
-  right: 20px;
+  top: max(20px, env(safe-area-inset-top));
+  left: 16px;
+  right: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -67,360 +47,300 @@
   z-index: 50;
 }
 
-.botao-menu,
-.relogio-flutuante,
-.status-online {
-  background: rgba(18, 18, 18, 0.7);
+.botao-menu, .relogio-flutuante {
+  background: rgba(18, 18, 18, 0.8);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-}
-
-.botao-menu {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+  border: 1px solid #222;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.1s;
+  height: 44px;
 }
 
-.botao-menu:active {
-  transform: scale(0.95);
+.botao-menu {
+  width: 44px;
+  cursor: pointer;
 }
 
 .relogio-flutuante {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 6px;
-  height: 48px;
-  border-radius: 24px;
-  font-weight: 800;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 13px;
 }
 
-.status-online {
-  padding: 0 16px;
-  height: 48px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-}
-
-.status-online span {
-  color: #A1A1AA;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.ponto-status {
-  width: 10px;
-  height: 10px;
+.notificacao-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: #EF4444;
   border-radius: 50%;
-  background: #52525B;
-  transition: all 0.3s;
 }
 
-/* Status Online Ativado (Ciano Neon) */
-.status-online.ativo {
-  border-color: rgba(0, 188, 212, 0.4);
-  background: rgba(0, 188, 212, 0.1);
-}
-
-.status-online.ativo span {
-  color: #00BCD4;
-}
-
-.status-online.ativo .ponto-status {
-  background: #00BCD4;
-  box-shadow: 0 0 10px #00BCD4;
-  animation: piscar-estado 1.5s infinite alternate;
-}
-
-@keyframes piscar-estado {
-  from { opacity: 1; }
-  to { opacity: 0.3; }
-}
-
-/* --- PAINEL INFERIOR --- */
 .card-inferior-motorista {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   background: linear-gradient(180deg, #121212 0%, #0A0A0A 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 32px 32px 0 0;
-  padding: 24px;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+  border-top: 1px solid #1E1E1E;
+  border-radius: 24px 24px 0 0;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  z-index: 60;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
 }
 
 .alca-drag {
-  width: 48px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.15);
+  width: 40px;
+  height: 4px;
+  background: #333;
   border-radius: 10px;
-  margin: 0 auto 20px;
+  margin: 0 auto 16px;
 }
 
-/* Informações de ganhos */
 .painel-ganhos-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .info-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 16px;
+  background: #1A1A1A;
+  border: 1px solid #222;
+  border-radius: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .info-box-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .info-box-header p {
-  color: #A1A1AA;
+  color: #888;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   margin: 0;
 }
 
 .info-box-valor {
-  color: #FFFFFF;
-  font-size: 24px;
+  color: #FFF;
+  font-size: 20px;
   font-weight: 900;
   margin: 0;
 }
 
-.info-box-sufixo {
-  font-size: 14px;
-  font-weight: 700;
-  color: #A1A1AA;
+.progresso-container {
+  margin-bottom: 20px;
+  padding: 0 4px;
 }
 
-/* Botões */
+.progresso-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #888;
+}
+
+.progresso-barra-fundo {
+  width: 100%;
+  height: 6px;
+  background: #1E1E1E;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progresso-barra-preenchimento {
+  height: 100%;
+  background: #00BCD4;
+}
+
 .btn-power {
   width: 100%;
-  height: 64px;
-  border-radius: 20px;
+  height: 52px;
+  border-radius: 14px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  font-size: 16px;
-  font-weight: 900;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.btn-power.offline {
-  background: #1A1A1A;
-  color: #FFFFFF;
-  border: 1px solid #333;
-}
-
-.btn-power.offline:active {
-  transform: scale(0.98);
-}
-
-.btn-power.online {
-  background: var(--ciano-primario, #00BCD4);
-  color: #000000;
-  box-shadow: 0 4px 20px rgba(0, 188, 212, 0.3);
-}
-
-.btn-power.online:active {
-  transform: translateY(4px);
-  box-shadow: 0 0px 0px transparent;
-}
+.btn-power.offline { background: #1A1A1A; color: #FFF; border: 1px solid #333; }
+.btn-power.online { background: #00BCD4; color: #000; }
 
 .btn-simular {
+  width: 100%;
   background: rgba(0, 188, 212, 0.05);
-  border: 1px dashed rgba(0, 188, 212, 0.3);
+  border: 1px dashed #00BCD4;
   color: #00BCD4;
-  border-radius: 16px;
-  font-weight: 800;
-  font-size: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
-  transition: all 0.2s;
-  height: 56px;
 }
 
-.btn-simular:active {
-  background: rgba(0, 188, 212, 0.15);
+.alerta-container-flutuante {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  z-index: 100;
 }
 
+.alerta-card-matte {
+  background: #121212;
+  border: 1px solid #222;
+  border-radius: 20px;
+  padding: 20px 16px 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
 
-/* =======================================================
-   BOTÃO DE DESLIZAR (SWIPE NAVEGAÇÃO) - AMOLED BLACK
-======================================================= */
+.barra-tempo-fundo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #1E1E1E;
+}
+
+.barra-tempo-preenchimento {
+  height: 100%;
+}
+
+.alerta-header { display: flex; justify-content: space-between; align-items: center; }
+.tempo-destaque { font-size: 24px; font-weight: 900; color: #FFF; margin: 0; }
+.distancia-destaque { font-size: 12px; color: #888; margin: 4px 0 0; }
+.preco-estimado { text-align: right; background: #1A1A1A; padding: 6px 10px; border-radius: 10px; }
+.preco-estimado h2 { color: #00BCD4; font-size: 18px; font-weight: 900; margin: 0; }
+.preco-estimado p { color: #888; font-size: 10px; font-weight: 700; text-transform: uppercase; margin: 2px 0 0; }
+
+.divisor-linha { height: 1px; background: #222; margin: 12px 0; }
+.alerta-info-passageiro { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.info-rating { display: flex; align-items: center; gap: 4px; background: #1A1A1A; padding: 4px 6px; border-radius: 6px; font-size: 11px; font-weight: 800; color: #FFF; }
+.divisor-ponto { width: 4px; height: 4px; background: #333; border-radius: 50%; }
+.nome-passageiro { font-size: 13px; font-weight: 700; color: #FFF; display: flex; align-items: center;}
+.categoria-carro { font-size: 10px; font-weight: 800; color: #00BCD4; background: rgba(0, 188, 212, 0.1); padding: 4px 6px; border-radius: 6px; }
+
+.alerta-locais { background: #1A1A1A; border-radius: 12px; padding: 12px; margin-bottom: 16px; }
+.local-linha { display: flex; align-items: center; gap: 10px; }
+.local-linha p { color: #FFF; font-size: 12px; font-weight: 600; margin: 0; }
+.traco-conexao { width: 2px; height: 10px; background: #333; margin: 4px 0 4px 7px; }
+
+.alerta-botoes { display: flex; gap: 12px; }
+.btn-rejeitar-circular { width: 50px; height: 50px; border-radius: 25px; background: #1A1A1A; border: 1px solid #333; display: flex; align-items: center; justify-content: center; }
+.btn-aceitar-grande { flex: 1; height: 50px; border-radius: 14px; background: #00BCD4; border: none; color: #000; font-size: 14px; font-weight: 800; }
+
+.navegacao-painel-flutuante {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+
+.painel-conteudo {
+  background: #121212;
+  border: 1px solid #222;
+  border-radius: 20px;
+  padding: 16px;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.painel-centralizado { align-items: center; text-align: center; }
+.painel-flex { display: flex; align-items: center; gap: 12px; }
+.painel-textos { flex: 1; display: flex; flex-direction: column; }
+.texto-destaque { font-size: 15px; font-weight: 800; color: #FFF; }
+.texto-secundario { font-size: 12px; color: #888; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;}
+.texto-aviso { color: #888; font-size: 12px; margin: 0 0 16px 0; }
+
+.avatar-icon, .icone-acao {
+  width: 44px;
+  height: 44px;
+  background-color: #1A1A1A;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botao-ciano { width: 100%; background-color: #00BCD4; color: #000; border: none; border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 800; }
+.titulo-chegada { font-size: 20px; font-weight: 900; color: #FFF; margin: 0; }
+.valor-corrida { font-size: 32px; font-weight: 900; color: #00BCD4; margin: 8px 0; }
+
+.painel-curva-topo {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  left: 16px;
+  right: 16px;
+  background: #121212;
+  border: 1px solid #222;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  z-index: 1000;
+}
+.curva-icone-container { background: rgba(0, 188, 212, 0.1); padding: 8px; border-radius: 10px; }
+.curva-distancia { font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; }
+.curva-rua { font-size: 15px; font-weight: 800; color: #FFF; }
+
+.avaliacao-estrelas { display: flex; gap: 8px; margin-bottom: 20px; }
+.botao-estrela { background: transparent; border: none; padding: 0; }
+
 .swipe-container-matte {
   position: relative;
   width: 100%;
-  height: 64px;
-  border-radius: 20px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #000000;
-  border: 2px solid #1E1E1E;
-  margin-top: 16px;
+  background: #1A1A1A;
+  border: 1px solid #222;
 }
 
-/* VERDE TOTAL pra Iniciar */
-.swipe-container-matte.iniciar {
-  background: #10B981;
-  border-color: #059669;
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
-}
-
-/* VERMELHO TOTAL pra Encerrar */
-.swipe-container-matte.encerrar {
-  background: #EF4444;
-  border-color: #DC2626;
-  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.2);
-}
-
-.swipe-texto {
-  color: #000000;
-  font-weight: 900;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Botão que arrasta - 100% AMOLED BLACK */
+.swipe-texto { color: #888; font-weight: 800; font-size: 12px; z-index: 1; }
 .swipe-thumb-matte {
   position: absolute;
-  left: 6px;
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  background: #000000 !important;
+  left: 4px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: grab;
   z-index: 2;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  border: 1px solid #1E1E1E;
 }
-
-.swipe-thumb-matte:active {
-  cursor: grabbing;
-  transform: scale(0.95);
-}
-
-.swipe-thumb-matte svg {
-  stroke: #FFFFFF !important;
-}
-
-/* =======================================================
-   MODO CLARO (WHITE MODE - VIA BODY.LIGHT-MODE)
-======================================================= */
-
-body.light-mode .botao-menu,
-body.light-mode .relogio-flutuante,
-body.light-mode .status-online {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: #E2E8F0;
-  color: #0F172A;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-body.light-mode .status-online span {
-  color: #64748B;
-}
-
-body.light-mode .status-online.ativo {
-  border-color: #00BCD4;
-  background: #F0FBFC;
-}
-
-body.light-mode .status-online.ativo span {
-  color: #00BCD4;
-}
-
-body.light-mode .status-online.ativo .ponto-status {
-  box-shadow: none;
-}
-
-body.light-mode .card-inferior-motorista {
-  background: #FFFFFF;
-  border-top-color: #E2E8F0;
-  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15);
-}
-
-body.light-mode .alca-drag {
-  background: #E2E8F0;
-}
-
-body.light-mode .info-box {
-  background: #F8FAFC;
-  border-color: #E2E8F0;
-}
-
-body.light-mode .info-box-header p {
-  color: #64748B;
-}
-
-body.light-mode .info-box-valor {
-  color: #0F172A;
-}
-
-body.light-mode .info-box-sufixo {
-  color: #64748B;
-}
-
-body.light-mode .btn-power.offline {
-  background: #F8FAFC;
-  color: #0F172A;
-  border-color: #E2E8F0;
-}
-
-body.light-mode .btn-power.offline:active {
-  background: #E2E8F0;
-}
-
-body.light-mode .btn-power.online {
-  color: #FFFFFF;
-}
-
-body.light-mode .swipe-container-matte {
-  border: none;
-}
-
-body.light-mode .swipe-texto {
-  color: #FFFFFF;
-}
+.swipe-thumb-matte:active { cursor: grabbing; transform: scale(0.95); }

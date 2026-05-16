@@ -1,13 +1,14 @@
 /* =======================================================
-   ESTRUTURA BASE (AMOLED BLACK MODE - PADRÃO)
+   ESTRUTURA BASE (MATTE BLACK MODE)
 ======================================================= */
 .home-bento-container {
   width: 100%;
   height: 100%;
-  padding: 60px 20px 100px;
-  background: #000000; /* Fundo 100% Preto */
+  padding: max(60px, env(safe-area-inset-top)) 20px max(100px, env(safe-area-inset-bottom));
+  background: #050505; 
   overflow-y: auto;
   font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
 }
 
 .home-bento-header {
@@ -17,11 +18,17 @@
   margin-bottom: 24px;
 }
 
+.header-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .saudacao-bento {
   font-size: 28px;
   font-weight: 900;
   color: #FFFFFF;
-  margin: 0 0 4px 0;
+  margin: 0;
   letter-spacing: -0.5px;
 }
 
@@ -32,7 +39,7 @@
   margin: 0;
 }
 
-/* WIDGET TEMPO (Fosco) */
+/* WIDGET TEMPO */
 .widget-clima {
   background: #121212;
   border: 1px solid #1E1E1E;
@@ -41,46 +48,45 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
   font-weight: 800;
   color: #FFFFFF;
 }
 
 /* =======================================================
-   GRID BENTO E CARDS
+   GRID BENTO E CARDS (FLAT DESIGN)
 ======================================================= */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 12px; 
 }
 
 .bento-card {
   background: #121212;
-  border: 2px solid #1E1E1E;
-  border-radius: 24px;
-  padding: 20px;
+  border: 1px solid #1E1E1E; 
+  border-radius: 20px;
+  padding: 16px; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   cursor: pointer;
   position: relative;
-  min-height: 120px;
+  min-height: 110px;
   text-align: left;
   transition: all 0.2s ease;
+  outline: none; 
+  -webkit-tap-highlight-color: transparent; 
 }
 
 .bento-card:active {
-  transform: scale(0.96);
-  border-color: #333;
   background: #1A1A1A;
+  border-color: #333333;
 }
 
 .bento-card.principal {
   grid-column: span 2;
-  min-height: 140px;
+  min-height: 120px;
   flex-direction: row;
   align-items: center;
 }
@@ -89,35 +95,29 @@
   grid-column: span 2;
   flex-direction: row;
   align-items: center;
-  min-height: 90px;
+  min-height: 80px;
 }
 
-/* Card Destaque Rosa */
-.bento-card.bg-rosa {
-  background: linear-gradient(135deg, #EC4899, #E11D48);
-  border: none;
-  box-shadow: 0 12px 30px rgba(225, 29, 72, 0.25);
+/* Card VEMCAR FEMINO (Matte Rosa elegantíssimo) */
+.bento-card.outline-rosa {
+  background: #121212;
+  border: 1px solid rgba(236, 72, 153, 0.3);
 }
-.bento-card.bg-rosa h3, .bento-card.bg-rosa p {
-  color: #FFFFFF;
-}
-.bento-card.bg-rosa:active {
-  transform: scale(0.96);
-  filter: brightness(0.9);
+.bento-card.outline-rosa:active {
+  background: rgba(236, 72, 153, 0.05);
 }
 
 /* =======================================================
-   ÍCONES E GRADIENTES NEON PREMIUM
+   ÍCONES TRANSLÚCIDOS (PREMIUM)
 ======================================================= */
 .bento-icon-wrapper {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .bento-card.principal .bento-icon-wrapper,
@@ -126,28 +126,23 @@
   margin-right: 16px;
 }
 
-/* Cores Refinadas */
-.bento-icon-wrapper.azul { background: linear-gradient(135deg, #00BCD4, #0284C7); color: #000; box-shadow: 0 8px 20px rgba(0, 188, 212, 0.3); }
-.bento-icon-wrapper.laranja { background: linear-gradient(135deg, #FBBF24, #F59E0B); color: #000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2); }
-.bento-icon-wrapper.roxo { background: linear-gradient(135deg, #A855F7, #7E22CE); color: #FFF; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); }
-.bento-icon-wrapper.verde { background: linear-gradient(135deg, #34D399, #059669); color: #000; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2); }
-.bento-icon-wrapper.branco { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid rgba(255, 255, 255, 0.2); }
+.bento-icon-wrapper.azul { background: rgba(0, 188, 212, 0.1); color: #00BCD4; }
+.bento-icon-wrapper.laranja { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+.bento-icon-wrapper.rosa { background: rgba(236, 72, 153, 0.1); color: #EC4899; }
+.bento-icon-wrapper.roxo { background: rgba(168, 85, 247, 0.1); color: #A855F7; }
+.bento-icon-wrapper.verde { background: rgba(16, 185, 129, 0.1); color: #10B981; }
 
-/* Textos dos Cards */
 .bento-card h3 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   color: #FFFFFF;
   margin: 0;
-  letter-spacing: -0.3px;
 }
 
-.bento-text-area {
-  flex: 1;
-}
+.bento-text-area { flex: 1; }
 
 .bento-text-area p {
-  font-size: 13px;
+  font-size: 12px;
   color: #A1A1AA;
   margin: 4px 0 0 0;
   font-weight: 600;
@@ -155,9 +150,8 @@
 
 .icon-badge {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  color: #52525B;
+  top: 16px;
+  right: 16px;
 }
 
 /* =======================================================
@@ -168,7 +162,7 @@
 }
 
 .recentes-titulo-bento {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 900;
   color: #FFFFFF;
   margin: 0 0 16px 0;
@@ -182,86 +176,42 @@
 
 .recente-card-bento {
   background: #121212;
-  border: 2px solid #1E1E1E;
-  border-radius: 20px;
+  border: 1px solid #1E1E1E;
+  border-radius: 16px;
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   cursor: pointer;
   transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .recente-card-bento:active {
   background: #1A1A1A;
-  border-color: #333;
-  transform: scale(0.98);
+  border-color: #333333;
 }
 
 .recente-icon-circulo {
-  width: 48px;
-  height: 48px;
-  background: #1A1A1A;
-  border-radius: 16px;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 188, 212, 0.1);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #00BCD4; /* Detalhe Ciano no ícone de recente */
 }
 
 .recente-local-nome {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: #FFFFFF;
 }
 
 .recente-local-desc {
   margin: 4px 0 0 0;
-  font-size: 13px;
+  font-size: 12px;
   color: #888888;
   font-weight: 600;
 }
-
-
-/* =======================================================
-   MODO CLARO (LIGHT MODE - VIA BODY.LIGHT-MODE)
-======================================================= */
-body.light-mode .home-bento-container { background: #F8FAFC; }
-body.light-mode .saudacao-bento { color: #0F172A; }
-body.light-mode .sub-saudacao-bento { color: #64748B; }
-
-body.light-mode .widget-clima {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-  color: #0F172A;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-}
-
-body.light-mode .bento-card {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-}
-body.light-mode .bento-card:active {
-  background: #F8FAFC;
-  border-color: #CBD5E1;
-}
-
-/* O card rosa continua rosa no modo claro para destacar */
-
-body.light-mode .bento-card h3 { color: #0F172A; }
-body.light-mode .bento-text-area p { color: #64748B; }
-body.light-mode .icon-badge { color: #CBD5E1; }
-
-body.light-mode .recentes-titulo-bento { color: #0F172A; }
-body.light-mode .recente-card-bento {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
-}
-body.light-mode .recente-card-bento:active { background: #F8FAFC; }
-body.light-mode .recente-icon-circulo { background: #F1F5F9; color: #0284C7; }
-body.light-mode .recente-local-nome { color: #0F172A; }
-body.light-mode .recente-local-desc { color: #64748B; }

@@ -1,70 +1,84 @@
+/* =======================================================
+   MENU INFERIOR FIXO (AMOLED BLACK & SAFE AREA)
+======================================================= */
 .menu-inferior-container {
-  position: absolute;
-  bottom: 0;
+  position: fixed; 
+  bottom: 0; 
   left: 0;
-  right: 0;
-  height: 68px;
-  z-index: 40;
-  background: rgba(0, 0, 0, 0.95);
-  border-top: 1px solid #1e1e1e;
+  width: 100%;
+  height: max(72px, calc(64px + env(safe-area-inset-bottom))); 
+  background: rgba(5, 5, 5, 0.85); 
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid #1E1E1E;
   display: flex;
-  align-items: center;
   justify-content: space-around;
-  padding: 0 8px;
-  font-family: 'Inter', sans-serif;
+  align-items: flex-start; /* Alinha pelo topo para a safe area ficar no fundo */
+  z-index: 9999; 
+  padding: 8px 16px env(safe-area-inset-bottom);
+  box-sizing: border-box;
 }
 
-.menu-inferior-botao {
+.menu-item {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  cursor: pointer;
-  background: none;
+  background: transparent;
   border: none;
-  padding: 6px 0;
+  color: #64748B; 
+  cursor: pointer;
+  height: 56px; /* Touch target size mínimo da Apple */
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-item.ativo {
+  color: #00BCD4; 
+}
+
+.menu-icon-container {
   position: relative;
-}
-
-.menu-inferior-indicador {
-  position: absolute;
-  top: 0;
-  width: 24px;
-  height: 3px;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  background: #00e5ff;
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
-}
-
-.menu-inferior-icone-container {
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
+  height: 28px;
 }
 
-.menu-inferior-icone-ativo {
-  background: rgba(0, 229, 255, 0.12);
+.indicador-ativo {
+  position: absolute;
+  bottom: -8px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #00BCD4;
+  box-shadow: 0 0 8px #00BCD4;
 }
 
-.menu-inferior-texto {
-  font-size: 10px;
-  letter-spacing: 0.2px;
-  line-height: 1;
-}
-
-.menu-inferior-texto-ativo {
+.menu-item span {
+  font-size: 11px;
   font-weight: 700;
-  color: #00e5ff;
+  letter-spacing: 0.2px;
 }
 
-.menu-inferior-texto-inativo {
-  font-weight: 500;
-  color: #666666;
+/* =======================================================
+   MODO CLARO (LIGHT MODE)
+======================================================= */
+body.light-mode .menu-inferior-container {
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid #E2E8F0;
+}
+
+body.light-mode .menu-item {
+  color: #94A3B8;
+}
+
+body.light-mode .menu-item.ativo {
+  color: #00BCD4;
+}
+
+body.light-mode .indicador-ativo {
+  box-shadow: none; /* No modo claro, não precisa brilhar */
 }
