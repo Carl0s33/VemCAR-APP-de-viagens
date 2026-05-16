@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowLeft, CreditCard, CarFront, Bike, GraduationCap, ShieldUser, AlertTriangle, Star, CheckCircle, Search, User, Navigation } from "lucide-react";
+import {
+    MapPin, ArrowLeft, CreditCard, CarFront, Bike, GraduationCap,
+    ShieldUser, AlertTriangle, Star, CheckCircle, Search, User, Navigation
+} from "lucide-react";
 import Map, { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "./style/FluxoViagem.css";
 
-// Utilitário para rotação do veículo
+// utilitário para rotação do veículo
 function getBearing(start, end) {
     const [lng1, lat1] = start;
     const [lng2, lat2] = end;
@@ -28,10 +31,10 @@ const LOCAIS_MOCK = [
     { nome: "Shopping Natal", endereco: "Av. Sen. Salgado Filho, Natal - RN", coords: [-35.205600, -5.832400] }
 ];
 
-export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { // Recebe a preferência da Home
+export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
     const [etapa, setEtapa] = useState("selecao_destino");
     const [precisaTroco, setPrecisaTroco] = useState(false);
-    const [categoria, setCategoria] = useState(categoriaInicial); // Usa a categoria vinda do Bento Grid
+    const [categoria, setCategoria] = useState(categoriaInicial);
     const [nota, setNota] = useState(0);
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -251,12 +254,11 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
                                     key={mod.id}
                                     className={`card-orcamento ${categoria === mod.id ? 'selecionado' : ''}`}
                                     onClick={() => setCategoria(mod.id)}
-                                    // Se for VEM ELAS selecionado, a borda e o bg ficam rosa ao invés de ciano
-                                    style={categoria === "VEM ELAS" && mod.id === "VEM ELAS" ? { borderColor: "#EC4899", background: "rgba(236, 72, 153, 0.05)" } : {}}
+                                    style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { borderColor: "#EC4899", background: "rgba(236, 72, 153, 0.05)" } : {}}
                                 >
                                     <div
                                         className="icone-orcamento"
-                                        style={categoria === "VEM ELAS" && mod.id === "VEM ELAS" ? { background: "#EC4899", color: "#FFF" } : {}}
+                                        style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF" } : {}}
                                     >
                                         {mod.icone}
                                     </div>
@@ -266,7 +268,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
                                     </div>
                                     <h2
                                         className="preco-orcamento"
-                                        style={categoria === "VEM ELAS" && mod.id === "VEM ELAS" ? { color: "#EC4899" } : {}}
+                                        style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { color: "#EC4899" } : {}}
                                     >
                                         {mod.preco}
                                     </h2>
@@ -276,18 +278,18 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
 
                         <div className="card-pagamento">
                             <div style={{ display: "flex", alignItems: "center", gap: 12, color: "var(--texto-forte)" }}>
-                                <CreditCard color={categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4"} />
+                                <CreditCard color={categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4"} />
                                 <span style={{ fontWeight: 800 }}>Dinheiro</span>
                             </div>
                             <label className="checkbox-troco">
-                                <input type="checkbox" checked={precisaTroco} onChange={() => setPrecisaTroco(!precisaTroco)} style={{ accentColor: categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4" }}/>
+                                <input type="checkbox" checked={precisaTroco} onChange={() => setPrecisaTroco(!precisaTroco)} style={{ accentColor: categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4" }}/>
                                 <span>Precisa de troco?</span>
                             </label>
                         </div>
                         <button
                             className="btn-viagem principal"
                             onClick={() => setEtapa("buscando")}
-                            style={categoria === "VEM ELAS" ? { background: "#EC4899", color: "#FFF", boxShadow: "0 4px 20px rgba(236, 72, 153, 0.3)" } : {}}
+                            style={categoria === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF", boxShadow: "0 4px 20px rgba(236, 72, 153, 0.3)" } : {}}
                         >
                             Solicitar {categoria}
                         </button>
@@ -297,11 +299,11 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
             case "buscando":
                 return (
                     <div className="sheet-centralizado">
-                        <div className="search-pulse-container" style={categoria === "VEM ELAS" ? { background: "rgba(236, 72, 153, 0.1)", animation: "pulse-search-rosa 1.5s infinite" } : {}}>
-                            <Search size={40} color={categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4"} />
+                        <div className={`search-pulse-container ${categoria === "VEM CAR FEMININO" ? "rosa" : ""}`}>
+                            <Search size={40} color={categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4"} />
                         </div>
                         <h2 className="sheet-title" style={{ marginTop: 24 }}>Localizando motorista...</h2>
-                        <p className="sheet-desc">Conectando com {categoria === "VEM ELAS" ? "motoristas mulheres" : "parceiros"} num raio próximo.</p>
+                        <p className="sheet-desc">Conectando com {categoria === "VEM CAR FEMININO" ? "motoristas mulheres" : "parceiros"} num raio próximo.</p>
                         <button className="btn-viagem secundario" onClick={() => setEtapa("selecao_destino")} style={{ marginTop: 32 }}>
                             Cancelar Solicitação
                         </button>
@@ -311,29 +313,29 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
             case "a_caminho":
             case "aguardando_embarque":
             case "em_corrida":
-                const ehVemElas = categoria === "VEM ELAS";
-                const corDestaque = ehVemElas ? "#EC4899" : "#00BCD4";
+                const ehVemFeminino = categoria === "VEM CAR FEMININO";
+                const corDestaque = ehVemFeminino ? "#EC4899" : "#00BCD4";
 
                 return (
                     <>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                             <h3 style={{ color: corDestaque, textTransform: "uppercase", fontSize: 13, fontWeight: 900, margin: 0 }}>
-                                {etapa === "a_caminho" ? "Motorista a caminho" : etapa === "aguardando_embarque" ? "O Motorista Chegou" : "Em corrida para o destino"}
+                                {etapa === "a_caminho" ? "Motorista a caminho" : etapa === "aguardando_embarque" ? "A Motorista Chegou" : "Em corrida para o destino"}
                             </h3>
                         </div>
 
                         <div className="perfil-motorista">
                             <div className="avatar-motorista"><User size={32} color={corDestaque} /></div>
                             <div className="info-motorista">
-                                <h2>{categoria === "VEM MOTO" ? "Lucas" : ehVemElas ? "Amanda" : "João Pedro"}</h2>
-                                <p>{categoria === "VEM MOTO" ? "Honda CG 160 Preta" : ehVemElas ? "Renault Kwid Rosa" : "Fiat Argo Branco"}</p>
+                                <h2>{categoria === "VEM MOTO" ? "Lucas" : ehVemFeminino ? "Amanda" : "João Pedro"}</h2>
+                                <p>{categoria === "VEM MOTO" ? "Honda CG 160 Preta" : ehVemFeminino ? "Renault Kwid Rosa" : "Fiat Argo Branco"}</p>
                             </div>
                             <div className="badge-placa">QWE-9999</div>
                         </div>
 
                         <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
                             {etapa === "aguardando_embarque" ? (
-                                <button className="btn-viagem principal" style={{ flex: 1, background: corDestaque, color: ehVemElas ? "#FFF" : "#000" }} onClick={iniciarCorrida}>Embarcar (Iniciar)</button>
+                                <button className="btn-viagem principal" style={{ flex: 1, background: corDestaque, color: ehVemFeminino ? "#FFF" : "#000" }} onClick={iniciarCorrida}>Embarcar (Iniciar)</button>
                             ) : (
                                 <button className="btn-viagem secundario" style={{ flex: 1, pointerEvents: 'none' }}>Acompanhando trajeto...</button>
                             )}
@@ -347,28 +349,33 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
             case "finalizada":
                 return (
                     <div className="sheet-centralizado">
-                        <CheckCircle size={56} color={categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4"} style={{ marginBottom: 16 }} />
+                        <CheckCircle size={56} color={categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4"} style={{ marginBottom: 16 }} />
                         <h2 className="sheet-title">Destino Alcançado!</h2>
                         <p className="sheet-desc">Valor final da sua corrida</p>
-                        <h1 className="preco-final" style={categoria === "VEM ELAS" ? { color: "#EC4899" } : {}}>{modalidadeEscolhida?.preco}</h1>
+                        <h1 className="preco-final" style={categoria === "VEM CAR FEMININO" ? { color: "#EC4899" } : {}}>{modalidadeEscolhida?.preco}</h1>
                         <p className="sheet-desc" style={{ marginBottom: 32 }}>Pagamento físico no veículo.</p>
-                        <button className="btn-viagem principal" style={categoria === "VEM ELAS" ? { background: "#EC4899", color: "#FFF" } : {}} onClick={() => setEtapa("avaliacao")}>Confirmar Pagamento</button>
+                        <button className="btn-viagem principal" style={categoria === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF" } : {}} onClick={() => setEtapa("avaliacao")}>Confirmar Pagamento</button>
                     </div>
                 );
 
             case "avaliacao":
                 return (
                     <div className="sheet-centralizado">
-                        <h2 className="sheet-title">Avalie {categoria === "VEM ELAS" ? "a Motorista" : "o Motorista"}</h2>
+                        <h2 className="sheet-title">Avalie {categoria === "VEM CAR FEMININO" ? "a Motorista" : "o Motorista"}</h2>
                         <p className="sheet-desc" style={{ marginBottom: 32 }}>Sua avaliação ajuda a manter a qualidade VEM.</p>
                         <div className="avaliacao-estrelas">
                             {[1, 2, 3, 4, 5].map(i => (
                                 <motion.div key={i} whileTap={{ scale: 0.8 }} className="botao-estrela" onClick={() => setNota(i)}>
-                                    <Star size={44} fill={i <= nota ? (categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4") : "transparent"} color={categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4"} strokeWidth={1.5} />
+                                    <Star
+                                        size={44}
+                                        fill={i <= nota ? (categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4") : "transparent"}
+                                        color={categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4"}
+                                        strokeWidth={1.5}
+                                    />
                                 </motion.div>
                             ))}
                         </div>
-                        <button className="btn-viagem principal" style={categoria === "VEM ELAS" ? { background: "#EC4899", color: "#FFF" } : {}} onClick={aoSair} disabled={nota === 0} style={{ opacity: nota === 0 ? 0.5 : 1 }}>
+                        <button className="btn-viagem principal" style={categoria === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF" } : {}} onClick={aoSair} disabled={nota === 0}>
                             Enviar Avaliação
                         </button>
                     </div>
@@ -380,15 +387,6 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
 
     return (
         <div className="viagem-container">
-            <style>
-                {`
-                @keyframes pulse-search-rosa {
-                    0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
-                    70% { box-shadow: 0 0 0 20px rgba(236, 72, 153, 0); }
-                    100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
-                }
-                `}
-            </style>
             <div className="mapa-layer" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                 <Map
                     {...viewState}
@@ -402,7 +400,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
                     {/* Rota Desenhada */}
                     {rota.length > 0 && (
                         <Source id="rotaSource" type="geojson" data={{ type: 'Feature', geometry: { type: 'LineString', coordinates: rota } }}>
-                            <Layer id="rotaLayer" type="line" paint={{ 'line-color': categoria === 'VEM ELAS' ? '#EC4899' : '#00BCD4', 'line-width': 5, 'line-opacity': 0.8 }} />
+                            <Layer id="rotaLayer" type="line" paint={{ 'line-color': categoria === 'VEM CAR FEMININO' ? '#EC4899' : '#00BCD4', 'line-width': 5, 'line-opacity': 0.8 }} />
                         </Source>
                     )}
 
@@ -426,7 +424,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
                     {/* PINO FIXO DE DESTINO */}
                     {pontoDestino && ['orcamento', 'buscando', 'a_caminho', 'aguardando_embarque', 'em_corrida'].includes(etapa) && (
                         <Marker longitude={pontoDestino[0]} latitude={pontoDestino[1]} anchor="bottom">
-                            <MapPin size={40} color="#000" fill={categoria === "VEM ELAS" ? "#EC4899" : "#00BCD4"} strokeWidth={1.5} style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }} />
+                            <MapPin size={40} color="#000" fill={categoria === "VEM CAR FEMININO" ? "#EC4899" : "#00BCD4"} strokeWidth={1.5} style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }} />
                         </Marker>
                     )}
 
@@ -450,8 +448,8 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) { 
                                         <rect x="36" y="80" width="8" height="22" rx="4" fill="#1E293B" />
                                         <rect x="36" y="100" width="8" height="4" rx="2" fill="#EF4444" />
                                     </svg>
-                                ) : categoria === "VEM ELAS" ? (
-                                    // CARRO ROSA VEM ELAS (Kwid Style)
+                                ) : categoria === "VEM CAR FEMININO" ? (
+                                    // CARRO ROSA VEM CAR FEMININO
                                     <svg width="60" height="90" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
                                         <defs>
                                             <linearGradient id="headlightGlowRosa" x1="50%" y1="0%" x2="50%" y2="100%">
