@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/VemCAR-APP-de-viagens/sw.js', { scope: '/VemCAR-APP-de-viagens/' })})}
