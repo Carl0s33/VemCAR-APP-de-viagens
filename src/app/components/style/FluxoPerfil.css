@@ -3,8 +3,8 @@
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  background-color: #000;
-  color: #FFF;
+  background-color: #000000;
+  color: #ffffff;
   font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
@@ -13,11 +13,11 @@
 }
 
 .perfil-header {
-  padding: 40px 24px 20px;
+  padding: max(40px, env(safe-area-inset-top)) 24px 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #000;
+  background: #000000;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -33,7 +33,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform 0.1s ease;
 }
 
 .perfil-botao-voltar:active {
@@ -60,36 +60,56 @@
   padding: 20px 24px 32px;
 }
 
+/* CONTAINER DO AVATAR CORRIGIDO: circulo perfeito e responsivo */
 .avatar-wrapper-matte {
   position: relative;
   width: 100px;
   height: 100px;
-  border-radius: 32px;
-  padding: 4px;
-  background: #121212;
+  border-radius: 50%;
+  padding: 2px;
+  background: #dfe5e7;
   border: 2px solid #1E1E1E;
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
+.avatar-wrapper-matte:active {
+  transform: scale(0.97);
+  filter: brightness(0.9);
+}
+
+/* garante que a foto preencha todo o espaco sem distorcer */
 .avatar-wrapper-matte img {
   width: 100%;
   height: 100%;
-  border-radius: 26px;
+  border-radius: 50%;
   object-fit: cover;
+}
+
+/* boneco do whatsapp */
+.avatar-wrapper-matte svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .badge-edicao {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
-  width: 32px;
-  height: 32px;
-  background: #00E5FF;
-  border-radius: 10px;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: #00BCD4;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #000;
+  border: 2px solid #000000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .perfil-nome-usuario {
@@ -101,13 +121,13 @@
 .perfil-email-usuario {
   font-size: 14px;
   font-weight: 700;
-  color: #888;
+  color: #888888;
   margin: 0;
 }
 
 .badge-motorista-info {
   background: #10B981;
-  color: #000;
+  color: #000000;
   padding: 6px 12px;
   border-radius: 12px;
   font-size: 13px;
@@ -131,7 +151,11 @@
   padding: 16px;
   border-radius: 20px;
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.perfil-menu-item:active {
+  background: #1A1A1A;
 }
 
 .perfil-item-esquerda {
@@ -141,11 +165,11 @@
 }
 
 .perfil-icone-caixa {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   background: #0A0A0A;
   border: 2px solid #1E1E1E;
-  border-radius: 16px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,13 +184,13 @@
 .perfil-item-label {
   font-size: 16px;
   font-weight: 800;
-  color: #FFF;
+  color: #ffffff;
 }
 
 .perfil-item-desc {
   font-size: 12px;
   font-weight: 700;
-  color: #888;
+  color: #888888;
 }
 
 /* --- TOGGLE DE TEMA --- */
@@ -196,7 +220,7 @@
 }
 
 .perfil-switch.ativo {
-  background: #00E5FF;
+  background: #00BCD4;
 }
 
 .perfil-switch-bolinha {
@@ -205,7 +229,7 @@
   left: 3px;
   width: 24px;
   height: 24px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 50%;
   transition: transform 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -216,7 +240,7 @@
 }
 
 body.light-mode .perfil-toggle-tema {
-  background: #FFFFFF;
+  background: #ffffff;
   border-color: #E5E7EB;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
@@ -226,8 +250,8 @@ body.light-mode .perfil-switch {
 }
 
 .perfil-botao-sair {
-  margin: 32px 24px 40px;
-  height: 64px;
+  margin: 32px 24px max(32px, env(safe-area-inset-bottom));
+  height: 60px;
   background: #EF4444;
   border: none;
   border-radius: 20px;
@@ -235,14 +259,18 @@ body.light-mode .perfil-switch {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: #000;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 4px 0px #B91C1C;
+  transition: transform 0.1s ease;
 }
 
-/* --- SUBTELAS (INFO, PAGAMENTO, ENDEREÇO) --- */
+.perfil-botao-sair:active {
+  transform: scale(0.98);
+}
+
+/* --- SUBTELAS --- */
 .subtela-container {
   padding: 0 24px 40px;
   flex: 1;
@@ -252,11 +280,11 @@ body.light-mode .perfil-switch {
   font-size: 28px;
   font-weight: 900;
   margin: 0 0 8px;
-  color: #FFF;
+  color: #ffffff;
 }
 
 .subtela-desc {
-  color: #888;
+  color: #888888;
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 32px;
@@ -267,7 +295,7 @@ body.light-mode .perfil-switch {
 }
 
 .label-solid {
-  color: #888;
+  color: #888888;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
@@ -282,14 +310,15 @@ body.light-mode .perfil-switch {
   border: 2px solid #1E1E1E;
   border-radius: 16px;
   padding: 0 16px;
-  color: #FFF;
+  color: #ffffff;
   font-weight: 700;
   font-size: 16px;
   outline: none;
+  transition: border-color 0.2s ease;
 }
 
 .input-solid:focus {
-  border-color: #00E5FF;
+  border-color: #00BCD4;
 }
 
 .card-item-salvo, .card-pagamento-salvo, .card-endereco-salvo {
@@ -317,42 +346,41 @@ body.light-mode .perfil-switch {
   font-size: 16px;
   font-weight: 800;
   margin: 0 0 4px;
-  color: #00E5FF;
+  color: #00BCD4;
 }
 
 .desc-item-salvo, .desc-pagamento, .card-endereco-salvo p {
   font-size: 13px;
   font-weight: 600;
-  color: #888;
+  color: #888888;
   margin: 0;
 }
 
 .btn-salvar-matte {
   width: 100%;
-  height: 60px;
-  background: #34C759; /* VERDE: Ajuste de aceitar geral/salvar */
+  height: 56px;
+  background: #34C759;
   border: none;
-  border-radius: 20px;
-  color: #000;
+  border-radius: 16px;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 900;
   margin-top: 32px;
   cursor: pointer;
-  box-shadow: 0 4px 0px #248A3D;
+  transition: transform 0.1s ease;
 }
 
 .btn-salvar-matte:active {
-  transform: translateY(4px);
-  box-shadow: 0 0px 0px transparent;
+  transform: translateY(2px);
 }
 
 .btn-adicionar-matte {
   width: 100%;
-  height: 60px;
+  height: 56px;
   background: transparent;
-  border: 2px dashed #333;
-  border-radius: 20px;
-  color: #00E5FF;
+  border: 2px dashed #333333;
+  border-radius: 16px;
+  color: #00BCD4;
   font-size: 15px;
   font-weight: 800;
   display: flex;
@@ -363,7 +391,7 @@ body.light-mode .perfil-switch {
   cursor: pointer;
 }
 
-/* --- VEÍCULO & GANHOS (MOTORISTA) --- */
+/* --- VEÍCULO E GANHOS --- */
 .veiculo-card-display {
   display: flex;
   align-items: center;
@@ -390,7 +418,7 @@ body.light-mode .perfil-switch {
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #888;
+  color: #888888;
   margin-bottom: 4px;
   display: block;
 }
@@ -399,12 +427,12 @@ body.light-mode .perfil-switch {
   margin: 0;
   font-size: 16px;
   font-weight: 900;
-  color: #FFF;
+  color: #ffffff;
 }
 
 .placa-badge {
-  background: #34C759; /* Verde para placa OK! */
-  color: #000 !important;
+  background: #34C759;
+  color: #000000 !important;
   display: inline-block;
   padding: 4px 8px;
   border-radius: 8px;
@@ -422,7 +450,7 @@ body.light-mode .perfil-switch {
   font-weight: 900;
   font-size: 15px;
   background: #1A1A1A;
-  border: 2px solid #333;
+  border: 2px solid #333333;
   margin-top: 16px;
 }
 
@@ -432,7 +460,7 @@ body.light-mode .perfil-switch {
   color: #34C759;
 }
 
-/* --- GANHOS (CARTEIRA) --- */
+/* --- CARD DE SALDO --- */
 .saldo-card-matte {
   background: #121212;
   border: 2px solid #1E1E1E;
@@ -445,7 +473,7 @@ body.light-mode .perfil-switch {
 }
 
 .saldo-card-matte p {
-  color: #888;
+  color: #888888;
   font-weight: 800;
   font-size: 14px;
   text-transform: uppercase;
@@ -462,7 +490,7 @@ body.light-mode .perfil-switch {
 
 .btn-saque-rapido {
   background: #34C759;
-  color: #000;
+  color: #000000;
   border: none;
   height: 56px;
   width: 100%;
@@ -470,86 +498,24 @@ body.light-mode .perfil-switch {
   font-size: 16px;
   font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 4px 0px #248A3D;
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition: transform 0.1s ease;
 }
 
 .btn-saque-rapido:active {
-  transform: translateY(4px);
-  box-shadow: 0 0px 0px transparent;
+  transform: translateY(2px);
 }
 
-/* --- MODAIS FLUTUANTES --- */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: flex-end;
-}
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-}
-
-.modal-conteudo-matte {
-  position: relative;
-  width: 100%;
-  background: #0A0A0A;
-  border-top: 2px solid #1E1E1E;
-  border-radius: 32px 32px 0 0;
-  padding: 24px 24px 40px;
-  z-index: 1001;
-  box-shadow: 0 -10px 40px rgba(0,0,0,1);
-}
-
-.alca-drag {
-  width: 48px;
-  height: 6px;
-  background: #2A2A2A;
-  border-radius: 10px;
-  margin: 0 auto 24px;
-}
-
-.btn-fechar-modal {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  background: #1A1A1A;
-  border: 2px solid #333;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.btn-secundario-matte {
-  height: 60px;
-  background: transparent;
-  border: 2px solid #333;
-  border-radius: 20px;
-  color: #FFF;
-  font-size: 16px;
-  font-weight: 900;
-  cursor: pointer;
-}
-/* --- BANNER DESTACADO VEM IFRN --- */
+/* --- BANNER VEM IFRN --- */
 .perfil-banner-ifrn {
   margin: 0 24px 24px;
-  background: #00E5FF;
+  background: #00BCD4;
   border-radius: 20px;
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 229, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.2);
 }
 
 .banner-ifrn-conteudo {
@@ -561,30 +527,18 @@ body.light-mode .perfil-switch {
 .banner-ifrn-icone {
   width: 44px;
   height: 44px;
-  background: #00E5FF;
+  background: #00BCD4;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
-}
-
-.banner-ifrn-icone svg,
-.banner-ifrn-icone svg * {
-  transition: stroke 0.2s ease, fill 0.2s ease;
-}
-
-.banner-ifrn.active .banner-ifrn-icone svg,
-.banner-ifrn.active .banner-ifrn-icone svg *,
-.banner-ifrn-icone.active svg,
-.banner-ifrn-icone.active svg * {
-  stroke: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
 }
 
 .banner-ifrn-textos h3 {
   font-size: 18px;
   font-weight: 900;
-  color: #000;
+  color: #000000;
   margin: 0 0 2px 0;
   letter-spacing: -0.5px;
 }
@@ -595,7 +549,8 @@ body.light-mode .perfil-switch {
   color: #1A1A1A;
   margin: 0;
 }
-/* --- CARTEIRINHA VIRTUAL VEM IFRN --- */
+
+/* --- CARTEIRINHA VIRTUAL --- */
 .carteirinha-virtual-matte {
   background: #121212;
   border: 2px solid #1E1E1E;
@@ -620,15 +575,15 @@ body.light-mode .perfil-switch {
 }
 
 .carteirinha-logo span {
-  color: #FFF;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 900;
   letter-spacing: 1px;
 }
 
 .carteirinha-selo {
-  background: rgba(0, 229, 255, 0.15);
-  color: #00E5FF;
+  background: rgba(0, 188, 212, 0.15);
+  color: #00BCD4;
   padding: 4px 10px;
   border-radius: 8px;
   font-size: 12px;
@@ -642,7 +597,7 @@ body.light-mode .perfil-switch {
 .carteirinha-nome {
   font-size: 24px;
   font-weight: 900;
-  color: #00E5FF;
+  color: #00BCD4;
   margin: 0 0 4px;
   letter-spacing: -0.5px;
 }
@@ -664,7 +619,7 @@ body.light-mode .perfil-switch {
 .carteirinha-dado span {
   display: block;
   font-size: 11px;
-  color: #666;
+  color: #666666;
   text-transform: uppercase;
   font-weight: 800;
   margin-bottom: 4px;
@@ -673,12 +628,12 @@ body.light-mode .perfil-switch {
 .carteirinha-dado strong {
   display: block;
   font-size: 15px;
-  color: #FFF;
+  color: #ffffff;
   font-weight: 700;
 }
 
 .carteirinha-rodape {
-  background: #00E5FF;
+  background: #00BCD4;
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -686,7 +641,7 @@ body.light-mode .perfil-switch {
 }
 
 .carteirinha-rodape span {
-  color: #000;
+  color: #000000;
   font-size: 13px;
   font-weight: 800;
 }

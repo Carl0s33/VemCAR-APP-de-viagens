@@ -126,11 +126,15 @@
   margin-right: 16px;
 }
 
-.bento-icon-wrapper.azul { background: rgba(0, 188, 212, 0.1); color: #00BCD4; }
-.bento-icon-wrapper.laranja { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
-.bento-icon-wrapper.rosa { background: rgba(236, 72, 153, 0.1); color: #EC4899; }
-.bento-icon-wrapper.roxo { background: rgba(168, 85, 247, 0.1); color: #A855F7; }
-.bento-icon-wrapper.verde { background: rgba(16, 185, 129, 0.1); color: #10B981; }
+/* Cores Refinadas */
+.bento-icon-wrapper.azul, .bento-icon-wrapper.laranja, .bento-icon-wrapper.roxo, .bento-icon-wrapper.verde {
+  box-shadow: none;
+}
+
+.bento-icon-wrapper.azul { background: #00BCD4; }
+.bento-icon-wrapper.laranja { background: #FBBF24; }
+.bento-icon-wrapper.roxo { background: #A855F7; }
+.bento-icon-wrapper.verde { background: #34D399; }
 
 .bento-card h3 {
   font-size: 16px;

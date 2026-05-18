@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Settings, CreditCard, MapPin, LogOut, ChevronRight,
@@ -16,12 +16,39 @@ import "./style/FluxoPerfil.css";
 export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
   const [telaAtiva, setTelaAtiva] = useState("menu");
   const [modalAtivo, setModalAtivo] = useState(null);
+  const [avatar, setAvatar] = useState(null); // inicia nulo pra mostrar o padrao do whatsapp
+  const fileInputRef = useRef(null);
   const { isLight, toggleTheme } = useTheme();
 
-  const AVATAR_URL = "https://images.unsplash.com/photo-1649044747879-d77b1dbcecf6?fit=max&fm=jpg&q=80&w=400";
   const isMotorista = tipoUsuario === "motorista";
 
-  // O item "Carona Uni" foi removido daqui para virar um banner exclusivo
+  // carrega a foto do cache se existir
+  useEffect(() => {
+    const fotoSalva = localStorage.getItem("vem_app_avatar");
+    if (fotoSalva) {
+      setAvatar(fotoSalva);
+    }
+  }, []);
+
+  // muda a foto e salva no localstorage
+  const handleTrocarFoto = (e) => {
+    const arquivo = e.target.files[0];
+    if (arquivo) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setAvatar(base64String);
+        localStorage.setItem("vem_app_avatar", base64String);
+      };
+      reader.readAsDataURL(arquivo);
+    }
+  };
+
+  const handleSairDaConta = () => {
+    setModalAtivo(null);
+    onBack();
+  };
+
   const menuPassageiro = [
     { id: "info", label: "Informações Pessoais", desc: "Meus dados, CPF e telefone", icon: User, cor: "#FFF" },
     { id: "pagamentos", label: "Formas de Pagamento", desc: "Dinheiro e Pix", icon: CreditCard, cor: "#FFF" },
@@ -65,10 +92,27 @@ export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
               <motion.div key="menu" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} className="menu-principal-wrapper">
 
                 <div className="perfil-info-principal">
-                  <div className="avatar-wrapper-matte">
-                    <img src={AVATAR_URL} alt="Avatar" />
-                    <div className="badge-edicao"><Settings size={14} color="#000" strokeWidth={2.5} /></div>
+                  <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleTrocarFoto}
+                      accept="image/*"
+                      style={{ display: "none" }}
+                  />
+
+                  <div className="avatar-wrapper-matte" onClick={() => fileInputRef.current.click()} style={{ cursor: "pointer", position: "relative", background: "#DFE5E7", width: 100, height: 100, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                    {avatar ? (
+                        <img src={avatar} alt="Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                        /* boneco padrao do whatsapp em branco/cinza vetorial */
+                        <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginTop: "12px" }}>
+                          <circle cx="50" cy="38" r="18" fill="#FFFFFF" />
+                          <path d="M18 80C18 64.536 30.536 52 46 52H54C69.464 52 82 64.536 82 80V84H18V80Z" fill="#FFFFFF" />
+                        </svg>
+                    )}
+                    <div className="badge-edicao" style={{ zIndex: 10 }}><Settings size={14} color="#000" strokeWidth={2.5} /></div>
                   </div>
+
                   <h2 className="perfil-nome-usuario">Carlos Eduardo</h2>
                   {isMotorista ? (
                       <span className="badge-motorista-info">Motorista Parceiro • 4.9</span>
@@ -77,7 +121,6 @@ export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
                   )}
                 </div>
 
-                {/* BANNER DESTACADO VEM IFRN (Exclusivo Passageiro) */}
                 {!isMotorista && (
                     <motion.div
                         className="perfil-banner-ifrn"
@@ -113,16 +156,16 @@ export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
                 </div>
 
                 <motion.button
-                  className="perfil-toggle-tema"
-                  whileTap={{ scale: 0.98 }}
-                  onClick={toggleTheme}
-                  aria-label={isLight ? "Mudar para modo escuro" : "Mudar para modo claro"}
+                    className="perfil-toggle-tema"
+                    whileTap={{ scale: 0.98 }}
+                    onClick={toggleTheme}
+                    aria-label={isLight ? "Mudar para modo escuro" : "Mudar para modo claro"}
                 >
                   <div className="perfil-item-esquerda">
                     <div className="perfil-icone-caixa">
                       {isLight
-                        ? <Moon size={22} color="#111827" strokeWidth={2.5} />
-                        : <Sun size={22} color="#FFD60A" strokeWidth={2.5} />}
+                          ? <Moon size={22} color="#111827" strokeWidth={2.5} />
+                          : <Sun size={22} color="#FFD60A" strokeWidth={2.5} />}
                     </div>
                     <div className="perfil-textos-caixa">
                       <span className="perfil-item-label">Aparência</span>
@@ -148,7 +191,26 @@ export default function FluxoPerfil({ onBack, tipoUsuario = "passageiro" }) {
           )}
         </AnimatePresence>
 
-        {/* Modais de Ação omitidos por brevidade (Mantenha os que já estavam no arquivo original) */}
+        <AnimatePresence>
+          {modalAtivo === "sair" && (
+              <div className="perfil-modal-overlay" style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: 20 }}>
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="perfil-modal-box"
+                    style={{ background: "#121212", border: "1px solid #1e1e1e", borderRadius: 20, padding: 24, width: "100%", maxWidth: 340, textAlign: "center" }}
+                >
+                  <h3 style={{ color: "#FFF", fontSize: 18, fontWeight: 800, margin: "0 0 8px 0" }}>Sair da Conta?</h3>
+                  <p style={{ color: "#888", fontSize: 14, margin: "0 0 24px 0" }}>Você precisará digitar suas credenciais para entrar novamente.</p>
+                  <div style={{ display: "flex", gap: 12 }}>
+                    <button onClick={() => setModalAtivo(null)} style={{ flex: 1, height: 48, background: "#1e1e1e", border: "none", color: "#FFF", borderRadius: 12, fontWeight: 700, cursor: "pointer" }}>Cancelar</button>
+                    <button onClick={handleSairDaConta} style={{ flex: 1, height: 48, background: "#EF4444", border: "none", color: "#FFF", borderRadius: 12, fontWeight: 700, cursor: "pointer" }}>Sair</button>
+                  </div>
+                </motion.div>
+              </div>
+          )}
+        </AnimatePresence>
       </div>
   );
 }

@@ -148,3 +148,54 @@
   font-weight: 800;
   cursor: pointer;
 }
+
+/* Enhancements for mobile responsiveness */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 0 16px;
+  }
+
+  .login-logo-secao {
+    padding-top: 60px;
+    padding-bottom: 32px;
+  }
+
+  .login-marca-vem, .login-marca-car {
+    font-size: 36px;
+  }
+
+  .login-subtitulo-cidade {
+    font-size: 10px;
+  }
+
+  .login-aba-texto {
+    font-size: 12px;
+  }
+
+  .login-campo-grupo {
+    margin-bottom: 16px;
+  }
+
+  .login-input {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .login-botao-entrar {
+    height: 48px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  .login-botao-entrar span {
+    font-size: 14px;
+  }
+
+  .login-rodape {
+    margin-bottom: 24px;
+  }
+
+  .login-rodape p {
+    font-size: 12px;
+  }
+}
