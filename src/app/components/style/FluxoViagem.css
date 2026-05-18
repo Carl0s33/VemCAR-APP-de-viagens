@@ -4,6 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: #000000;
   font-family: 'Inter', sans-serif;
@@ -314,23 +315,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
-/* CORREÇÃO AQUI: removida a duplicação e unificado o estilo */
 .btn-viagem.principal {
   background: #00BCD4;
   color: #000000;
-  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
-}
-
-.btn-viagem.principal:hover {
-  background: #008C9E;
-}
-
-.btn-viagem.principal:active:not(:disabled) {
-  transform: translateY(4px);
-  box-shadow: none;
 }
 
 .btn-viagem.secundario {
@@ -467,101 +457,4 @@
   0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.2); }
   70% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
   100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
-}
-
-/* =======================================================
-   MODO CLARO (LIGHT MODE)
-======================================================= */
-body.light-mode .bottom-sheet-viagem {
-  background: #FFFFFF;
-  border-top-color: #E2E8F0;
-}
-
-body.light-mode .btn-voltar {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-  color: #0F172A;
-}
-
-body.light-mode .sheet-title,
-body.light-mode .info-orcamento h3,
-body.light-mode .preco-orcamento,
-body.light-mode .info-motorista h2,
-body.light-mode .textos-sugestao h4 {
-  color: #0F172A;
-}
-
-body.light-mode .sheet-desc,
-body.light-mode .info-motorista p,
-body.light-mode .textos-sugestao p {
-  color: #64748B;
-}
-
-body.light-mode .input-viagem-wrapper,
-body.light-mode .card-orcamento,
-body.light-mode .card-pagamento,
-body.light-mode .perfil-motorista {
-  background: #F8FAFC;
-  border-color: #E2E8F0;
-}
-
-body.light-mode .input-viagem-wrapper input {
-  color: #0F172A;
-}
-
-body.light-mode .card-orcamento.selecionado {
-  border-color: #00BCD4;
-  background: #F0FBFC;
-}
-
-body.light-mode .icone-orcamento,
-body.light-mode .icone-sugestao {
-  background: #E2E8F0;
-  color: #64748B;
-}
-
-body.light-mode .badge-placa {
-  background: #E2E8F0;
-  color: #0F172A;
-}
-
-body.light-mode .btn-viagem.principal {
-  color: #FFFFFF;
-}
-
-body.light-mode .btn-viagem.secundario {
-  background: #F8FAFC;
-  color: #0F172A;
-  border-color: #E2E8F0;
-}
-
-body.light-mode .btn-perigo {
-  background: #FEF2F2;
-  border-color: #FECACA;
-}
-
-body.light-mode .balao-pino {
-  background: #FFFFFF;
-  color: #00BCD4;
-  border-color: #E2E8F0;
-}
-
-body.light-mode .dropdown-sugestoes {
-  background: #FFFFFF;
-  border-color: #E2E8F0;
-}
-
-body.light-mode .item-sugestao {
-  border-bottom-color: #F1F5F9;
-}
-
-body.light-mode .item-sugestao:active {
-  background: #F8FAFC;
-}
-
-.modal-resizable {
-    resize: both;
-    overflow: auto;
-    max-width: 100%;
-    max-height: 100%;
 }
