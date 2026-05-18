@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { CarFront, Bike, Package, Calendar, MapPin, Sparkles, CloudSun, ShieldUser } from "lucide-react";
+import { CarFront, Bike, Package, Calendar, MapPin, Sparkles, CloudSun } from "lucide-react";
 import "./style/TelaHomeServicos.css";
 
 export default function TelaHomeServicos({ onSelectService }) {
@@ -23,7 +23,7 @@ export default function TelaHomeServicos({ onSelectService }) {
             </div>
 
             <div className="bento-grid">
-                {/* Principal: VEM CAR (Passa 'VEM CAR' via callback) */}
+                {/* VEM CAR */}
                 <motion.button
                     className="bento-card principal"
                     onClick={() => onSelectService("viagens", "VEM CAR")}
@@ -39,7 +39,7 @@ export default function TelaHomeServicos({ onSelectService }) {
                     <Sparkles className="icon-badge" size={20} color="#00BCD4" />
                 </motion.button>
 
-                {/* Moto: VEM MOTO */}
+                {/* VEM MOTO */}
                 <motion.button
                     className="bento-card"
                     onClick={() => onSelectService("viagens", "VEM MOTO")}
@@ -51,13 +51,14 @@ export default function TelaHomeServicos({ onSelectService }) {
                     <h3>Vem MOTO</h3>
                 </motion.button>
 
+                {/* VEM CAR FEMININO */}
                 <motion.button
                     className="bento-card bg-rosa"
-                    onClick={() => onSelectService("viagens", "VEM ELAS")}
+                    onClick={() => onSelectService("viagens", "VEM CAR FEMININO")}
                     whileTap={{ scale: 0.95 }}
                 >
                     <div className="bento-icon-wrapper branco">
-                        <ShieldUser size={28} color="#EC4899" />
+                        <CarFront size={28} color="#FFF" />
                     </div>
                     <h3>VEM CAR FEMININO</h3>
                 </motion.button>

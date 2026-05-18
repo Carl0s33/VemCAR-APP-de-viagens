@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import Map, { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -28,26 +28,44 @@ const PONTO_DESTINO = [-35.44523200903737, -6.470226792030399];
 const ROTACAO_CARRO_PARADO = -135;
 
 const BotaoDeslizante = ({ texto, corFundo, aoCompletar }) => {
+    const containerRef = useRef(null);
+    const [larguraArrastavel, setLarguraArrastavel] = useState(240);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            // Calcula o tamanho dinâmico: largura do container menos o tamanho da bolinha (48px) e margens
+            setLarguraArrastavel(containerRef.current.offsetWidth - 56);
+        }
+    }, []);
+
     return (
-        <div style={{ position: 'relative', width: '100%', height: '56px', backgroundColor: '#1E293B', borderRadius: '28px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 8 }}>
-            <span style={{ color: '#94A3B8', fontWeight: '700', zIndex: 1 }}>{texto}</span>
+        <div
+            ref={containerRef}
+            style={{ position: 'relative', width: '100%', height: '56px', backgroundColor: '#1E293B', borderRadius: '28px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 8 }}
+        >
+            <span style={{ color: '#94A3B8', fontWeight: '700', zIndex: 1, userSelect: 'none', fontSize: 13 }}>{texto}</span>
             <motion.div
                 drag="x"
-                dragConstraints={{ left: 0, right: (window.innerWidth >= 400 ? 320 : window.innerWidth - 100) }}
+                dragConstraints={{ left: 0, right: larguraArrastavel }}
+                dragElastic={{ left: 0, right: 0.1 }}
                 dragSnapToOrigin
-                onDragEnd={(e, info) => { if (info.offset.x > 150) aoCompletar(); }}
+                onDragEnd={(e, info) => {
+                    // Só ativa se o motorista arrastar mais de 85% do caminho total
+                    if (info.offset.x > larguraArrastavel * 0.85) {
+                        aoCompletar();
+                    }
+                }}
                 style={{ position: 'absolute', left: 4, top: 4, width: '48px', height: '48px', backgroundColor: corFundo, borderRadius: '24px', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', boxShadow: '0 4px 12px rgba(0,0,0,0.3)', cursor: 'grab' }}
             >
                 <ArrowUp size={24} style={{ transform: 'rotate(90deg)' }} />
             </motion.div>
         </div>
-    )
-}
+    );
+};
 
 export default function FluxoMotorista({ aoPerfil }) {
     const mapRef = useRef(null);
 
-    // Estados Unificados do Motorista
     // offline -> online -> alerta -> a_caminho -> aguardando -> em_corrida -> finalizada -> avaliacao -> online
     const [fase, setFase] = useState('offline');
 
@@ -115,12 +133,12 @@ export default function FluxoMotorista({ aoPerfil }) {
                 const timer = setTimeout(() => setTempoAlerta(tempoAlerta - 1), 1000);
                 return () => clearTimeout(timer);
             } else {
-                setFase('online'); // Volta pro painel se estourar o tempo
+                setFase('online');
             }
         }
     }, [fase, tempoAlerta]);
 
-    // Função para buscar rota no OSRM
+    // Busca rota no OSRM
     const fetchRoute = async (start, end) => {
         try {
             const url = `https://router.project-osrm.org/route/v1/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&steps=true&overview=full`;
@@ -132,16 +150,19 @@ export default function FluxoMotorista({ aoPerfil }) {
                 setRota(coordenadas);
                 setPassos(steps);
                 setPosicaoCarro(coordenadas[0]);
+
                 let initialBearing = 0;
                 if (coordenadas.length > 1) {
                     initialBearing = getBearing(coordenadas[0], coordenadas[1]);
                 }
+
                 setViewState((prev) => ({
                     ...prev,
                     longitude: coordenadas[0][0],
                     latitude: coordenadas[0][1],
                     bearing: initialBearing,
-                    pitch: 0
+                    pitch: ['a_caminho', 'em_corrida'].includes(fase) ? 60 : 0, // Inclinado estilo Waze na navegação
+                    zoom: 18
                 }));
                 if (steps && steps.length > 0) atualizarInstrucao(0, steps);
             }
@@ -157,7 +178,7 @@ export default function FluxoMotorista({ aoPerfil }) {
             if (distAcumulada > distPercorrida) {
                 setInstrucaoAtual({
                     distancia: Math.round(distAcumulada - distPercorrida),
-                    nomeRua: passo.name || "Rota desconhecida",
+                    nomeRua: passo.name || "Rota principal",
                     tipoCurva: passo.maneuver.modifier
                 });
                 break;
@@ -165,7 +186,7 @@ export default function FluxoMotorista({ aoPerfil }) {
         }
     };
 
-    // Motor da Animação (Rodando a 60FPS sem piscar a tela)
+    // Motor da Animação a 60FPS estável
     useEffect(() => {
         if (rota.length < 2 || ['offline', 'online', 'alerta', 'aguardando', 'finalizada', 'avaliacao'].includes(fase)) return;
 
@@ -213,18 +234,18 @@ export default function FluxoMotorista({ aoPerfil }) {
                 let distPercorrida = 0;
                 for (let i = 0; i < currentIdx; i++) {
                     const pt1 = rota[i];
-                    const pt2 = rota[i+1];
-                    distPercorrida += Math.sqrt(Math.pow(pt2[0]-pt1[0], 2) + Math.pow(pt2[1]-pt1[1], 2)) * 111000;
+                    const pt2 = rota[i + 1];
+                    distPercorrida += Math.sqrt(Math.pow(pt2[0] - pt1[0], 2) + Math.pow(pt2[1] - pt1[1], 2)) * 111000;
                 }
                 if (passos.length > 0) atualizarInstrucao(distPercorrida, passos);
 
-                setViewState((prev) => ({
-                    ...prev,
-                    longitude: currentLng,
-                    latitude: currentLat,
-                    bearing: newBearing,
-                    pitch: 0
-                }));
+                if (mapRef.current) {
+                    mapRef.current.getMap().jumpTo({
+                        center: [currentLng, currentLat],
+                        bearing: newBearing,
+                        pitch: 55 // Mantém inclinação 3D fluida nas curvas
+                    });
+                }
             }
             animationFrameId = requestAnimationFrame(animate);
         };
@@ -233,13 +254,12 @@ export default function FluxoMotorista({ aoPerfil }) {
         return () => cancelAnimationFrame(animationFrameId);
     }, [rota, fase]);
 
-    // Ações do Fluxo
     const iniciarAlerta = () => { setTempoAlerta(15); setFase('alerta'); };
     const aceitarCorrida = () => { setFase('a_caminho'); fetchRoute(PONTO_CARRO, PONTO_PASSAGEIRA); };
     const iniciarCorrida = () => { setRota([]); setFase('em_corrida'); fetchRoute(PONTO_PASSAGEIRA, PONTO_DESTINO); };
     const finalizarAvaliacao = () => {
         setRota([]); setPassos([]); setInstrucaoAtual(null); setNota(0);
-        setViewState(prev => ({ ...prev, bearing: 0, longitude: PONTO_DESTINO[0], latitude: PONTO_DESTINO[1] }));
+        setViewState(prev => ({ ...prev, bearing: 0, pitch: 0, zoom: 16.5, longitude: PONTO_DESTINO[0], latitude: PONTO_DESTINO[1] }));
         setPosicaoCarro(PONTO_DESTINO);
         setFase('online');
     };
@@ -253,10 +273,6 @@ export default function FluxoMotorista({ aoPerfil }) {
 
     return (
         <div className="tela-painel-motorista" style={{ background: "#000" }}>
-
-            {/* ============================================================== */}
-            {/* O MAPA É RENDERIZADO UMA ÚNICA VEZ E FICA FIXO NO FUNDO */}
-            {/* ============================================================== */}
             <div className="mapa-wrapper" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                 <Map
                     ref={mapRef}
@@ -266,14 +282,12 @@ export default function FluxoMotorista({ aoPerfil }) {
                     interactive={false}
                     style={{ width: '100%', height: '100%' }}
                 >
-                    {/* Linha da Rota (Só renderiza se tiver uma rota ativa) */}
                     {rota.length > 0 && (
                         <Source id="rotaSource" type="geojson" data={{ type: 'Feature', geometry: { type: 'LineString', coordinates: rota } }}>
                             <Layer id="rotaLayer" type="line" paint={{ 'line-color': '#00BCD4', 'line-width': 6, 'line-opacity': 0.8 }} />
                         </Source>
                     )}
 
-                    {/* Marcador Único do Carro */}
                     <Marker
                         longitude={posicaoCarro[0]}
                         latitude={posicaoCarro[1]}
@@ -303,17 +317,16 @@ export default function FluxoMotorista({ aoPerfil }) {
                                         <stop offset="100%" stopColor="#7DD3FC" />
                                     </linearGradient>
                                 </defs>
-
                                 <polygon points="26,45 -10,0 90,0 54,45" fill="url(#headlightGlow)" />
                                 <ellipse cx="40" cy="72" rx="30" ry="15" fill="url(#shadowPainel)" />
                                 <rect x="24" y="37" width="32" height="46" rx="8" fill="url(#bodyGradPainel)" />
                                 <rect x="28" y="45" width="24" height="24" rx="4" fill="url(#roofGradPainel)" />
                                 <path d="M 29 47 Q 40 41 51 47 L 50 51 Q 40 47 30 51 Z" fill="rgba(255,255,255,0.8)" />
                                 <path d="M 30 63 Q 40 67 50 63 L 49 61 Q 40 64 31 61 Z" fill="#0C4A6E" opacity="0.8" />
-                                <rect x="27" y="37" width="8" height="4" rx="2" fill="#FEF08A" opacity="1" />
-                                <rect x="45" y="37" width="8" height="4" rx="2" fill="#FEF08A" opacity="1" />
-                                <rect x="26" y="80" width="8" height="4" rx="2" fill="#EF4444" opacity="1" />
-                                <rect x="46" y="80" width="8" height="4" rx="2" fill="#EF4444" opacity="1" />
+                                <rect x="27" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
+                                <rect x="45" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
+                                <rect x="26" y="80" width="8" height="4" rx="2" fill="#EF4444" />
+                                <rect x="46" y="80" width="8" height="4" rx="2" fill="#EF4444" />
                                 <ellipse cx="24" cy="45" rx="4" ry="5" fill="#1E293B" />
                                 <ellipse cx="56" cy="45" rx="4" ry="5" fill="#1E293B" />
                                 <ellipse cx="24" cy="73" rx="4" ry="5" fill="#1E293B" />
@@ -322,38 +335,33 @@ export default function FluxoMotorista({ aoPerfil }) {
                         </div>
                     </Marker>
 
-                    {/* Marcadores de Destino e Passageira */}
-                    {(fase === 'a_caminho' || fase === 'aguardando') && (
+                    {['a_caminho', 'aguardando'].includes(fase) && (
                         <Marker longitude={PONTO_PASSAGEIRA[0]} latitude={PONTO_PASSAGEIRA[1]} anchor="bottom">
-                            <MapPin size={32} color="#FFFFFF" fill="#0F172A" strokeWidth={2} />
+                            <MapPin size={36} color="#000" fill="#34C759" strokeWidth={1.5} />
                         </Marker>
                     )}
-                    {(fase === 'em_corrida' || fase === 'finalizada') && (
+                    {['em_corrida', 'finalizada'].includes(fase) && (
                         <Marker longitude={PONTO_DESTINO[0]} latitude={PONTO_DESTINO[1]} anchor="bottom">
-                            <MapPin size={32} color="#FFFFFF" fill="#00BCD4" strokeWidth={2} />
+                            <MapPin size={36} color="#000" fill="#00BCD4" strokeWidth={1.5} />
                         </Marker>
                     )}
                 </Map>
             </div>
 
-            {/* ============================================================== */}
-            {/* UI SOBREPOSTA (Muda dinamicamente sem recarregar o componente) */}
-            {/* ============================================================== */}
-
-            {/* --- INSTRUÇÕES DO GPS (Aparece ao dirigir) --- */}
+            {/* --- INSTRUÇÕES DO GPS --- */}
             <AnimatePresence>
-                {instrucaoAtual && (fase === 'a_caminho' || fase === 'em_corrida') && (
+                {instrucaoAtual && ['a_caminho', 'em_corrida'].includes(fase) && (
                     <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} className="painel-curva-topo" style={{ zIndex: 100 }}>
                         <div className="curva-icone-container">{getIconeManeobra(instrucaoAtual.tipoCurva)}</div>
                         <div className="curva-infos">
                             <div className="curva-distancia">A {instrucaoAtual.distancia}m vire à {instrucaoAtual.tipoCurva?.includes('left') ? 'esquerda' : instrucaoAtual.tipoCurva?.includes('right') ? 'direita' : 'frente'} na</div>
-                            <div className="curva-rua">{instrucaoAtual.nomeRua ? instrucaoAtual.nomeRua : 'Rua principal'}</div>
+                            <div className="curva-rua">{instrucaoAtual.nomeRua}</div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* --- CABEÇALHO PADRÃO (Online/Offline) --- */}
+            {/* --- CABEÇALHO PADRÃO --- */}
             <AnimatePresence>
                 {['offline', 'online'].includes(fase) && (
                     <motion.div className="cabecalho-flutuante" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }} style={{ zIndex: 50 }}>
@@ -367,7 +375,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                 )}
             </AnimatePresence>
 
-            {/* --- GAVETA INFERIOR (Onde a mágica acontece) --- */}
+            {/* --- GAVETA INFERIOR PAINEL --- */}
             <AnimatePresence mode="wait">
                 {['offline', 'online'].includes(fase) && (
                     <motion.div key="painel" className="card-inferior-motorista" initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }} style={{ zIndex: 60 }}>
@@ -422,7 +430,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                             <div className="divisor-linha" />
                             <div className="alerta-info-passageiro">
                                 <div className="info-rating"><Star size={16} fill="#F59E0B" color="#F59E0B" /><span>5.0</span></div>
-                                <div className="divisor-ponto" /><span className="nome-passageiro"><User size={14} style={{marginRight: 4}}/> Joao Pedro</span>
+                                <div className="divisor-ponto" /><span className="nome-passageiro"><User size={14} style={{marginRight: 4}}/> Ana</span>
                                 <div className="divisor-ponto" /><span className="categoria-carro">VEM CAR</span>
                             </div>
                             <div className="alerta-locais">
@@ -442,7 +450,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                     </motion.div>
                 )}
 
-                {/* NAVEGAÇÃO E AVALIAÇÃO */}
+                {/* PAINÉIS DE NAVEGAÇÃO */}
                 {['a_caminho', 'aguardando', 'em_corrida', 'finalizada', 'avaliacao'].includes(fase) && (
                     <motion.div key="navegacao" className="navegacao-painel-flutuante" style={{ zIndex: 60 }} initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
                         {fase === 'a_caminho' && (
@@ -450,12 +458,12 @@ export default function FluxoMotorista({ aoPerfil }) {
                                 <div className="painel-flex">
                                     <div className="avatar-icon"><User size={24} color="#00BCD4" /></div>
                                     <div className="painel-textos">
-                                        <span className="texto-destaque">Buscando Joao Pedro</span>
-                                        <span className="texto-secundario"><Star size={14} className="star-icon" /> 5.0</span>
+                                        <span className="texto-destaque">Buscando Ana</span>
+                                        <span className="texto-secundario"><Star size={14} className="star-icon" fill="#00BCD4" color="#00BCD4" /> 5.0</span>
                                     </div>
                                     <Phone size={24} color="#00BCD4" className="icone-acao" />
                                 </div>
-                                <div className="aviso-simulacao">Dirigindo até o passageiro...</div>
+                                <div className="aviso-simulacao">Dirigindo até o ponto de embarque...</div>
                             </div>
                         )}
 
@@ -463,7 +471,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                             <div className="painel-conteudo painel-centralizado">
                                 <CheckCircle size={48} color="#00BCD4" className="icone-central" />
                                 <h3 className="titulo-chegada">Você Chegou!</h3>
-                                <p className="texto-aviso">Passageiro(a) Joao Pedro notificado(a).</p>
+                                <p className="texto-aviso">Passageira Ana notificada.</p>
                                 <BotaoDeslizante texto="DESLIZE PARA INICIAR" corFundo="#10B981" aoCompletar={iniciarCorrida} />
                             </div>
                         )}
@@ -477,7 +485,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                                         <span className="texto-secundario">IFRN Campus Nova Cruz</span>
                                     </div>
                                 </div>
-                                <div className="aviso-simulacao">Simulando trajeto...</div>
+                                <div className="aviso-simulacao">Simulando trajeto da viagem...</div>
                             </div>
                         )}
 
@@ -494,14 +502,14 @@ export default function FluxoMotorista({ aoPerfil }) {
                         {fase === 'avaliacao' && (
                             <div className="painel-conteudo painel-centralizado">
                                 <div className="titulo-chegada">Como foi a viagem?</div>
-                                <div className="texto-secundario">Avalie o Passageiro(a)</div>
+                                <div className="texto-secundario">Avalie a passageira Ana</div>
                                 <div className="avaliacao-estrelas">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <button key={star} className="botao-estrela" onClick={() => setNota(star)}>
                                             <Star
                                                 size={40}
                                                 fill={star <= nota ? "#00BCD4" : "transparent"}
-                                                color="#00BCD4" /* <-- Borda sempre ciano/azul! */
+                                                color="#00BCD4"
                                                 strokeWidth={1.5}
                                             />
                                         </button>

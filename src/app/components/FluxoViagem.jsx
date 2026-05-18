@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     MapPin, ArrowLeft, CreditCard, CarFront, Bike, GraduationCap,
-    ShieldUser, AlertTriangle, Star, CheckCircle, Search, User, Navigation
+    AlertTriangle, Star, CheckCircle, Search, User, Navigation
 } from "lucide-react";
 import Map, { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "./style/FluxoViagem.css";
+import MotoSVG from '../../assets/vectors/MotoSVG';
+import CarroRosaSVG from '../../assets/vectors/CarroRosaSVG';
+import CarroOriginalSVG from '../../assets/vectors/CarroOriginalSVG';
+import SkeletonLoader from "./SkeletonLoader";
 
 // utilitário para rotação do veículo
 function getBearing(start, end) {
@@ -31,6 +35,34 @@ const LOCAIS_MOCK = [
     { nome: "Shopping Natal", endereco: "Av. Sen. Salgado Filho, Natal - RN", coords: [-35.205600, -5.832400] }
 ];
 
+// =======================================================
+// COMPONENTES OTIMIZADOS (Fora da função principal)
+// =======================================================
+const MemoizedCard = memo(({ categoria, mod, setCategoria }) => (
+    <div
+        className={`card-orcamento ${categoria === mod.id ? 'selecionado' : ''}`}
+        onClick={() => setCategoria(mod.id)}
+        style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { borderColor: "#EC4899", background: "rgba(236, 72, 153, 0.05)", borderWidth: "2%" } : {}}
+    >
+        <div
+            className="icone-orcamento"
+            style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF" } : {}}
+        >
+            {mod.icone}
+        </div>
+        <div className="info-orcamento">
+            <h3>{mod.id === "VEM CAR FEMININO" ? "VEMCAR FEMINO" : mod.id}</h3>
+            <p>{mod.desc}</p>
+        </div>
+        <h2
+            className="preco-orcamento"
+            style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { color: "#EC4899" } : {}}
+        >
+            {mod.preco}
+        </h2>
+    </div>
+));
+
 export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
     const [etapa, setEtapa] = useState("selecao_destino");
     const [precisaTroco, setPrecisaTroco] = useState(false);
@@ -48,6 +80,8 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
     const [posicaoCarro, setPosicaoCarro] = useState(PONTO_CARRO);
     const [rotacaoCarro, setRotacaoCarro] = useState(0);
 
+    const mapRef = useRef(null);
+
     const [viewState, setViewState] = useState({
         longitude: PONTO_PASSAGEIRA[0],
         latitude: PONTO_PASSAGEIRA[1],
@@ -59,7 +93,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
     const modalidades = [
         { id: "VEM MOTO", preco: "R$ 6,00", desc: "Viagem rápida", icone: <Bike size={28} color="currentColor" /> },
         { id: "VEM CAR", preco: "R$ 10,00", desc: "Conforto", icone: <CarFront size={28} color="currentColor" /> },
-        { id: "VEM CAR FEMININO", preco: "R$ 12,00", desc: "Apenas Motoristas Mulheres", icone: <ShieldUser size={28} color="currentColor" /> },
+        { id: "VEM CAR FEMININO", preco: "R$ 12,00", desc: "Apenas Motoristas Mulheres", icone: <CarFront size={28} color="#FFFFFF" /> },
         { id: "VEM IFRN", preco: "R$ 15,00", desc: "Intermunicipal", icone: <GraduationCap size={28} color="currentColor" /> }
     ];
 
@@ -131,7 +165,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
         let currentIdx = 0;
         let progress = 0;
         let lastTime = performance.now();
-        const VELOCIDADE = 0.000015;
+        const VELOCIDADE = 0.00001; // Diminuindo a velocidade do veículo
 
         const animate = (time) => {
             const dt = time - lastTime;
@@ -164,14 +198,19 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
             } else {
                 const currentLng = p1[0] + dx * progress;
                 const currentLat = p1[1] + dy * progress;
-                setPosicaoCarro([currentLng, currentLat]);
-                setRotacaoCarro(getBearing(p1, p2));
+                const newBearing = getBearing(p1, p2);
 
-                setViewState((prev) => ({
-                    ...prev,
-                    longitude: currentLng,
-                    latitude: currentLat
-                }));
+                // Atualiza SÓ o carrinho no React
+                setPosicaoCarro([currentLng, currentLat]);
+                setRotacaoCarro(newBearing);
+
+                // A MÁGICA DA OTIMIZAÇÃO: Move a câmera direto na Engine do mapa
+                if (mapRef.current) {
+                    mapRef.current.getMap().jumpTo({
+                        center: [currentLng, currentLat],
+                        bearing: newBearing
+                    });
+                }
             }
             animationFrameId = requestAnimationFrame(animate);
         };
@@ -180,6 +219,17 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
         return () => cancelAnimationFrame(animationFrameId);
     }, [rota, etapa]);
 
+    useEffect(() => {
+        if (etapa === "em_corrida") {
+            setViewState((prev) => ({
+                ...prev,
+                pitch: 60,
+                zoom: 18.5,
+                transitionDuration: 1000
+            }));
+        }
+    }, [etapa]);
+
     const iniciarCorrida = () => {
         setRota([]);
         setEtapa("em_corrida");
@@ -187,8 +237,10 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
     };
 
     const confirmarDestino = () => {
+        console.log("Confirmar Destino clicked");
         setPontoDestino([viewState.longitude, viewState.latitude]);
         setEtapa("orcamento");
+        console.log("Etapa set to orcamento");
     };
 
     const RenderBottomSheet = () => {
@@ -250,29 +302,12 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
                         <h3 className="sheet-subtitle">Escolha a Modalidade</h3>
                         <div className="modalidades-grid">
                             {modalidades.map((mod) => (
-                                <div
+                                <MemoizedCard
                                     key={mod.id}
-                                    className={`card-orcamento ${categoria === mod.id ? 'selecionado' : ''}`}
-                                    onClick={() => setCategoria(mod.id)}
-                                    style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { borderColor: "#EC4899", background: "rgba(236, 72, 153, 0.05)" } : {}}
-                                >
-                                    <div
-                                        className="icone-orcamento"
-                                        style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF" } : {}}
-                                    >
-                                        {mod.icone}
-                                    </div>
-                                    <div className="info-orcamento">
-                                        <h3>{mod.id}</h3>
-                                        <p>{mod.desc}</p>
-                                    </div>
-                                    <h2
-                                        className="preco-orcamento"
-                                        style={categoria === "VEM CAR FEMININO" && mod.id === "VEM CAR FEMININO" ? { color: "#EC4899" } : {}}
-                                    >
-                                        {mod.preco}
-                                    </h2>
-                                </div>
+                                    categoria={categoria}
+                                    mod={mod}
+                                    setCategoria={setCategoria}
+                                />
                             ))}
                         </div>
 
@@ -286,12 +321,14 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
                                 <span>Precisa de troco?</span>
                             </label>
                         </div>
+
+                        {/* AQUI FOI CONSERTADO: Usando botão normal pro CSS funcionar */}
                         <button
                             className="btn-viagem principal"
                             onClick={() => setEtapa("buscando")}
                             style={categoria === "VEM CAR FEMININO" ? { background: "#EC4899", color: "#FFF", boxShadow: "0 4px 20px rgba(236, 72, 153, 0.3)" } : {}}
                         >
-                            Solicitar {categoria}
+                            Solicitar {categoria === "VEM CAR FEMININO" ? "VEMCAR FEMINO" : categoria}
                         </button>
                     </>
                 );
@@ -304,6 +341,11 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
                         </div>
                         <h2 className="sheet-title" style={{ marginTop: 24 }}>Localizando motorista...</h2>
                         <p className="sheet-desc">Conectando com {categoria === "VEM CAR FEMININO" ? "motoristas mulheres" : "parceiros"} num raio próximo.</p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 32, width: "100%" }}>
+                            <SkeletonLoader width="100%" height="20px" borderRadius="4%" />
+                            <SkeletonLoader width="80%" height="20px" borderRadius="4%" />
+                            <SkeletonLoader width="60%" height="20px" borderRadius="4%" />
+                        </div>
                         <button className="btn-viagem secundario" onClick={() => setEtapa("selecao_destino")} style={{ marginTop: 32 }}>
                             Cancelar Solicitação
                         </button>
@@ -389,6 +431,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
         <div className="viagem-container">
             <div className="mapa-layer" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                 <Map
+                    ref={mapRef}
                     {...viewState}
                     onMove={evt => setViewState(evt.viewState)}
                     onMoveStart={() => setIsDragging(true)}
@@ -433,67 +476,11 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
                         <Marker longitude={posicaoCarro[0]} latitude={posicaoCarro[1]} anchor="center" pitchAlignment="map" rotationAlignment="map" rotation={rotacaoCarro}>
                             <div>
                                 {categoria === "VEM MOTO" ? (
-                                    <svg width="50" height="90" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
-                                        <defs>
-                                            <linearGradient id="headlightGlowMoto" x1="50%" y1="0%" x2="50%" y2="100%">
-                                                <stop offset="0%" stopColor="#FFF" stopOpacity="0.8" />
-                                                <stop offset="100%" stopColor="#FFF" stopOpacity="0" />
-                                            </linearGradient>
-                                        </defs>
-                                        <polygon points="36,45 20,0 60,0 44,45" fill="url(#headlightGlowMoto)" />
-                                        <rect x="36" y="30" width="8" height="20" rx="4" fill="#1E293B" />
-                                        <rect x="24" y="45" width="32" height="4" rx="2" fill="#94A3B8" />
-                                        <path d="M 32 45 L 48 45 L 44 85 L 36 85 Z" fill="#00BCD4" />
-                                        <circle cx="40" cy="65" r="9" fill="#0F172A" stroke="#333" strokeWidth="2" />
-                                        <rect x="36" y="80" width="8" height="22" rx="4" fill="#1E293B" />
-                                        <rect x="36" y="100" width="8" height="4" rx="2" fill="#EF4444" />
-                                    </svg>
+                                    <MotoSVG />
                                 ) : categoria === "VEM CAR FEMININO" ? (
-                                    // CARRO ROSA VEM CAR FEMININO
-                                    <svg width="60" height="90" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
-                                        <defs>
-                                            <linearGradient id="headlightGlowRosa" x1="50%" y1="0%" x2="50%" y2="100%">
-                                                <stop offset="0%" stopColor="#FFF" stopOpacity="0.6" />
-                                                <stop offset="100%" stopColor="#FFF" stopOpacity="0" />
-                                            </linearGradient>
-                                            <linearGradient id="bodyGradRosa" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                <stop offset="0%" stopColor="#F43F5E" />
-                                                <stop offset="40%" stopColor="#EC4899" />
-                                                <stop offset="100%" stopColor="#BE185D" />
-                                            </linearGradient>
-                                        </defs>
-                                        <polygon points="26,45 -10,0 90,0 54,45" fill="url(#headlightGlowRosa)" />
-                                        <rect x="24" y="37" width="32" height="46" rx="8" fill="url(#bodyGradRosa)" />
-                                        <path d="M 29 47 Q 40 41 51 47 L 50 51 Q 40 47 30 51 Z" fill="rgba(255,255,255,0.8)" />
-                                        <path d="M 30 63 Q 40 67 50 63 L 49 61 Q 40 64 31 61 Z" fill="#4C1D95" opacity="0.8" />
-                                        <rect x="27" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
-                                        <rect x="45" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
-                                        <rect x="26" y="80" width="8" height="4" rx="2" fill="#EF4444" />
-                                        <rect x="46" y="80" width="8" height="4" rx="2" fill="#EF4444" />
-                                    </svg>
+                                    <CarroRosaSVG />
                                 ) : (
-                                    // CARRO ORIGINAL
-                                    <svg width="60" height="90" viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
-                                        <defs>
-                                            <linearGradient id="headlightGlowPassageiro" x1="50%" y1="0%" x2="50%" y2="100%">
-                                                <stop offset="0%" stopColor="#FFF" stopOpacity="0.6" />
-                                                <stop offset="100%" stopColor="#FFF" stopOpacity="0" />
-                                            </linearGradient>
-                                            <linearGradient id="bodyGradPainelPassageiro" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                <stop offset="0%" stopColor="#0EA5E9" />
-                                                <stop offset="40%" stopColor="#00BCD4" />
-                                                <stop offset="100%" stopColor="#0369A1" />
-                                            </linearGradient>
-                                        </defs>
-                                        <polygon points="26,45 -10,0 90,0 54,45" fill="url(#headlightGlowPassageiro)" />
-                                        <rect x="24" y="37" width="32" height="46" rx="8" fill="url(#bodyGradPainelPassageiro)" />
-                                        <path d="M 29 47 Q 40 41 51 47 L 50 51 Q 40 47 30 51 Z" fill="rgba(255,255,255,0.8)" />
-                                        <path d="M 30 63 Q 40 67 50 63 L 49 61 Q 40 64 31 61 Z" fill="#0C4A6E" opacity="0.8" />
-                                        <rect x="27" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
-                                        <rect x="45" y="37" width="8" height="4" rx="2" fill="#FEF08A" />
-                                        <rect x="26" y="80" width="8" height="4" rx="2" fill="#EF4444" />
-                                        <rect x="46" y="80" width="8" height="4" rx="2" fill="#EF4444" />
-                                    </svg>
+                                    <CarroOriginalSVG />
                                 )}
                             </div>
                         </Marker>
@@ -513,6 +500,7 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
             {/* Bottom Sheet Animado */}
             <AnimatePresence mode="wait">
                 <motion.div
+                    layout
                     key={etapa}
                     className="bottom-sheet-viagem"
                     initial={{ y: "100%" }}
@@ -525,6 +513,14 @@ export default function FluxoViagem({ aoSair, categoriaInicial = "VEM CAR" }) {
                     {RenderBottomSheet()}
                 </motion.div>
             </AnimatePresence>
+        </div>
+    );
+}
+
+function ResizableModal({ children, ...props }) {
+    return (
+        <div className="modal-resizable" {...props}>
+            {children}
         </div>
     );
 }

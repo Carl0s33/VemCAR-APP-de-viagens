@@ -127,11 +127,14 @@
 }
 
 /* Cores Refinadas */
-.bento-icon-wrapper.azul { background: linear-gradient(135deg, #00BCD4, #0284C7); color: #000; box-shadow: 0 8px 20px rgba(0, 188, 212, 0.3); }
-.bento-icon-wrapper.laranja { background: linear-gradient(135deg, #FBBF24, #F59E0B); color: #000; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2); }
-.bento-icon-wrapper.roxo { background: linear-gradient(135deg, #A855F7, #7E22CE); color: #FFF; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); }
-.bento-icon-wrapper.verde { background: linear-gradient(135deg, #34D399, #059669); color: #000; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2); }
-.bento-icon-wrapper.branco { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid rgba(255, 255, 255, 0.2); }
+.bento-icon-wrapper.azul, .bento-icon-wrapper.laranja, .bento-icon-wrapper.roxo, .bento-icon-wrapper.verde {
+  box-shadow: none;
+}
+
+.bento-icon-wrapper.azul { background: #00BCD4; }
+.bento-icon-wrapper.laranja { background: #FBBF24; }
+.bento-icon-wrapper.roxo { background: #A855F7; }
+.bento-icon-wrapper.verde { background: #34D399; }
 
 /* Textos dos Cards */
 .bento-card h3 {
