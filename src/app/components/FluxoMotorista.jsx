@@ -10,7 +10,6 @@ import './style/TelaNavegacaoMotorista.css';
 import './style/TelaPainelMotorista.css';
 import './style/TelaAlertaCorrida.css';
 
-// Calcula a rotação (yaw) do carro em movimento
 function getBearing(start, end) {
     const [lng1, lat1] = start;
     const [lng2, lat2] = end;
@@ -27,15 +26,21 @@ const PONTO_PASSAGEIRA = [-35.43350494820496, -6.480733831089614];
 const PONTO_DESTINO = [-35.44523200903737, -6.470226792030399];
 const ROTACAO_CARRO_PARADO = -135;
 
+// botao de arrastar recalcula o tamanho real na tela do celular de forma responsiva
 const BotaoDeslizante = ({ texto, corFundo, aoCompletar }) => {
     const containerRef = useRef(null);
-    const [larguraArrastavel, setLarguraArrastavel] = useState(240);
+    const [larguraArrastavel, setLarguraArrastavel] = useState(200);
 
-    useEffect(() => {
+    const recalcularLargura = () => {
         if (containerRef.current) {
-            // Calcula o tamanho dinâmico: largura do container menos o tamanho da bolinha (48px) e margens
             setLarguraArrastavel(containerRef.current.offsetWidth - 56);
         }
+    };
+
+    useEffect(() => {
+        recalcularLargura();
+        window.addEventListener('resize', recalcularLargura);
+        return () => window.removeEventListener('resize', recalcularLargura);
     }, []);
 
     return (
@@ -49,9 +54,14 @@ const BotaoDeslizante = ({ texto, corFundo, aoCompletar }) => {
                 dragConstraints={{ left: 0, right: larguraArrastavel }}
                 dragElastic={{ left: 0, right: 0.1 }}
                 dragSnapToOrigin
+                onDrag={(e, info) => {
+                    // ativa direto ao encostar no fim da linha baseado no container real
+                    if (info.offset.x >= larguraArrastavel - 5) {
+                        aoCompletar();
+                    }
+                }}
                 onDragEnd={(e, info) => {
-                    // Só ativa se o motorista arrastar mais de 85% do caminho total
-                    if (info.offset.x > larguraArrastavel * 0.85) {
+                    if (info.offset.x > larguraArrastavel * 0.8) {
                         aoCompletar();
                     }
                 }}
@@ -65,11 +75,8 @@ const BotaoDeslizante = ({ texto, corFundo, aoCompletar }) => {
 
 export default function FluxoMotorista({ aoPerfil }) {
     const mapRef = useRef(null);
-
-    // offline -> online -> alerta -> a_caminho -> aguardando -> em_corrida -> finalizada -> avaliacao -> online
     const [fase, setFase] = useState('offline');
 
-    // Estados do Mapa e Navegação
     const [viewState, setViewState] = useState({
         longitude: PONTO_CARRO[0],
         latitude: PONTO_CARRO[1],
@@ -83,16 +90,14 @@ export default function FluxoMotorista({ aoPerfil }) {
     const [instrucaoAtual, setInstrucaoAtual] = useState(null);
     const [posicaoCarro, setPosicaoCarro] = useState(PONTO_CARRO);
 
-    // Estados Extras (Painel e Alerta)
     const [horaAtual, setHoraAtual] = useState("");
     const [tempoAlerta, setTempoAlerta] = useState(15);
     const [nota, setNota] = useState(0);
 
     const metaDiaria = 200.00;
-    const ganhosHoje = 142.50;
-    const progressoMeta = (ganhosHoje / metaDiaria) * 100;
+    const gananciasHoje = 142.50;
+    const progressoMeta = (gananciasHoje / metaDiaria) * 100;
 
-    // Relógio
     useEffect(() => {
         const atualizarHora = () => {
             const data = new Date();
@@ -103,7 +108,6 @@ export default function FluxoMotorista({ aoPerfil }) {
         return () => clearInterval(intervalo);
     }, []);
 
-    // Som do Alerta
     useEffect(() => {
         if (fase === 'alerta') {
             const context = new (window.AudioContext || window.webkitAudioContext)();
@@ -126,7 +130,6 @@ export default function FluxoMotorista({ aoPerfil }) {
         }
     }, [fase]);
 
-    // Temporizador do Alerta
     useEffect(() => {
         if (fase === 'alerta') {
             if (tempoAlerta > 0) {
@@ -138,7 +141,6 @@ export default function FluxoMotorista({ aoPerfil }) {
         }
     }, [fase, tempoAlerta]);
 
-    // Busca rota no OSRM
     const fetchRoute = async (start, end) => {
         try {
             const url = `https://router.project-osrm.org/route/v1/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&steps=true&overview=full`;
@@ -161,7 +163,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                     longitude: coordenadas[0][0],
                     latitude: coordenadas[0][1],
                     bearing: initialBearing,
-                    pitch: ['a_caminho', 'em_corrida'].includes(fase) ? 60 : 0, // Inclinado estilo Waze na navegação
+                    pitch: ['a_caminho', 'em_corrida'].includes(fase) ? 60 : 0,
                     zoom: 18
                 }));
                 if (steps && steps.length > 0) atualizarInstrucao(0, steps);
@@ -186,7 +188,6 @@ export default function FluxoMotorista({ aoPerfil }) {
         }
     };
 
-    // Motor da Animação a 60FPS estável
     useEffect(() => {
         if (rota.length < 2 || ['offline', 'online', 'alerta', 'aguardando', 'finalizada', 'avaliacao'].includes(fase)) return;
 
@@ -243,7 +244,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                     mapRef.current.getMap().jumpTo({
                         center: [currentLng, currentLat],
                         bearing: newBearing,
-                        pitch: 55 // Mantém inclinação 3D fluida nas curvas
+                        pitch: 55
                     });
                 }
             }
@@ -348,7 +349,6 @@ export default function FluxoMotorista({ aoPerfil }) {
                 </Map>
             </div>
 
-            {/* --- INSTRUÇÕES DO GPS --- */}
             <AnimatePresence>
                 {instrucaoAtual && ['a_caminho', 'em_corrida'].includes(fase) && (
                     <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} className="painel-curva-topo" style={{ zIndex: 100 }}>
@@ -361,7 +361,6 @@ export default function FluxoMotorista({ aoPerfil }) {
                 )}
             </AnimatePresence>
 
-            {/* --- CABEÇALHO PADRÃO --- */}
             <AnimatePresence>
                 {['offline', 'online'].includes(fase) && (
                     <motion.div className="cabecalho-flutuante" initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }} style={{ zIndex: 50 }}>
@@ -375,7 +374,6 @@ export default function FluxoMotorista({ aoPerfil }) {
                 )}
             </AnimatePresence>
 
-            {/* --- GAVETA INFERIOR PAINEL --- */}
             <AnimatePresence mode="wait">
                 {['offline', 'online'].includes(fase) && (
                     <motion.div key="painel" className="card-inferior-motorista" initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }} style={{ zIndex: 60 }}>
@@ -383,7 +381,7 @@ export default function FluxoMotorista({ aoPerfil }) {
                         <div className="painel-ganhos-grid">
                             <div className="info-box">
                                 <div className="info-box-header"><Wallet size={16} color="#10B981" /><p>Ganhos Hoje</p></div>
-                                <h2 className="info-box-valor">R$ {ganhosHoje.toFixed(2).replace('.', ',')}</h2>
+                                <h2 className="info-box-valor">R$ {gananciasHoje.toFixed(2).replace('.', ',')}</h2>
                             </div>
                             <div className="info-box">
                                 <div className="info-box-header"><Route size={16} color="#00BCD4" /><p>Corridas</p></div>
@@ -415,7 +413,6 @@ export default function FluxoMotorista({ aoPerfil }) {
                     </motion.div>
                 )}
 
-                {/* ALERTA DE CORRIDA */}
                 {fase === 'alerta' && (
                     <motion.div key="alerta" className="alerta-container-flutuante" style={{ zIndex: 100, position: 'absolute', bottom: 0, width: '100%', left: 0, padding: 16 }}>
                         <motion.div className="alerta-card-matte" initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
@@ -450,9 +447,17 @@ export default function FluxoMotorista({ aoPerfil }) {
                     </motion.div>
                 )}
 
-                {/* PAINÉIS DE NAVEGAÇÃO */}
                 {['a_caminho', 'aguardando', 'em_corrida', 'finalizada', 'avaliacao'].includes(fase) && (
-                    <motion.div key="navegacao" className="navegacao-painel-flutuante" style={{ zIndex: 60 }} initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
+                    <motion.div
+                        key="navegacao"
+                        className="navegacao-painel-flutuante"
+                        style={{ zIndex: 60 }}
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        onLayoutAnimationComplete={() => window.dispatchEvent(new Event('resize'))} // Força o recalculo do slide assim que a gaveta abre
+                    >
                         {fase === 'a_caminho' && (
                             <div className="painel-conteudo">
                                 <div className="painel-flex">
