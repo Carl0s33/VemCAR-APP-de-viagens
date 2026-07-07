@@ -1,0 +1,181 @@
+
+.cadastro-container {
+  background: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+.cadastro-header {
+  padding: 60px 24px 20px;
+  z-index: 10;
+}
+
+.btn-voltar {
+  background: #111111;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #FFF;
+  transition: transform 0.1s;
+}
+
+.btn-voltar:active {
+  transform: scale(0.95);
+}
+
+.cadastro-content {
+  flex: 1;
+  padding: 0 24px;
+  overflow-y: auto;
+}
+
+
+.cadastro-titulo {
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  color: #FFF;
+  letter-spacing: -0.5px;
+}
+
+.cadastro-subtitulo {
+  color: #888;
+  margin-bottom: 24px;
+  font-size: 15px;
+}
+
+
+.card-opcao {
+  background: #111111;
+  border: none;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  text-align: left;
+  color: #FFF;
+  width: 100%;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.card-opcao:active {
+  border-color: #00E5FF;
+  background: #1A1A1A;
+  transform: scale(0.98);
+}
+
+.icone-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icone-passageiro { background: #FFFFFF; }
+.icone-motorista { background: #00E5FF; }
+
+
+.label-solid {
+  color: #00E5FF;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-solid {
+  background: #111111;
+  border: 1px solid #1A1A1A;
+  border-radius: 12px;
+  height: 52px;
+  padding: 0 16px;
+  color: #FFF;
+  width: 100%;
+  outline: none;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 0px;
+  transition: all 0.2s ease;
+}
+
+.input-group-matte {
+  margin-bottom: 2px;
+}
+
+.input-solid:focus {
+  border-color: #00E5FF;
+  background: #000;
+  box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.1);
+}
+
+.grid-veiculo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+
+.btn-principal {
+  width: 100%;
+  height: 56px;
+  background: #34C759; 
+  border: none;
+  border-radius: 16px;
+  color: #000;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: transform 0.1s, box-shadow 0.1s;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.btn-principal:active {
+  transform: translateY(4px);
+  box-shadow: 0 0px 0px transparent;
+}
+
+
+.otp-grid {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.otp-input {
+  width: 56px;
+  height: 64px;
+  background: #111111;
+  border: none;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 28px;
+  color: #00E5FF;
+  font-weight: 900;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.otp-input:focus {
+  border-color: #00E5FF;
+  background: #1A1A1A;
+}

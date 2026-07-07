@@ -1,0 +1,278 @@
+.tela-viagens-container {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tela-viagens-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 68px;
+  padding-bottom: 80px;
+}
+
+
+.tela-viagens-titulo-wrapper {
+  padding: 16px 22px 0;
+  margin-bottom: 20px;
+}
+
+.tela-viagens-titulo-icone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.tela-viagens-titulo-icone h1 {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.tela-viagens-titulo-wrapper p {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+
+.tela-viagens-card-resumo {
+  margin: 0 22px 20px;
+  background: #111;
+  border-radius: 22px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.tela-viagens-card-resumo-conteudo {
+  flex: 1;
+}
+
+.tela-viagens-gasto-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.tela-viagens-gasto-label span {
+  font-size: 11px;
+  color: #555;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tela-viagens-gasto-total {
+  font-size: 34px;
+  font-weight: 900;
+  color: #00E5FF;
+  line-height: 1;
+  margin: 0 0 4px;
+}
+
+.tela-viagens-gasto-semana {
+  font-size: 11px;
+  color: #555;
+  margin: 0;
+}
+
+
+.tela-viagens-grafico-barra {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.tela-viagens-barra-dia {
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.tela-viagens-barra {
+  width: 100%;
+  border-radius: 5px;
+  min-height: 4px;
+}
+
+.tela-viagens-barra-dia span {
+  font-size: 9px;
+  color: #444;
+  font-weight: 700;
+}
+
+
+.tela-viagens-filtros {
+  display: flex;
+  gap: 8px;
+  padding: 0 22px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.tela-viagens-filtro {
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 17px;
+  border: none;
+  background: #111;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.tela-viagens-filtro.ativo {
+  background: #00E5FF;
+}
+
+.tela-viagens-filtro span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+}
+
+.tela-viagens-filtro.ativo span {
+  color: #000;
+}
+
+
+.tela-viagens-lista {
+  padding: 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.tela-viagens-card {
+  background: #111;
+  border-radius: 18px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  overflow: hidden;
+}
+
+.tela-viagens-card.expandido {
+  background: #141414;
+}
+
+.tela-viagens-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tela-viagens-card-icone {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tela-viagens-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tela-viagens-card-modalidade {
+  font-size: 10px;
+  font-weight: 900;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 2px;
+}
+
+.tela-viagens-card-rotas {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.tela-viagens-card-rotas span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.origem-texto {
+  color: #888 !important;
+}
+
+.tela-viagens-card-data {
+  font-size: 11px;
+  color: #444;
+  display: block;
+  margin-top: 3px;
+}
+
+.tela-viagens-preco {
+  font-size: 15px;
+  font-weight: 900;
+  color: #00E5FF;
+  flex-shrink: 0;
+}
+
+.tela-viagens-preco.cancelada {
+  color: #333;
+  text-decoration: line-through;
+}
+
+
+.tela-viagens-card-detalhe {
+  overflow: hidden;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #1A1A1A;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detalhe-linha {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #FFF;
+}
+
+.btn-repetir-corrida {
+  margin-top: 4px;
+  border: none;
+  border-radius: 12px;
+  height: 40px;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 800;
+  color: #000;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

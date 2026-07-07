@@ -1,0 +1,561 @@
+
+.viagem-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Inter', sans-serif;
+}
+
+
+.viagem-search-bar {
+  position: absolute;
+  top: max(48px, env(safe-area-inset-top));
+  left: 12px;
+  right: 12px;
+  z-index: 200;
+}
+
+.viagem-search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1A1A1A;
+  border-radius: 14px;
+  padding: 13px 14px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.viagem-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #FFF;
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.viagem-search-input::placeholder {
+  color: #555;
+}
+
+.viagem-search-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.viagem-search-dot.verde { background: #10B981; }
+.viagem-search-dot.azul { background: #00BCD4; }
+
+.viagem-search-divider {
+  width: 1px;
+  height: 28px;
+  background: #222;
+  margin-left: 4px;
+  align-self: center;
+}
+
+.btn-voltar-flutuante {
+  position: absolute;
+  top: max(48px, env(safe-area-inset-top));
+  left: 12px;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFF;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+
+.dropdown-sugestoes {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  z-index: 300;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+}
+
+.item-sugestao {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.item-sugestao:active { background: #1A1A1A; }
+
+.icone-sugestao {
+  width: 36px;
+  height: 36px;
+  background: #1A1A1A;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.textos-sugestao h4 {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.textos-sugestao p {
+  color: #666;
+  font-size: 12px;
+  margin: 2px 0 0;
+}
+
+
+.pino-selecao-dinamico {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.5));
+}
+
+.pino-selecao-dinamico.arrastando {
+  transform: translateY(-14px) scale(1.08);
+  filter: drop-shadow(0 18px 14px rgba(0,0,0,0.4));
+}
+
+.balao-pino {
+  background: #000;
+  color: #00BCD4;
+  padding: 5px 11px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 900;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+.ponto-embarque-verde {
+  width: 14px;
+  height: 14px;
+  background: #10B981;
+  border: 3px solid #000;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(16,185,129,0.5);
+}
+
+
+.bottom-sheet-viagem {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px 24px 0 0;
+  padding: 8px 16px max(24px, env(safe-area-inset-bottom));
+  z-index: 100;
+  max-height: 88dvh;
+  overflow-y: auto;
+}
+
+.bottom-sheet-viagem.has-menu {
+  padding-bottom: calc(76px + max(24px, env(safe-area-inset-bottom)));
+}
+
+.sheet-drag {
+  width: 40px;
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  margin: 8px auto 20px;
+}
+
+
+.sheet-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #FFF;
+  margin: 0 0 16px;
+}
+
+.sheet-subtitle {
+  font-size: 11px;
+  font-weight: 800;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 20px 0 10px;
+}
+
+.sheet-desc {
+  color: #666;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sheet-centralizado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.modalidades-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.card-orcamento {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #111;
+  border: 1px solid #1A1A1A;
+  padding: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-orcamento:hover {
+  background: #151515;
+}
+
+.card-orcamento.selecionado {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.12) 0%, rgba(17, 17, 17, 0.6) 100%);
+  border-color: #00E5FF;
+  box-shadow: 0 0 0 1px #00E5FF, 0 8px 30px rgba(0, 229, 255, 0.15);
+}
+
+.icone-orcamento {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1A1A1A;
+  color: #888;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.card-orcamento.selecionado .icone-orcamento {
+  background: #00E5FF;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+.info-orcamento { flex: 1; }
+
+.info-orcamento h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FFF;
+  margin: 0;
+}
+
+.info-orcamento p {
+  font-size: 12px;
+  color: #A1A1AA;
+  margin: 2px 0 6px 0;
+}
+
+.preco-orcamento {
+  font-size: 20px;
+  font-weight: 900;
+  color: #FFF;
+  margin: 0;
+  text-align: right;
+}
+
+.info-orcamento small {
+  font-size: 11px;
+  color: #444;
+  font-weight: 700;
+}
+
+.preco-orcamento {
+  font-size: 17px;
+  font-weight: 900;
+  color: #FFF;
+  margin: 0;
+}
+
+.card-orcamento.selecionado .preco-orcamento {
+  color: #00E5FF;
+}
+
+
+.metodos-pagamento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.btn-pagamento {
+  background: #111;
+  border: 1.5px solid #1E1E1E;
+  color: #666;
+  border-radius: 14px;
+  padding: 12px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-pagamento.ativo {
+  border-color: #00BCD4;
+  color: #00BCD4;
+  background: rgba(0,188,212,0.04);
+}
+
+.card-pagamento-opcoes {
+  background: #111;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.checkbox-troco {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #888;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkbox-troco input { accent-color: #00BCD4; }
+
+.troco-input-wrapper {
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.troco-input-wrapper input {
+  width: 100%;
+  background: #0A0A0A;
+  border: 1px solid #222;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #FFF;
+  font-size: 13px;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+
+.btn-viagem {
+  width: 100%;
+  height: 54px;
+  border-radius: 16px;
+  border: none;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-viagem.principal {
+  background: #00E5FF;
+  color: #000;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+}
+
+.btn-viagem.principal:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.2);
+}
+
+.btn-viagem.principal:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-viagem.secundario {
+  background: #111;
+  color: #FFF;
+  border: 1.5px solid #1E1E1E;
+}
+
+
+.perfil-motorista {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #111;
+  padding: 14px;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+
+.avatar-motorista {
+  width: 46px;
+  height: 46px;
+  background: #1A1A1A;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-motorista { flex: 1; }
+
+.info-motorista h2 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFF;
+  margin: 0;
+}
+
+.info-motorista p {
+  font-size: 12px;
+  color: #666;
+  margin: 2px 0 0;
+}
+
+.badge-placa {
+  background: #1A1A1A;
+  color: #FFF;
+  font-weight: 800;
+  padding: 5px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+
+.eta-badge-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.eta-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0, 188, 212, 0.1);
+  color: #00BCD4;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.eta-chip.verde {
+  background: rgba(16,185,129,0.1);
+  color: #10B981;
+}
+
+
+.search-pulse-container {
+  width: 72px;
+  height: 72px;
+  background: rgba(0,188,212,0.06);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-search 1.5s ease-out infinite;
+}
+
+@keyframes pulse-search {
+  0% { box-shadow: 0 0 0 0 rgba(0,188,212,0.25); }
+  70% { box-shadow: 0 0 0 16px rgba(0,188,212,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,188,212,0); }
+}
+
+
+.preco-final {
+  font-size: 36px;
+  color: #00BCD4;
+  font-weight: 900;
+  margin: 8px 0 4px;
+  letter-spacing: -1px;
+}
+
+.avaliacao-estrelas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.botao-estrela {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+.status-corrida-label {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot-piscante {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pisca 1s infinite;
+}
+
+@keyframes pisca {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}

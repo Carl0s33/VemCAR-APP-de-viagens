@@ -19,19 +19,15 @@
   }
 }
 
-/* ============================================================
-   MODO CLARO — overrides aplicados quando <body class="light-mode">
-   Mantém o modo escuro como padrão; abaixo só inverte cores
-   chave (fundo/painel/texto/borda) para o tema branco.
-   ============================================================ */
 
-/* --- BASE GERAL --- */
+
+
 body.light-mode {
   background-color: #F9FAFB;
   color: #111827;
 }
 
-/* --- CONTAINERS DE TELA (fundo preto -> cinza muito claro) --- */
+
 body.light-mode .perfil-container,
 body.light-mode .perfil-header,
 body.light-mode .subtela-container,
@@ -47,7 +43,7 @@ body.light-mode .tela-navegacao-motorista-container {
   color: #111827;
 }
 
-/* --- CABEÇALHO --- */
+
 body.light-mode .cabecalho-container {
   background-color: #FFFFFF;
   border-bottom: 1px solid #E5E7EB;
@@ -66,7 +62,7 @@ body.light-mode .cabecalho-avatar {
   background-color: #F3F4F6;
 }
 
-/* --- MENU INFERIOR --- */
+
 body.light-mode .menu-inferior-container {
   background: rgba(255, 255, 255, 0.97);
   border-top: 1px solid #E5E7EB;
@@ -79,7 +75,7 @@ body.light-mode .menu-inferior-icone-container svg {
   color: #6B7280;
 }
 
-/* --- CARDS / PAINÉIS / ITENS DE MENU --- */
+
 body.light-mode .perfil-menu-item,
 body.light-mode .perfil-botao-voltar,
 body.light-mode .card-item-salvo,
@@ -117,7 +113,7 @@ body.light-mode .info-rating {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-/* --- INPUTS --- */
+
 body.light-mode .input-solid,
 body.light-mode .login-input {
   background: #FFFFFF;
@@ -132,7 +128,7 @@ body.light-mode .input-viagem-wrapper input::placeholder {
   color: #9CA3AF;
 }
 
-/* --- BOTTOM SHEETS / GAVETAS / MODAIS --- */
+
 body.light-mode .bottom-sheet-viagem,
 body.light-mode .card-inferior-motorista-matte,
 body.light-mode .tela-navegacao-motorista-painel-inferior,
@@ -148,7 +144,7 @@ body.light-mode .alca-drag {
   background: #D1D5DB;
 }
 
-/* --- BOTÕES SECUNDÁRIOS / DASHED --- */
+
 body.light-mode .btn-adicionar-matte,
 body.light-mode .btn-simular-matte {
   border-color: #D1D5DB;
@@ -158,7 +154,7 @@ body.light-mode .btn-secundario-matte {
   color: #111827;
 }
 
-/* --- BORDA INFERIOR / DIVISÓRIAS --- */
+
 body.light-mode .login-abas,
 body.light-mode .card-destino-recente {
   border-color: #E5E7EB;
@@ -167,12 +163,12 @@ body.light-mode .divisor-linha {
   background: #E5E7EB;
 }
 
-/* --- BACKDROP DE MODAL --- */
+
 body.light-mode .modal-backdrop {
   background: rgba(0, 0, 0, 0.3);
 }
 
-/* --- TEXTOS PRIMÁRIOS (FFF -> preto/cinza-escuro) --- */
+
 body.light-mode .perfil-titulo-header,
 body.light-mode .perfil-nome-usuario,
 body.light-mode .perfil-item-label,
@@ -207,7 +203,7 @@ body.light-mode .saldo-valor {
   color: #111827;
 }
 
-/* --- TEXTOS SECUNDÁRIOS (#888 / #A1A1AA / #666 -> cinza médio) --- */
+
 body.light-mode .perfil-email-usuario,
 body.light-mode .perfil-item-desc,
 body.light-mode .subtela-desc,
@@ -244,7 +240,7 @@ body.light-mode .abertura-slogan {
   color: #6B7280;
 }
 
-/* --- ÍCONES DECORATIVOS ESCUROS (fundo preto -> cinza claro) --- */
+
 body.light-mode .perfil-icone-caixa,
 body.light-mode .icone-item-salvo,
 body.light-mode .icone-pagamento,
@@ -253,7 +249,7 @@ body.light-mode .tela-viagens-barra {
   border-color: #E5E7EB;
 }
 
-/* --- AVATAR / BADGE MATTE --- */
+
 body.light-mode .avatar-wrapper-matte {
   background: #FFFFFF;
   border: 2px solid #E5E7EB;
@@ -262,7 +258,7 @@ body.light-mode .badge-edicao {
   border-color: #FFFFFF;
 }
 
-/* --- TÍTULOS COM ACENTO AZUL ficam mantidos no light-mode --- */
+
 body.light-mode .titulo-item-salvo,
 body.light-mode .titulo-pagamento,
 body.light-mode .card-endereco-salvo h3,
@@ -271,11 +267,9 @@ body.light-mode .tela-viagens-gasto-total,
 body.light-mode .tela-viagens-preco,
 body.light-mode .preco-estimado h2,
 body.light-mode .categoria-carro,
-body.light-mode .login-marca-car {
-  /* mantém o ciano; nenhuma alteração */
-}
+body.light-mode .login-marca-car 
 
-/* --- ESTADO ATIVO DOS FILTROS PERMANECE AZUL --- */
+
 body.light-mode .tela-viagens-filtro.ativo {
   background: #00E5FF;
   border: none;
@@ -284,14 +278,14 @@ body.light-mode .tela-viagens-filtro.ativo span {
   color: #000;
 }
 
-/* --- DIVISÓRIAS PEQUENAS --- */
+
 body.light-mode .divisor-ponto,
 body.light-mode .traco-conexao,
 body.light-mode .ponto-status {
   background: #D1D5DB;
 }
 
-/* --- BOTÃO CHEGUEI (preto -> claro) --- */
+
 body.light-mode .btn-cheguei-matte {
   background: #F3F4F6;
   border: 2px solid #E5E7EB;
@@ -299,17 +293,17 @@ body.light-mode .btn-cheguei-matte {
   box-shadow: 0 4px 0px #E5E7EB;
 }
 
-/* --- BARRA DE TEMPO ESGOTANDO (alerta corrida) --- */
+
 body.light-mode .barra-tempo-esgotando {
   background: #E5E7EB;
 }
 
-/* --- CADASTRO ESTADO ATIVO --- */
+
 body.light-mode .card-opcao:active {
   background: #F3F4F6;
 }
 
-/* --- CLASSES SEMÂNTICAS DE TEXTO --- */
+
 body.light-mode .texto-primario {
   color: #111827;
 }

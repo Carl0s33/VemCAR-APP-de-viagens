@@ -3,7 +3,7 @@
 @import './theme.css';
 @import './globals.css';
 
-/* Hide scrollbar utility */
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

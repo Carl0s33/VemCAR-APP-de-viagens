@@ -1,0 +1,224 @@
+.login-container {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top right, #0A192F 0%, #000000 40%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+  overflow-y: auto;
+}
+
+.login-logo-secao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80px;
+  padding-bottom: 40px;
+}
+
+.login-marca {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.login-marca-vem {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -2px;
+}
+
+.login-marca-car {
+  font-size: 48px;
+  font-weight: 900;
+  color: #00BCD4;
+  letter-spacing: -2px;
+}
+
+.login-subtitulo-cidade {
+  font-size: 11px;
+  color: #00BCD4;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  font-weight: 800;
+}
+
+.login-abas {
+  display: flex;
+  border-bottom: 2px solid #1A1A1A;
+  margin-bottom: 32px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px 12px 0 0;
+  padding-top: 8px;
+}
+
+.login-aba-item {
+  flex: 1;
+  padding-bottom: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.login-aba-texto {
+  font-size: 14px;
+  color: #666666;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.login-aba-texto.ativo {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.login-aba-indicador {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #00BCD4;
+  border-radius: 3px;
+}
+
+.login-form-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-title {
+  color: #FFF;
+  font-size: 28px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  color: #A1A1AA;
+  font-size: 14px;
+  margin: 0 0 32px 0;
+}
+
+.login-campo-grupo {
+  margin-bottom: 24px;
+}
+
+.login-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: #A1A1AA;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 16px;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.login-input {
+  width: 100%;
+  height: 56px;
+  background-color: #111;
+  border: 1.5px solid #222;
+  border-radius: 16px;
+  padding: 0 16px;
+  color: #ffffff;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.login-input.com-icone {
+  padding-left: 48px;
+}
+
+.login-input:focus {
+  border-color: #00BCD4;
+  background-color: #151515;
+  box-shadow: 0 0 0 4px rgba(0,188,212,0.1);
+}
+
+.login-input:focus + .login-input-icon,
+.login-input-wrapper:focus-within .login-input-icon {
+  color: #00BCD4;
+}
+
+.login-btn-senha {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.login-btn-senha:hover {
+  color: #FFF;
+}
+
+.login-botao-entrar {
+  width: 100%;
+  height: 56px;
+  background: linear-gradient(135deg, #00BCD4 0%, #0288D1 100%);
+  border-radius: 16px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 16px rgba(0,188,212,0.2);
+}
+
+.login-botao-entrar span {
+  color: #000000;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.login-rodape {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-rodape p {
+  color: #888888;
+  font-size: 14px;
+}
+
+.login-link-cadastro {
+  color: #00BCD4;
+  font-weight: 800;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: color 0.2s;
+}
+
+.login-link-cadastro:hover {
+  color: #FFF;
+}
